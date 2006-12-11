@@ -1,0 +1,10 @@
+Name:                dlist
+Version:             0.1
+Description:         Differences lists: lists supporting efficient append
+License:             BSD3
+License-file:        LICENSE
+Author:              Don Stewart 
+Maintainer:          <dons@cse.unsw.edu.au>
+Build-Depends:       base
+ghc-options:         -O
+Exposed-modules:     Data.DList
