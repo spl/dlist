@@ -1,0 +1,14 @@
+DLists: a Haskell list type supporting O(1) append and snoc
+
+Build instructions:
+
+    $ runhaskell Setup.lhs configure --prefix=$HOME
+    $ runhaskell Setup.lhs build
+    $ runhaskell Setup.lhs install
+
+Running the testsuite:
+    $ cd tests && runhaskell Properties.hs
+
+Author:
+    Don Stewart
+    http://www.cse.unsw.edu.au/~dons
