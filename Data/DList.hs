@@ -32,7 +32,7 @@ module Data.DList (
 -- | A difference list is a function that given a list, returns the
 -- original contents of the difference list prepended at the given list
 --
--- This structure supports /O(1)/ append/snoc operations on lists
+-- This structure supports /O(1)/ append and snoc operations on lists.
 --
 type DList a = [a] -> [a]
 
