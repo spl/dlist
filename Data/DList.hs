@@ -23,39 +23,51 @@ module Data.DList (
   -- * Basic functions
   empty,        -- :: DList a
   singleton,    -- :: a -> DList a
+  cons,         -- :: a -> DList a -> DList a
   snoc,         -- :: DList a -> a -> DList a
   append,       -- :: DList a -> DList a -> DList a
 
 
   ) where
 
+import Data.Monoid
+
 -- | A difference list is a function that given a list, returns the
 -- original contents of the difference list prepended at the given list
 --
 -- This structure supports /O(1)/ append and snoc operations on lists.
 --
-type DList a = [a] -> [a]
+newtype DList a = DL { unDL :: [a] -> [a] }
 
 -- | Converting a normal list to a dlist
 fromList    :: [a] -> DList a
-fromList    = (++)
+fromList    = DL . (++)
 
 -- | Converting a dlist back to a normal list
 toList      :: DList a -> [a]
-toList      = ($[])
+toList      = ($[]) . unDL
 
 -- | Create a difference list containing no elements
 empty       :: DList a
-empty       = id
+empty       = DL id
 
 -- | Create difference list with given single element
 singleton   :: a -> DList a
-singleton   = (:)
+singleton   = DL . (:)
+
+-- | /O(1)/, Prepend a single element to a difference list
+cons        :: a -> DList a -> DList a
+cons x xs   = DL ((x:) . unDL xs)
 
 -- | /O(1)/, Append a single element at a difference list
 snoc        :: DList a -> a -> DList a
-snoc        = (. (:)) . (.)
+snoc xs x   = DL (unDL xs . (x:))
 
 -- | Appending difference lists
-append      :: DList a -> DList a -> DList a
-append      = (.)
+append       :: DList a -> DList a -> DList a
+append xs ys = DL (unDL xs . unDL ys)
+
+
+instance Monoid (DList a) where
+    mempty  = empty
+    mappend = append
