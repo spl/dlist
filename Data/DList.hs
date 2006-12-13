@@ -14,22 +14,23 @@
 
 module Data.DList (
 
-  DList,        -- abstract, instance Monoid
+  DList         -- abstract, instance Monoid
 
   -- * Construction
-  fromList,     -- :: [a] -> DList a
-  toList,       -- :: DList a -> [a]
+  ,fromList      -- :: [a] -> DList a
+  ,toList        -- :: DList a -> [a]
 
   -- * Basic functions
-  empty,        -- :: DList a
-  singleton,    -- :: a -> DList a
-  cons,         -- :: a -> DList a -> DList a
-  snoc,         -- :: DList a -> a -> DList a
-  append,       -- :: DList a -> DList a -> DList a
-
+  ,empty         -- :: DList a
+  ,singleton     -- :: a -> DList a
+  ,cons          -- :: a -> DList a -> DList a
+  ,snoc          -- :: DList a -> a -> DList a
+  ,append        -- :: DList a -> DList a -> DList a
+  ,concat        -- :: [DList a] -> DList a
 
   ) where
 
+import Prelude hiding (concat)
 import Data.Monoid
 
 -- | A difference list is a function that given a list, returns the
@@ -66,6 +67,10 @@ snoc xs x   = DL (unDL xs . (x:))
 -- | Appending difference lists
 append       :: DList a -> DList a -> DList a
 append xs ys = DL (unDL xs . unDL ys)
+
+-- | Concatenate difference lists
+concat       :: [DList a] -> DList a
+concat       = foldr append empty
 
 
 instance Monoid (DList a) where
