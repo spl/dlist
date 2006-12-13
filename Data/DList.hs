@@ -14,7 +14,7 @@
 
 module Data.DList (
 
-  DList,        -- abstract
+  DList,        -- abstract, instance Monoid
 
   -- * Construction
   fromList,     -- :: [a] -> DList a
