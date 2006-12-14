@@ -74,12 +74,18 @@ append xs ys = DL (unDL xs . unDL ys)
 concat       :: [DList a] -> DList a
 concat       = List.foldr append empty
 
--- | /O(length dl)/, List elimination (head/tail)
+-- | /O(length dl)/, List elimination, head, tail
 list :: b -> (a -> DList a -> b) -> DList a -> b
 list null cons dl =
   case toList dl of
     [] -> null
     (x : xs) -> cons x (fromList xs)
+
+head :: DList a -> a
+head = list (error "Data.DList.head: empty list") (curry fst)
+
+tail :: DList a -> DList a
+tail = list (error "Data.DList.tail: empty list") (curry snd) 
 
 -- | Unfoldr for difference lists
 unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
