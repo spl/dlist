@@ -30,9 +30,9 @@ module Data.DList (
 
   ) where
 
-import Prelude hiding (concat)
+import Prelude hiding (concat, foldr, map)
 import Control.Monad
-import qualified Data.List as List (concat, map)
+import qualified Data.List as List (concat, foldr, map, unfoldr)
 import Data.Monoid
 
 -- | A difference list is a function that given a list, returns the
@@ -72,23 +72,47 @@ append xs ys = DL (unDL xs . unDL ys)
 
 -- | Concatenate difference lists
 concat       :: [DList a] -> DList a
-concat       = foldr append empty
+concat       = List.foldr append empty
+
+-- | /O(length dl)/, List elimination (head/tail)
+list :: b -> (a -> DList a -> b) -> DList a -> b
+list null cons dl =
+  case toList dl of
+    [] -> null
+    (x : xs) -> cons x (fromList xs)
+
+-- | Unfoldr for difference lists
+unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
+unfoldr pf b =
+  case pf b of
+    Nothing     -> empty
+    Just (a, b) -> cons a (unfoldr pf b)
+
+-- | Foldr over difference lists
+foldr        :: (a -> b -> b) -> b -> DList a -> b
+foldr f b    = List.foldr f b . toList
+
+-- | Map over difference lists
+map          :: (a -> b) -> DList a -> DList b
+map f        = foldr (cons . f) empty
+
 
 instance Monoid (DList a) where
     mempty  = empty
     mappend = append
 
 instance Functor DList where
-  fmap f = fromList . List.map f . toList
+    fmap = map
 
 instance Monad DList where
   m >>= k  
     -- = concat (toList (fmap k m))
     -- = (concat . toList . fromList . List.map k . toList) m
     -- = concat . List.map k . toList $ m
-    -- = foldr append empty . List.map k . toList $ m
-    = foldr (append . k) empty . toList $ m
-    
+    -- = List.foldr append empty . List.map k . toList $ m
+    -- = List.foldr (append . k) empty . toList $ m
+    = foldr (append . k) empty m
+
   return x = singleton x
   fail s   = empty
 
