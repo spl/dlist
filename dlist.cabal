@@ -2,7 +2,7 @@ Name:                dlist
 Version:             0.2
 Description:         Differences lists: lists supporting efficient append
 Category:            Data
-Synopis:             Differences lists: lists supporting efficient append
+Synopsis:            Differences lists: lists supporting efficient append
 License:             BSD3
 License-file:        LICENSE
 Author:              Don Stewart 
