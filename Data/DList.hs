@@ -34,6 +34,9 @@ module Data.DList (
   ,foldr         -- :: (a -> b -> b) -> b -> DList a -> b
   ,map           -- :: (a -> b) -> DList a -> DList b
 
+  -- * Miscellaneous utilities
+  ,maybeToMonadPlus -- :: MonadPlus m => Maybe a -> m a
+
   ) where
 
 import Prelude hiding (concat, foldr, map, head, tail)
@@ -133,3 +136,8 @@ instance Monad DList where
 instance MonadPlus DList where
   mzero    = empty
   mplus    = append
+
+-- Use this to convert Maybe a into DList a, or indeed into any other
+-- MonadPlus instance.
+maybeToMonadPlus :: MonadPlus m => Maybe a -> m a
+maybeToMonadPlus = maybe mzero return
