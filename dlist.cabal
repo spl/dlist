@@ -10,3 +10,4 @@ Maintainer:          <dons@cse.unsw.edu.au>
 Build-Depends:       base
 ghc-options:         -O
 Exposed-modules:     Data.DList
+Homepage:            http://www.cse.unsw.edu.au/~dons/code/dlist
