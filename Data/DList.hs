@@ -68,10 +68,12 @@ singleton   :: a -> DList a
 singleton   = DL . (:)
 
 -- | /O(1)/, Prepend a single element to a difference list
+infixr `cons`
 cons        :: a -> DList a -> DList a
 cons x xs   = DL ((x:) . unDL xs)
 
 -- | /O(1)/, Append a single element at a difference list
+infixl `snoc`
 snoc        :: DList a -> a -> DList a
 snoc xs x   = DL (unDL xs . (x:))
 
