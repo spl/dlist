@@ -8,6 +8,7 @@ Build instructions:
 
 Running the testsuite:
     $ cd tests && runhaskell Properties.hs
+    $ cd tests && ghc --make -O2 -ddump-simpl-stats Properties.hs -o prop && ./prop
 
 Author:
     Don Stewart
