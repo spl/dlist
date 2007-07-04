@@ -1,13 +1,14 @@
 Name:                dlist
-Version:             0.2
-Description:         Differences lists: lists supporting efficient append
+Version:             0.3
+Synopsis:            Differences lists
+Description:         Differences lists: a list-like type supporting O(1) append
 Category:            Data
-Synopsis:            Differences lists: lists supporting efficient append
 License:             BSD3
 License-file:        LICENSE
 Author:              Don Stewart 
-Maintainer:          <dons@cse.unsw.edu.au>
+Maintainer:          dons@cse.unsw.edu.au
 Build-Depends:       base
-ghc-options:         -O
+Ghc-options:         -O2
 Exposed-modules:     Data.DList
 Homepage:            http://www.cse.unsw.edu.au/~dons/code/dlist
+extra-source-files:  README tests/Properties.hs tests/Parallel.hs
