@@ -102,11 +102,11 @@ list null cons dl =
 
 -- | Return the head of the list
 head :: DList a -> a
-head = list (error "Data.DList.head: empty list") (curry fst)
+head = list (error "Data.DList.head: empty list") const
 
 -- | Return the tail of the list
 tail :: DList a -> DList a
-tail = list (error "Data.DList.tail: empty list") (curry snd)
+tail = list (error "Data.DList.tail: empty list") (flip const)
 
 -- | Unfoldr for difference lists
 unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
