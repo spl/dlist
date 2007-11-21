@@ -72,7 +72,9 @@ main = pRun 8 300
 -- missing QC instances
 --
 
+{-
 instance Arbitrary a => Arbitrary (Maybe a) where
   arbitrary           = do a <- arbitrary ; elements [Nothing, Just a]
   coarbitrary Nothing = variant 0
   coarbitrary _       = variant 1 -- ok?
+      -}
