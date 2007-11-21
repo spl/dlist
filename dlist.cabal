@@ -10,10 +10,11 @@ Category:            Data
 License:             BSD3
 License-file:        LICENSE
 Author:              Don Stewart 
-Maintainer:          dons@cse.unsw.edu.au
+Maintainer:          dons@galois.com
+Copyright:           2006-7 Don Stewart
+Homepage:            http://www.cse.unsw.edu.au/~dons/dlist.html
 Build-Depends:       base
 Ghc-options:         -O2 -Wall
 Extensions:          CPP
 Exposed-modules:     Data.DList
-Homepage:            http://www.cse.unsw.edu.au/~dons/dlist.html
 extra-source-files:  README tests/Properties.hs tests/Parallel.hs
