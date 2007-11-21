@@ -14,7 +14,7 @@
 
 module Data.DList (
 
-  DList         -- abstract, instance Monoid, Functor, Monad, MonadPlus
+   DList(..)         -- abstract, instance Monoid, Functor, Applicative, Monad, MonadPlus
 
   -- * Construction
   ,fromList      -- :: [a] -> DList a
@@ -40,14 +40,31 @@ module Data.DList (
   ) where
 
 import Prelude hiding (concat, foldr, map, head, tail)
+import qualified Data.List as List
 import Control.Monad
-import qualified Data.List as List (concat, foldr, map, unfoldr)
+import Control.Applicative(Applicative(..))
 import Data.Monoid
 
 -- | A difference list is a function that given a list, returns the
 -- original contents of the difference list prepended at the given list
 --
--- This structure supports /O(1)/ append and snoc operations on lists.
+-- This structure supports /O(1)/ append and snoc operations on lists,
+-- making it very useful for append-heavy uses, such as logging and
+-- pretty printing.
+--
+-- For example, using DList as the state type when printing a tree with
+-- the Writer monad
+--
+-- > import Control.Monad.Writer
+-- > import Data.DList
+-- > 
+-- > data Tree a = Leaf a | Branch (Tree a) (Tree a)
+-- >
+-- > flatten_writer :: Tree x -> DList x
+-- > flatten_writer = snd . runWriter . flatten
+-- >     where
+-- >       flatten (Leaf x)     = tell (singleton x)
+-- >       flatten (Branch x y) = flatten x >> flatten y
 --
 newtype DList a = DL { unDL :: [a] -> [a] }
 
@@ -95,10 +112,10 @@ concat       = List.foldr append empty
 
 -- | /O(length dl)/, List elimination, head, tail. 
 list :: b -> (a -> DList a -> b) -> DList a -> b
-list null cons dl =
+list nill consit dl =
   case toList dl of
-    [] -> null
-    (x : xs) -> cons x (fromList xs)
+    [] -> nill
+    (x : xs) -> consit x (fromList xs)
 
 -- | Return the head of the list
 head :: DList a -> a
@@ -113,7 +130,7 @@ unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
 unfoldr pf b =
   case pf b of
     Nothing     -> empty
-    Just (a, b) -> cons a (unfoldr pf b)
+    Just (a, b') -> cons a (unfoldr pf b')
 
 -- | Foldr over difference lists
 foldr        :: (a -> b -> b) -> b -> DList a -> b
@@ -133,6 +150,12 @@ instance Functor DList where
     fmap = map
     {-# INLINE fmap #-}
 
+#if __GLASGOW_HASKELL__ >= 608
+instance Applicative DList where
+    pure  = return
+    (<*>) = ap
+#endif
+
 instance Monad DList where
   m >>= k
     -- = concat (toList (fmap k m))
@@ -146,7 +169,7 @@ instance Monad DList where
   return x = singleton x
   {-# INLINE return #-}
 
-  fail s   = empty
+  fail _   = empty
   {-# INLINE fail #-}
 
 instance MonadPlus DList where
