@@ -25,6 +25,6 @@ Library
     Exposed-modules:     Data.DList
     if flag(applicative-in-base)
         build-depends: base >= 2.0
-        ghc-options: -DAPPLICATIVE_IN_BASE
+        cpp-options: -DAPPLICATIVE_IN_BASE
     else
         build-depends: base < 2.0
