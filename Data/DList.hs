@@ -42,8 +42,11 @@ module Data.DList (
 import Prelude hiding (concat, foldr, map, head, tail)
 import qualified Data.List as List
 import Control.Monad
-import Control.Applicative(Applicative(..))
 import Data.Monoid
+
+#ifdef APPLICATIVE_IN_BASE
+import Control.Applicative(Applicative(..))
+#endif
 
 -- | A difference list is a function that given a list, returns the
 -- original contents of the difference list prepended at the given list
@@ -150,7 +153,7 @@ instance Functor DList where
     fmap = map
     {-# INLINE fmap #-}
 
-#if __GLASGOW_HASKELL__ >= 608
+#ifdef APPLICATIVE_IN_BASE
 instance Applicative DList where
     pure  = return
     (<*>) = ap

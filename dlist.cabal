@@ -13,8 +13,18 @@ Author:              Don Stewart
 Maintainer:          dons@galois.com
 Copyright:           2006-7 Don Stewart
 Homepage:            http://www.cse.unsw.edu.au/~dons/dlist.html
-Build-Depends:       base
-Ghc-options:         -O2 -Wall
-Extensions:          CPP
-Exposed-modules:     Data.DList
 extra-source-files:  README tests/Properties.hs tests/Parallel.hs
+cabal-version:       >= 1.2
+
+flag applicative-in-base
+
+Library
+    Build-Depends:       base
+    Ghc-options:         -O2 -Wall
+    Extensions:          CPP
+    Exposed-modules:     Data.DList
+    if flag(applicative-in-base)
+        build-depends: base >= 2.0
+        ghc-options: -DAPPLICATIVE_IN_BASE
+    else
+        build-depends: base < 2.0
