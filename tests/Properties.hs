@@ -1,8 +1,8 @@
 
 import qualified Prelude   as P
 import qualified Data.List as P (unfoldr)
-import Prelude          hiding (concat,map,head,tail,foldr,map)
-import Data.List        hiding (concat,map,head,tail,unfoldr,foldr,map)
+import Prelude          hiding (concat,map,head,tail,foldr,map,replicate)
+import Data.List        hiding (concat,map,head,tail,unfoldr,foldr,map,replicate)
 import Text.Show.Functions
 
 import Parallel
@@ -24,6 +24,8 @@ prop_append xs ys = (xs ++ ys :: T) == toList (append (fromList xs) (fromList ys
 
 prop_concat zss  = (P.concat zss) == toList (concat (P.map fromList zss))
     where _ = zss :: [T]
+
+prop_replicate n x = (P.replicate n x :: T) == toList (replicate n x)
 
 prop_head xs = not (null xs) ==> (P.head xs) == head (fromList xs)
     where _ = xs :: T
@@ -58,6 +60,7 @@ main = pRun 8 300
     , ("snoc",      pDet prop_snoc)
     , ("append",    pDet prop_append)
     , ("concat",    pDet prop_concat)
+    , ("replicate", pDet prop_replicate)
     , ("head",      pDet prop_head)
     , ("tail",      pDet prop_tail)
     , ("unfoldr",   pDet prop_unfoldr)

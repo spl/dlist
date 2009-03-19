@@ -27,6 +27,7 @@ module Data.DList (
   ,snoc          -- :: DList a -> a -> DList a
   ,append        -- :: DList a -> DList a -> DList a
   ,concat        -- :: [DList a] -> DList a
+  ,replicate     -- :: Int -> a -> DList a
   ,list          -- :: b -> (a -> DList a -> b) -> DList a -> b
   ,head          -- :: DList a -> a
   ,tail          -- :: DList a -> DList a
@@ -39,7 +40,7 @@ module Data.DList (
 
   ) where
 
-import Prelude hiding (concat, foldr, map, head, tail)
+import Prelude hiding (concat, foldr, map, head, tail, replicate)
 import qualified Data.List as List
 import Control.Monad
 import Data.Monoid
@@ -113,7 +114,14 @@ concat       :: [DList a] -> DList a
 concat       = List.foldr append empty
 {-# INLINE concat #-}
 
--- | /O(length dl)/, List elimination, head, tail. 
+-- | /O(n)/, Create a difference list of the given number of elements
+replicate :: Int -> a -> DList a
+replicate n x = DL $ \xs -> let go m | m <= 0    = xs
+                                     | otherwise = x : go (m-1)
+                            in go n
+{-# INLINE replicate #-}
+
+-- | /O(length dl)/, List elimination, head, tail.
 list :: b -> (a -> DList a -> b) -> DList a -> b
 list nill consit dl =
   case toList dl of
