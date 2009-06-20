@@ -1,5 +1,5 @@
 Name:                dlist
-Version:             0.4.1
+Version:             0.5
 Synopsis:            Differences lists
 Description:         
     Differences lists: a list-like type supporting O(1) append.
@@ -11,7 +11,7 @@ License:             BSD3
 License-file:        LICENSE
 Author:              Don Stewart 
 Maintainer:          dons@galois.com
-Copyright:           2006-7 Don Stewart
+Copyright:           2006-9 Don Stewart
 Homepage:            http://code.haskell.org/~dons/code/dlist/
 extra-source-files:  README tests/Properties.hs tests/Parallel.hs
 build-type:          Simple
