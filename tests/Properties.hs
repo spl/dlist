@@ -1,13 +1,15 @@
 
-module Properties where
+module Properties (run) where
 
 --------------------------------------------------------------------------------
 
 import qualified Prelude   as P
 import qualified Data.List as P (unfoldr)
 import Prelude          hiding (concat,map,head,tail,foldr,map,replicate)
+import Text.Show.Functions ()
 
 import Test.QuickCheck
+import Test.QuickCheck.Test (isSuccess)
 
 import Data.DList
 
@@ -56,4 +58,27 @@ prop_map f xs = (P.map f xs) == (toList $ map f (fromList xs))
 prop_map_fusion :: (Int -> Int) -> (a -> Int) -> [a] -> Bool
 prop_map_fusion f g xs = (P.map f . P.map g $ xs)
                       == (toList $ map f . map g $ fromList xs)
+
+--------------------------------------------------------------------------------
+
+props :: [Property]
+props =
+  [ label "model"       prop_model
+  , label "empty"       prop_empty
+  , label "singleton"   prop_singleton
+  , label "cons"        prop_cons
+  , label "snoc"        prop_snoc
+  , label "append"      prop_append
+  , label "concat"      prop_concat
+  , label "replicate"   prop_replicate
+  , label "head"        prop_head
+  , label "tail"        prop_tail
+  , label "unfoldr"     prop_unfoldr
+  , label "foldr"       prop_foldr
+  , label "map"         prop_map
+  , label "map fusion"  (prop_map_fusion (+1) (+1))
+  ]
+
+run :: IO Bool
+run = fmap isSuccess $ quickCheckResult (conjoin props)
 
