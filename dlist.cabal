@@ -10,12 +10,17 @@ Category:            Data
 License:             BSD3
 License-file:        LICENSE
 Author:              Don Stewart 
-Maintainer:          dons@galois.com
+Maintainer:          sean.leather@gmail.com
 Copyright:           2006-9 Don Stewart
-Homepage:            http://code.haskell.org/~dons/code/dlist/
+Homepage:            https://github.com/spl/dlist
+bug-reports:         https://github.com/spl/dlist/issues
 extra-source-files:  README tests/Properties.hs tests/Parallel.hs
 build-type:          Simple
-cabal-version:       >= 1.2
+cabal-version:       >= 1.9.2
+
+source-repository head
+  Type: git
+  Location: git://github.com/spl/dlist.git
 
 flag applicative-in-base
 
