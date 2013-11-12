@@ -44,9 +44,11 @@ import Prelude hiding (concat, foldr, map, head, tail, replicate)
 import qualified Data.List as List
 import Control.Monad
 import Data.Monoid
+import Data.Function (on)
 
 #ifdef APPLICATIVE_IN_BASE
-import Control.Applicative(Applicative(..))
+import Control.Applicative(Applicative(..), Alternative, (<|>))
+import qualified Control.Applicative (empty)
 #endif
 
 -- | A difference list is a function that given a list, returns the
@@ -61,7 +63,7 @@ import Control.Applicative(Applicative(..))
 --
 -- > import Control.Monad.Writer
 -- > import Data.DList
--- > 
+-- >
 -- > data Tree a = Leaf a | Branch (Tree a) (Tree a)
 -- >
 -- > flatten_writer :: Tree x -> DList x
@@ -153,6 +155,16 @@ map          :: (a -> b) -> DList a -> DList b
 map f        = foldr (cons . f) empty
 {-# INLINE map #-}
 
+instance Eq a => Eq (DList a) where
+    (==) = (==) `on` toList
+
+instance Ord a => Ord (DList a) where
+    compare = compare `on` toList
+
+instance Show a => Show (DList a) where
+    showsPrec p dl = showParen (p >= 10) $
+                     showString "Data.DList.fromList " . shows (toList dl)
+
 instance Monoid (DList a) where
     mempty  = empty
     mappend = append
@@ -165,6 +177,10 @@ instance Functor DList where
 instance Applicative DList where
     pure  = return
     (<*>) = ap
+
+instance Alternative DList where
+    empty = empty
+    (<|>) = append
 #endif
 
 instance Monad DList where
