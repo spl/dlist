@@ -1,6 +1,8 @@
 
 module Properties where
 
+--------------------------------------------------------------------------------
+
 import qualified Prelude   as P
 import qualified Data.List as P (unfoldr)
 import Prelude          hiding (concat,map,head,tail,foldr,map,replicate)
@@ -9,7 +11,11 @@ import Test.QuickCheck
 
 import Data.DList
 
+--------------------------------------------------------------------------------
+
 type T = [Int]
+
+--------------------------------------------------------------------------------
 
 prop_model x = (toList . fromList $ (x :: T)) == id x
 
