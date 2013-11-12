@@ -1,11 +1,12 @@
 
+module Properties where
+
 import qualified Prelude   as P
 import qualified Data.List as P (unfoldr)
 import Prelude          hiding (concat,map,head,tail,foldr,map,replicate)
-import Data.List        hiding (concat,map,head,tail,unfoldr,foldr,map,replicate)
-import Text.Show.Functions
 
-import Parallel
+import Test.QuickCheck
+
 import Data.DList
 
 type T = [Int]
@@ -49,35 +50,3 @@ prop_map_fusion f g xs = (P.map f . P.map g $ xs)
                       == (toList $ map f . map g $ fromList xs)
     where _ = f :: Int -> Int
 
---
--- run 8 threads simultaneously
---
-main = pRun 8 300
-    [ ("model",     pDet prop_model)
-    , ("empty",     pDet prop_empty)
-    , ("singleton", pDet prop_singleton)
-    , ("cons",      pDet prop_cons)
-    , ("snoc",      pDet prop_snoc)
-    , ("append",    pDet prop_append)
-    , ("concat",    pDet prop_concat)
-    , ("replicate", pDet prop_replicate)
-    , ("head",      pDet prop_head)
-    , ("tail",      pDet prop_tail)
-    , ("unfoldr",   pDet prop_unfoldr)
-    , ("foldr",     pDet prop_foldr)
-    , ("map",       pDet prop_map)
-    , ("map fusion",pDet prop_map)
-    ]
-
-
-------------------------------------------------------------------------
---
--- missing QC instances
---
-
-{-
-instance Arbitrary a => Arbitrary (Maybe a) where
-  arbitrary           = do a <- arbitrary ; elements [Nothing, Just a]
-  coarbitrary Nothing = variant 0
-  coarbitrary _       = variant 1 -- ok?
-      -}
