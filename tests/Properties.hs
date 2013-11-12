@@ -13,46 +13,47 @@ import Data.DList
 
 --------------------------------------------------------------------------------
 
-type T = [Int]
+prop_model :: [Int] -> Bool
+prop_model x = (toList . fromList $ x) == id x
 
---------------------------------------------------------------------------------
+prop_empty :: Bool
+prop_empty = ([] :: [Int]) == (toList empty :: [Int])
 
-prop_model x = (toList . fromList $ (x :: T)) == id x
+prop_singleton :: Int -> Bool
+prop_singleton c = [c] == toList (singleton c)
 
-prop_empty = ([] :: T) == (toList empty :: T)
+prop_cons :: Int -> [Int] -> Bool
+prop_cons c xs = (c : xs) == toList (cons c (fromList xs))
 
-prop_singleton c = ([c] :: T) == toList (singleton c)
+prop_snoc :: [Int] -> Int -> Bool
+prop_snoc xs c = (xs ++ [c]) == toList (snoc (fromList xs) c)
 
-prop_cons c xs = (c : xs :: T) == toList (cons c (fromList xs))
+prop_append :: [Int] -> [Int] -> Bool
+prop_append xs ys = (xs ++ ys) == toList (append (fromList xs) (fromList ys))
 
-prop_snoc xs c = (xs ++ [c] :: T) == toList (snoc (fromList xs) c)
-
-prop_append xs ys = (xs ++ ys :: T) == toList (append (fromList xs) (fromList ys))
-
+prop_concat :: [[Int]] -> Bool
 prop_concat zss  = (P.concat zss) == toList (concat (P.map fromList zss))
-    where _ = zss :: [T]
 
-prop_replicate n x = (P.replicate n x :: T) == toList (replicate n x)
+prop_replicate :: Int -> Int -> Bool
+prop_replicate n x = (P.replicate n x) == toList (replicate n x)
 
+prop_head :: [Int] -> Property
 prop_head xs = not (null xs) ==> (P.head xs) == head (fromList xs)
-    where _ = xs :: T
 
+prop_tail :: [Int] -> Property
 prop_tail xs = not (null xs) ==> (P.tail xs) == (toList . tail . fromList) xs
-    where _ = xs :: T
 
+prop_unfoldr :: (Int -> Maybe (Int, Int)) -> Int -> Int -> Property
 prop_unfoldr f x n = n >= 0 ==> take n (P.unfoldr f x)
                              == take n (toList $ unfoldr f x)
-    where _ = x :: Int
-          _ = f :: Int -> Maybe (Int,Int)
 
+prop_foldr :: (Int -> Int -> Int) -> Int -> [Int] -> Bool
 prop_foldr f x xs = (P.foldr f x xs) == (foldr f x (fromList xs))
-    where _ = x :: Int
-          _ = f :: Int -> Int -> Int
 
+prop_map :: (Int -> Int) -> [Int] -> Bool
 prop_map f xs = (P.map f xs) == (toList $ map f (fromList xs))
-    where _ = f :: Int -> Int
 
+prop_map_fusion :: (Int -> Int) -> (a -> Int) -> [a] -> Bool
 prop_map_fusion f g xs = (P.map f . P.map g $ xs)
                       == (toList $ map f . map g $ fromList xs)
-    where _ = f :: Int -> Int
 
