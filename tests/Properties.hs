@@ -6,8 +6,9 @@ module Properties (run) where
 
 import qualified Prelude   as P
 import qualified Data.List as P (unfoldr)
-import Prelude          hiding (concat,map,head,tail,foldr,map,replicate)
+import Prelude          hiding (head, tail, foldr, replicate)
 import Text.Show.Functions ()
+import Data.Monoid (mconcat)
 
 import Data.Foldable (foldr)
 import Data.Traversable (traverse)
@@ -15,7 +16,7 @@ import Data.Traversable (traverse)
 import Test.QuickCheck
 import Test.QuickCheck.Test (isSuccess)
 
-import Data.DList hiding (foldr)
+import Data.DList hiding (concat, map, foldr)
 
 --------------------------------------------------------------------------------
 
@@ -38,7 +39,7 @@ prop_append :: [Int] -> [Int] -> Bool
 prop_append xs ys = (xs ++ ys) == toList (append (fromList xs) (fromList ys))
 
 prop_concat :: [[Int]] -> Bool
-prop_concat zss  = (P.concat zss) == toList (concat (P.map fromList zss))
+prop_concat zss  = (concat zss) == toList (mconcat (map fromList zss))
 
 prop_replicate :: Int -> Int -> Bool
 prop_replicate n x = (P.replicate n x) == toList (replicate n x)
@@ -60,11 +61,11 @@ prop_traverse :: (Int -> [Int]) -> [Int] -> Bool
 prop_traverse f xs = fmap fromList (traverse f xs) == traverse f (fromList xs)
 
 prop_map :: (Int -> Int) -> [Int] -> Bool
-prop_map f xs = (P.map f xs) == (toList $ map f (fromList xs))
+prop_map f xs = (map f xs) == (toList $ fmap f (fromList xs))
 
 prop_map_fusion :: (Int -> Int) -> (a -> Int) -> [a] -> Bool
-prop_map_fusion f g xs = (P.map f . P.map g $ xs)
-                      == (toList $ map f . map g $ fromList xs)
+prop_map_fusion f g xs = (map f . map g $ xs)
+                      == (toList $ fmap f . fmap g $ fromList xs)
 
 prop_show_read :: [Int] -> Bool
 prop_show_read x = (read . show) x == x

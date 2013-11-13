@@ -45,7 +45,7 @@ module Data.DList (
 
 import Prelude hiding (concat, foldr, map, head, tail, replicate)
 import qualified Prelude as P
-import qualified Data.List as List (foldr, foldl')
+import qualified Data.List as L (foldl')
 import Control.Monad
 import Data.Monoid
 import Data.Function (on)
@@ -126,10 +126,10 @@ append       :: DList a -> DList a -> DList a
 append xs ys = DL (unDL xs . unDL ys)
 {-# INLINE append #-}
 
--- | /O(spine)/, Concatenate difference lists
 concat       :: [DList a] -> DList a
-concat       = List.foldr append empty
+concat       = mconcat
 {-# INLINE concat #-}
+{-# DEPRECATED concat "Use Data.Monoid.mconcat. This function may be removed in the next major version." #-}
 
 -- | /O(n)/, Create a difference list of the given number of elements
 replicate :: Int -> a -> DList a
@@ -160,15 +160,15 @@ unfoldr pf b =
     Nothing     -> empty
     Just (a, b') -> cons a (unfoldr pf b')
 
--- | Foldr over difference lists
 foldr        :: (a -> b -> b) -> b -> DList a -> b
-foldr f b    = List.foldr f b . toList
+foldr        = F.foldr
 {-# INLINE foldr #-}
+{-# DEPRECATED foldr "Use Data.Foldable.foldr. This function may be removed in the next major version." #-}
 
--- | Map over difference lists.
 map          :: (a -> b) -> DList a -> DList b
-map f        = foldr (cons . f) empty
+map          = fmap
 {-# INLINE map #-}
+{-# DEPRECATED map "Use fmap. This function may be removed in the next major version." #-}
 
 instance Eq a => Eq (DList a) where
     (==) = (==) `on` toList
@@ -201,7 +201,7 @@ instance Monoid (DList a) where
     mappend = append
 
 instance Functor DList where
-    fmap = map
+    fmap f = F.foldr (cons . f) empty
     {-# INLINE fmap #-}
 
 #ifdef APPLICATIVE_IN_BASE
@@ -221,7 +221,7 @@ instance Monad DList where
     -- = concat . List.map k . toList $ m
     -- = List.foldr append empty . List.map k . toList $ m
     -- = List.foldr (append . k) empty . toList $ m
-    = foldr (append . k) empty m
+    = F.foldr (append . k) empty m
   {-# INLINE (>>=) #-}
 
   return x = singleton x
@@ -250,7 +250,7 @@ instance Foldable DList where
   foldl f x   = P.foldl f x . toList
   {-# INLINE foldl #-}
 
-  foldl' f x  = List.foldl' f x . toList
+  foldl' f x  = L.foldl' f x . toList
   {-# INLINE foldl' #-}
 
   foldr1 f    = F.foldr1 f . toList
