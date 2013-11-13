@@ -44,10 +44,17 @@ module Data.DList (
   ) where
 
 import Prelude hiding (concat, foldr, map, head, tail, replicate)
-import qualified Data.List as List
+import qualified Prelude as P
+import qualified Data.List as List (foldr, foldl')
 import Control.Monad
 import Data.Monoid
 import Data.Function (on)
+
+import Data.Foldable (Foldable)
+import qualified Data.Foldable as F
+
+import Data.Traversable (Traversable)
+import qualified Data.Traversable as T
 
 #ifdef __GLASGOW_HASKELL__
 import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
@@ -226,6 +233,44 @@ instance Monad DList where
 instance MonadPlus DList where
   mzero    = empty
   mplus    = append
+
+instance Foldable DList where
+  fold        = mconcat . toList
+  {-# INLINE fold #-}
+
+  foldMap f   = F.foldMap f . toList
+  {-# INLINE foldMap #-}
+
+  foldr f x   = P.foldr f x . toList
+  {-# INLINE foldr #-}
+
+  foldr' f x  = F.foldr' f x . toList
+  {-# INLINE foldr' #-}
+
+  foldl f x   = P.foldl f x . toList
+  {-# INLINE foldl #-}
+
+  foldl' f x  = List.foldl' f x . toList
+  {-# INLINE foldl' #-}
+
+  foldr1 f    = F.foldr1 f . toList
+  {-# INLINE foldr1 #-}
+
+  foldl1 f    = P.foldl1 f . toList
+  {-# INLINE foldl1 #-}
+
+instance Traversable DList where
+  traverse f  = fmap fromList . T.traverse f . toList
+  {-# INLINE traverse #-}
+
+  sequenceA   = fmap fromList . T.sequenceA . toList
+  {-# INLINE sequenceA #-}
+
+  mapM f      = liftM fromList . P.mapM f . toList
+  {-# INLINE mapM #-}
+
+  sequence    = liftM fromList . P.sequence . toList
+  {-# INLINE sequence #-}
 
 -- Use this to convert Maybe a into DList a, or indeed into any other MonadPlus instance.
 maybeReturn :: MonadPlus m => Maybe a -> m a

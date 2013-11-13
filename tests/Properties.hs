@@ -9,10 +9,13 @@ import qualified Data.List as P (unfoldr)
 import Prelude          hiding (concat,map,head,tail,foldr,map,replicate)
 import Text.Show.Functions ()
 
+import Data.Foldable (foldr)
+import Data.Traversable (traverse)
+
 import Test.QuickCheck
 import Test.QuickCheck.Test (isSuccess)
 
-import Data.DList
+import Data.DList hiding (foldr)
 
 --------------------------------------------------------------------------------
 
@@ -51,7 +54,10 @@ prop_unfoldr f x n = n >= 0 ==> take n (P.unfoldr f x)
                              == take n (toList $ unfoldr f x)
 
 prop_foldr :: (Int -> Int -> Int) -> Int -> [Int] -> Bool
-prop_foldr f x xs = (P.foldr f x xs) == (foldr f x (fromList xs))
+prop_foldr f x xs = foldr f x xs == foldr f x (fromList xs)
+
+prop_traverse :: (Int -> [Int]) -> [Int] -> Bool
+prop_traverse f xs = fmap fromList (traverse f xs) == traverse f (fromList xs)
 
 prop_map :: (Int -> Int) -> [Int] -> Bool
 prop_map f xs = (P.map f xs) == (toList $ map f (fromList xs))
@@ -86,6 +92,7 @@ props =
   , label "tail"        prop_tail
   , label "unfoldr"     prop_unfoldr
   , label "foldr"       prop_foldr
+  , label "traverse"    prop_traverse
   , label "map"         prop_map
   , label "map fusion"  (prop_map_fusion (+1) (+1))
   , label "read . show" prop_show_read
