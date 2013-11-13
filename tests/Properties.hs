@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 
 module Properties (run) where
 
@@ -59,6 +60,16 @@ prop_map_fusion :: (Int -> Int) -> (a -> Int) -> [a] -> Bool
 prop_map_fusion f g xs = (P.map f . P.map g $ xs)
                       == (toList $ map f . map g $ fromList xs)
 
+prop_show_read :: [Int] -> Bool
+prop_show_read x = (read . show) x == x
+
+prop_read_show :: [Int] -> Bool
+prop_read_show x = (show . f . read) s == s
+  where
+    s = "fromList " ++ show x
+    f :: DList Int -> DList Int
+    f = id
+
 --------------------------------------------------------------------------------
 
 props :: [Property]
@@ -77,6 +88,8 @@ props =
   , label "foldr"       prop_foldr
   , label "map"         prop_map
   , label "map fusion"  (prop_map_fusion (+1) (+1))
+  , label "read . show" prop_show_read
+  , label "show . read" prop_read_show
   ]
 
 run :: IO Bool

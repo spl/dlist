@@ -49,6 +49,11 @@ import Control.Monad
 import Data.Monoid
 import Data.Function (on)
 
+#ifdef __GLASGOW_HASKELL__
+import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
+                  readListPrecDefault)
+#endif
+
 #ifdef APPLICATIVE_IN_BASE
 import Control.Applicative(Applicative(..), Alternative, (<|>))
 import qualified Control.Applicative (empty)
@@ -164,9 +169,25 @@ instance Eq a => Eq (DList a) where
 instance Ord a => Ord (DList a) where
     compare = compare `on` toList
 
+-- The Read and Show instances were adapted from Data.Sequence.
+
+instance Read a => Read (DList a) where
+#ifdef __GLASGOW_HASKELL__
+  readPrec = parens $ prec 10 $ do
+    Ident "fromList" <- lexP
+    dl <- readPrec
+    return (fromList dl)
+  readListPrec = readListPrecDefault
+#else
+  readsPrec p = readParen (p > 10) $ \r -> do
+    ("fromList", s) <- lex r
+    (dl, t) <- reads s
+    return (fromList dl, t)
+#endif
+
 instance Show a => Show (DList a) where
-    showsPrec p dl = showParen (p >= 10) $
-                     showString "Data.DList.fromList " . shows (toList dl)
+  showsPrec p dl = showParen (p > 10) $
+    showString "fromList " . shows (toList dl)
 
 instance Monoid (DList a) where
     mempty  = empty

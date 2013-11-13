@@ -8,6 +8,6 @@ Version NEXT (????-??-??)
 * Maintenance and development taken over by Sean Leather
 * Repository migrated from http://code.haskell.org/~dons/code/dlist/ to
   https://github.com/spl/dlist
-* Added `Eq`, `Ord`, `Show`, `Alternative` instances for `DList`
+* Added `Eq`, `Ord`, `Read`, `Show`, `Alternative` instances
 * Update tests to work with `cabal test`
 
