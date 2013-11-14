@@ -39,10 +39,11 @@ library
 test-suite test
   type:                 exitcode-stdio-1.0
   main-is:              Main.hs
-  other-modules:        Properties
   hs-source-dirs:       tests
   build-depends:        dlist,
                         base,
                         Cabal,
-                        QuickCheck >= 2.6 && < 2.7
+                        QuickCheck >= 2.6 && < 2.7,
+                        pqc >= 0.8 && < 0.9
+  ghc-options:          -threaded -with-rtsopts=-N
 
