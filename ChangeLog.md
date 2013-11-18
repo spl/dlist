@@ -13,6 +13,7 @@ Version 0.6 (*expected*)
 * Deprecate functions in favor of their type class equivalents: `concat`, `map`,
   `foldr`
 * Deprecate `DL`, `unDL` and add `apply` ([#4](https://github.com/spl/dlist/issues/4))
+* Stop supporting `base < 2`
 * Update tests to run `cabal test` using parallel QuickCheck (`pqc`)
 * Add scripts for running `hpc`
 * Update documentation

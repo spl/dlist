@@ -62,10 +62,8 @@ import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
                   readListPrecDefault)
 #endif
 
-#ifdef APPLICATIVE_IN_BASE
 import Control.Applicative(Applicative(..), Alternative, (<|>))
 import qualified Control.Applicative (empty)
-#endif
 
 -- | A difference list is a function that given a list, returns the
 -- original contents of the difference list prepended at the given list
@@ -213,7 +211,6 @@ instance Functor DList where
     fmap f = F.foldr (cons . f) empty
     {-# INLINE fmap #-}
 
-#ifdef APPLICATIVE_IN_BASE
 instance Applicative DList where
     pure  = return
     (<*>) = ap
@@ -221,7 +218,6 @@ instance Applicative DList where
 instance Alternative DList where
     empty = empty
     (<|>) = append
-#endif
 
 instance Monad DList where
   m >>= k
