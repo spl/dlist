@@ -46,7 +46,6 @@ module Data.DList (
 
 import Prelude hiding (concat, foldr, map, head, tail, replicate)
 import qualified Prelude as P
-import qualified Data.List as L (foldl')
 import Control.Monad
 import Data.Monoid
 import Data.Function (on)
@@ -249,20 +248,24 @@ instance Foldable DList where
   foldr f x   = P.foldr f x . toList
   {-# INLINE foldr #-}
 
-  foldr' f x  = F.foldr' f x . toList
-  {-# INLINE foldr' #-}
-
   foldl f x   = P.foldl f x . toList
   {-# INLINE foldl #-}
-
-  foldl' f x  = L.foldl' f x . toList
-  {-# INLINE foldl' #-}
 
   foldr1 f    = F.foldr1 f . toList
   {-# INLINE foldr1 #-}
 
   foldl1 f    = P.foldl1 f . toList
   {-# INLINE foldl1 #-}
+
+-- CPP: foldl', foldr' added to Foldable in 7.6.1
+-- http://www.haskell.org/ghc/docs/7.6.1/html/users_guide/release-7-6-1.html
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 706
+  foldl' f x  = F.foldl' f x . toList
+  {-# INLINE foldl' #-}
+
+  foldr' f x  = F.foldr' f x . toList
+  {-# INLINE foldr' #-}
+#endif
 
 instance Traversable DList where
   traverse f  = fmap fromList . T.traverse f . toList
