@@ -22,6 +22,7 @@ module Data.DList (
   -- * Construction
   ,fromList      -- :: [a] -> DList a
   ,toList        -- :: DList a -> [a]
+  ,apply         -- :: DList a -> [a] -> [a]
 
   -- * Basic functions
   ,empty         -- :: DList a
@@ -88,6 +89,8 @@ import qualified Control.Applicative (empty)
 -- >       flatten (Branch x y) = flatten x >> flatten y
 --
 newtype DList a = DL { unDL :: [a] -> [a] }
+{-# DEPRECATED DL "DL is unsafe (see <https://github.com/spl/dlist/issues/4 #4>). It will be removed in the next major version." #-}
+{-# DEPRECATED unDL "Use apply. unDL will be removed in the next major version." #-}
 
 -- | Converting a normal list to a dlist
 fromList    :: [a] -> DList a
@@ -98,6 +101,12 @@ fromList    = DL . (++)
 toList      :: DList a -> [a]
 toList      = ($[]) . unDL
 {-# INLINE toList #-}
+
+-- | Apply a dlist to a list to get the underlying list with an extension
+--
+-- > apply (fromList xs) ys = xs ++ ys
+apply       :: DList a -> [a] -> [a]
+apply       = unDL
 
 -- | Create a difference list containing no elements
 empty       :: DList a
