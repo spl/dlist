@@ -8,7 +8,6 @@ import qualified Prelude   as P
 import qualified Data.List as P (unfoldr)
 import Prelude          hiding (head, tail, foldr, replicate)
 import Text.Show.Functions ()
-import Data.Monoid (mconcat)
 import Control.Arrow (second)
 
 import Data.Foldable (foldr)
@@ -24,7 +23,7 @@ prop_model :: [Int] -> Bool
 prop_model x = (toList . fromList $ x) == id x
 
 prop_empty :: Bool
-prop_empty = ([] :: [Int]) == (toList empty :: [Int])
+prop_empty = ([] :: [Int]) == (toList mempty :: [Int])
 
 prop_singleton :: Int -> Bool
 prop_singleton c = [c] == toList (singleton c)
@@ -36,7 +35,7 @@ prop_snoc :: [Int] -> Int -> Bool
 prop_snoc xs c = (xs ++ [c]) == toList (snoc (fromList xs) c)
 
 prop_append :: [Int] -> [Int] -> Bool
-prop_append xs ys = (xs ++ ys) == toList (append (fromList xs) (fromList ys))
+prop_append xs ys = (xs ++ ys) == toList (fromList xs <> fromList ys)
 
 prop_concat :: [[Int]] -> Bool
 prop_concat zss  = (concat zss) == toList (mconcat (map fromList zss))

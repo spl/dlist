@@ -39,6 +39,10 @@ module Data.DList (
   ,foldr         -- :: (a -> b -> b) -> b -> DList a -> b
   ,map           -- :: (a -> b) -> DList a -> DList b
 
+  -- * Monoidal interface
+  , Monoid(..)
+  , (<>)
+
   -- * MonadPlus
   , maybeReturn
 
@@ -105,10 +109,10 @@ toList      = ($[]) . unDL
 apply       :: DList a -> [a] -> [a]
 apply       = unDL
 
--- | Create a difference list containing no elements
 empty       :: DList a
 empty       = DL id
 {-# INLINE empty #-}
+{-# DEPRECATED empty "Use mempty or empty from Alternative. This function may be removed in the next major version." #-}
 
 -- | Create difference list with given single element
 singleton   :: a -> DList a
@@ -127,15 +131,15 @@ snoc        :: DList a -> a -> DList a
 snoc xs x   = DL (unDL xs . (x:))
 {-# INLINE snoc #-}
 
--- | /O(1)/, Appending difference lists
 append       :: DList a -> DList a -> DList a
 append xs ys = DL (unDL xs . unDL ys)
 {-# INLINE append #-}
+{-# DEPRECATED append "Use mappend, (<>), or (<|>) from Alternative. This function may be removed in the next major version." #-}
 
 concat       :: [DList a] -> DList a
 concat       = mconcat
 {-# INLINE concat #-}
-{-# DEPRECATED concat "Use Data.Monoid.mconcat. This function may be removed in the next major version." #-}
+{-# DEPRECATED concat "Use mconcat. This function may be removed in the next major version." #-}
 
 -- | /O(n)/, Create a difference list of the given number of elements
 replicate :: Int -> a -> DList a
@@ -205,6 +209,15 @@ instance Show a => Show (DList a) where
 instance Monoid (DList a) where
     mempty  = empty
     mappend = append
+
+-- CPP: (<>) added in 7.6.1
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ < 706
+-- | An infix synonym for 'mappend'
+(<>) :: Monoid m => m -> m -> m
+(<>) = mappend
+{-# INLINE (<>) #-}
+infixr 6 <>
+#endif
 
 instance Functor DList where
     fmap f = F.foldr (cons . f) empty
