@@ -12,7 +12,7 @@ Version NEXT (????-??-??)
   instances
 * Deprecate functions in favor of their type class equivalents: `concat`, `map`,
   `foldr`
-* Deprecate `DL`, `unDL` and add `apply` (#4)
+* Deprecate `DL`, `unDL` and add `apply` ([#4](https://github.com/spl/dlist/issues/4))
 * Update tests to run `cabal test` using parallel QuickCheck (`pqc`)
 * Add scripts for running `hpc`
 * Update documentation
