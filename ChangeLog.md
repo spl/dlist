@@ -2,7 +2,7 @@
 Change Log
 ==========
 
-Version NEXT (????-??-??)
+Version 0.6 (*expected*)
 -------------------------
 
 * Maintenance and development taken over by Sean Leather
