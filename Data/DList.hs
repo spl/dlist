@@ -90,8 +90,8 @@ import qualified Control.Applicative (empty)
 -- >       flatten (Branch x y) = flatten x >> flatten y
 --
 newtype DList a = DL { unDL :: [a] -> [a] }
-{-# DEPRECATED DL "DL is unsafe (see <https://github.com/spl/dlist/issues/4 #4>). It will be removed in the next major version." #-}
-{-# DEPRECATED unDL "Use apply. unDL will be removed in the next major version." #-}
+{-# DEPRECATED DL "'DL' is unsafe (see <https://github.com/spl/dlist/issues/4 #4>). 'DL' will be removed in the next major version." #-}
+{-# DEPRECATED unDL "Use 'apply'. 'unDL' will be removed in the next major version." #-}
 
 -- | Converting a normal list to a dlist
 fromList    :: [a] -> DList a
@@ -112,7 +112,7 @@ apply       = unDL
 empty       :: DList a
 empty       = DL id
 {-# INLINE empty #-}
-{-# DEPRECATED empty "Use mempty or empty from Alternative. This function may be removed in the next major version." #-}
+{-# DEPRECATED empty "Use 'mempty' or 'Control.Applicative.empty'. 'empty' may be removed in the next major version." #-}
 
 -- | Create difference list with given single element
 singleton   :: a -> DList a
@@ -134,12 +134,12 @@ snoc xs x   = DL (unDL xs . (x:))
 append       :: DList a -> DList a -> DList a
 append xs ys = DL (unDL xs . unDL ys)
 {-# INLINE append #-}
-{-# DEPRECATED append "Use mappend, (<>), or (<|>) from Alternative. This function may be removed in the next major version." #-}
+{-# DEPRECATED append "Use 'mappend', '<>', or 'Control.Applicative.<|>'. 'append' may be removed in the next major version." #-}
 
 concat       :: [DList a] -> DList a
 concat       = mconcat
 {-# INLINE concat #-}
-{-# DEPRECATED concat "Use mconcat. This function may be removed in the next major version." #-}
+{-# DEPRECATED concat "Use 'mconcat'. 'concat' may be removed in the next major version." #-}
 
 -- | /O(n)/, Create a difference list of the given number of elements
 replicate :: Int -> a -> DList a
@@ -173,12 +173,12 @@ unfoldr pf b =
 foldr        :: (a -> b -> b) -> b -> DList a -> b
 foldr        = F.foldr
 {-# INLINE foldr #-}
-{-# DEPRECATED foldr "Use Data.Foldable.foldr. This function may be removed in the next major version." #-}
+{-# DEPRECATED foldr "Use 'Data.Foldable.foldr'. 'foldr' may be removed in the next major version." #-}
 
 map          :: (a -> b) -> DList a -> DList b
 map          = fmap
 {-# INLINE map #-}
-{-# DEPRECATED map "Use fmap. This function may be removed in the next major version." #-}
+{-# DEPRECATED map "Use 'fmap'. 'map' may be removed in the next major version." #-}
 
 instance Eq a => Eq (DList a) where
     (==) = (==) `on` toList
