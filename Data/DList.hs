@@ -210,8 +210,8 @@ instance Monoid (DList a) where
     mempty  = empty
     mappend = append
 
--- CPP: (<>) added in 7.6.1
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ < 706
+-- CPP: (<>) added in 7.4.1
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ < 704
 -- | An infix synonym for 'mappend'
 (<>) :: Monoid m => m -> m -> m
 (<>) = mappend
