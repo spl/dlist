@@ -25,7 +25,7 @@ source-repository head
 
 library
   build-depends:        base >= 2 && < 5
-  ghc-options:          -O2 -Wall
+  ghc-options:          -Wall
   extensions:           CPP
   exposed-modules:      Data.DList
 
