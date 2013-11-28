@@ -145,11 +145,11 @@ list nill consit dl =
 
 -- | Return the head of the list
 head :: DList a -> a
-head = list (error "Data.DList.head: empty list") const
+head = list (error "Data.DList.head: empty dlist") const
 
 -- | Return the tail of the list
 tail :: DList a -> DList a
-tail = list (error "Data.DList.tail: empty list") (flip const)
+tail = list (error "Data.DList.tail: empty dlist") (flip const)
 
 -- | Unfoldr for difference lists
 unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
