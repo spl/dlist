@@ -36,7 +36,5 @@ test-suite test
   build-depends:        dlist,
                         base,
                         Cabal,
-                        QuickCheck >= 2.6 && < 2.7,
-                        pqc >= 0.8 && < 0.9
-  ghc-options:          -threaded -rtsopts
+                        QuickCheck >= 2.6 && < 2.7
 

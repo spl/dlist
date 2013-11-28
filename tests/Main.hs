@@ -2,15 +2,14 @@
 
 --------------------------------------------------------------------------------
 
-module Main (main, smain, pmain) where
+module Main (main) where
 
 --------------------------------------------------------------------------------
 
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
 import qualified Data.List as List
 import Text.Show.Functions ()
-import Control.Arrow (second)
-import Test.QuickCheck.Parallel
+import Test.QuickCheck
 
 import Data.DList
 
@@ -81,7 +80,7 @@ prop_read_show x = eqWith id (show . f . read) $ "fromList " ++ show x
 
 --------------------------------------------------------------------------------
 
-props :: [(Name, Property)]
+props :: [(String, Property)]
 props =
   [ ("model",         property prop_model)
   , ("empty",         property prop_empty)
@@ -103,14 +102,6 @@ props =
 
 --------------------------------------------------------------------------------
 
--- Sequential
-smain :: IO ()
-smain = quickCheck $ conjoin $ List.map (uncurry label) props
-
--- Parallel
-pmain :: IO ()
-pmain = pRunAllProcessors 100 $ List.map (second pDet) props
-
 main :: IO ()
-main = pmain
+main = quickCheck $ conjoin $ List.map (uncurry label) props
 
