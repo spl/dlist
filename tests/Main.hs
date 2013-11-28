@@ -1,78 +1,83 @@
 {-# OPTIONS_GHC -Wall #-}
 
-module Main (main) where
+--------------------------------------------------------------------------------
+
+module Main (main, smain, pmain) where
 
 --------------------------------------------------------------------------------
 
-import qualified Prelude   as P
-import qualified Data.List as P (unfoldr)
-import Prelude          hiding (head, tail, foldr, replicate)
+import Prelude hiding (concat, foldr, head, map, replicate, tail)
+import qualified Data.List as List
 import Text.Show.Functions ()
 import Control.Arrow (second)
-
-import Data.Foldable (foldr)
 import Data.Traversable (traverse)
-
 import Test.QuickCheck.Parallel
 
-import Data.DList hiding (concat, map, foldr)
+import Data.DList
+
+--------------------------------------------------------------------------------
+
+eqWith :: Eq b => (a -> b) -> (a -> b) -> a -> Bool
+eqWith f g x = f x == g x
+
+eqOn :: Eq b => (a -> Bool) -> (a -> b) -> (a -> b) -> a -> Property
+eqOn c f g x = c x ==> f x == g x
 
 --------------------------------------------------------------------------------
 
 prop_model :: [Int] -> Bool
-prop_model x = (toList . fromList $ x) == id x
+prop_model = eqWith id (toList . fromList)
 
 prop_empty :: Bool
-prop_empty = ([] :: [Int]) == (toList mempty :: [Int])
+prop_empty = ([] :: [Int]) == (toList empty :: [Int])
 
 prop_singleton :: Int -> Bool
-prop_singleton c = [c] == toList (singleton c)
+prop_singleton = eqWith (:[]) (toList . singleton)
 
 prop_cons :: Int -> [Int] -> Bool
-prop_cons c xs = (c : xs) == toList (cons c (fromList xs))
+prop_cons c = eqWith (c:) (toList . cons c . fromList)
 
 prop_snoc :: [Int] -> Int -> Bool
-prop_snoc xs c = (xs ++ [c]) == toList (snoc (fromList xs) c)
+prop_snoc xs c = xs ++ [c] == toList (snoc (fromList xs) c)
 
 prop_append :: [Int] -> [Int] -> Bool
-prop_append xs ys = (xs ++ ys) == toList (fromList xs <> fromList ys)
+prop_append xs ys = xs ++ ys == toList (fromList xs `append` fromList ys)
 
 prop_concat :: [[Int]] -> Bool
-prop_concat zss  = (concat zss) == toList (mconcat (map fromList zss))
+prop_concat = eqWith List.concat (toList . concat . List.map fromList)
 
 prop_replicate :: Int -> Int -> Bool
-prop_replicate n x = (P.replicate n x) == toList (replicate n x)
+prop_replicate n = eqWith (List.replicate n) (toList . replicate n)
 
 prop_head :: [Int] -> Property
-prop_head xs = not (null xs) ==> (P.head xs) == head (fromList xs)
+prop_head = eqOn (not . null) List.head (head . fromList)
 
 prop_tail :: [Int] -> Property
-prop_tail xs = not (null xs) ==> (P.tail xs) == (toList . tail . fromList) xs
+prop_tail = eqOn (not . null) List.tail (toList . tail . fromList)
 
 prop_unfoldr :: (Int -> Maybe (Int, Int)) -> Int -> Int -> Property
-prop_unfoldr f x n = n >= 0 ==> take n (P.unfoldr f x)
-                             == take n (toList $ unfoldr f x)
+prop_unfoldr f n =
+  eqOn (const (n >= 0)) (take n . List.unfoldr f) (take n . toList . unfoldr f)
 
 prop_foldr :: (Int -> Int -> Int) -> Int -> [Int] -> Bool
-prop_foldr f x xs = foldr f x xs == foldr f x (fromList xs)
+prop_foldr f x = eqWith (List.foldr f x) (foldr f x . fromList)
 
 prop_traverse :: (Int -> [Int]) -> [Int] -> Bool
-prop_traverse f xs = fmap fromList (traverse f xs) == traverse f (fromList xs)
+prop_traverse f = eqWith (traverse f) (List.map toList . traverse f . fromList)
 
 prop_map :: (Int -> Int) -> [Int] -> Bool
-prop_map f xs = (map f xs) == (toList $ fmap f (fromList xs))
+prop_map f = eqWith (List.map f) (toList . map f . fromList)
 
 prop_map_fusion :: (Int -> Int) -> (a -> Int) -> [a] -> Bool
-prop_map_fusion f g xs = (map f . map g $ xs)
-                      == (toList $ fmap f . fmap g $ fromList xs)
+prop_map_fusion f g =
+  eqWith (List.map f . List.map g) (toList . map f . map g . fromList)
 
 prop_show_read :: [Int] -> Bool
-prop_show_read x = (read . show) x == x
+prop_show_read = eqWith id (read . show)
 
 prop_read_show :: [Int] -> Bool
-prop_read_show x = (show . f . read) s == s
+prop_read_show x = eqWith id (show . f . read) $ "fromList " ++ show x
   where
-    s = "fromList " ++ show x
     f :: DList Int -> DList Int
     f = id
 
@@ -101,13 +106,14 @@ props =
 
 --------------------------------------------------------------------------------
 
-{-
 -- Sequential
-main :: IO ()
-main = quickCheck $ conjoin (map (uncurry label) props)
--}
+smain :: IO ()
+smain = quickCheck $ conjoin $ List.map (uncurry label) props
 
 -- Parallel
+pmain :: IO ()
+pmain = pRunAllProcessors 100 $ List.map (second pDet) props
+
 main :: IO ()
-main = pRunAllProcessors 100 $ map (second pDet) props
+main = pmain
 
