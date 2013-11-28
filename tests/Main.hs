@@ -10,7 +10,6 @@ import Prelude hiding (concat, foldr, head, map, replicate, tail)
 import qualified Data.List as List
 import Text.Show.Functions ()
 import Control.Arrow (second)
-import Data.Traversable (traverse)
 import Test.QuickCheck.Parallel
 
 import Data.DList
@@ -46,8 +45,10 @@ prop_append xs ys = xs ++ ys == toList (fromList xs `append` fromList ys)
 prop_concat :: [[Int]] -> Bool
 prop_concat = eqWith List.concat (toList . concat . List.map fromList)
 
-prop_replicate :: Int -> Int -> Bool
-prop_replicate n = eqWith (List.replicate n) (toList . replicate n)
+-- The condition reduces the size of replications and thus the eval time.
+prop_replicate :: Int -> Int -> Property
+prop_replicate n =
+  eqOn (const (n < 100)) (List.replicate n) (toList . replicate n)
 
 prop_head :: [Int] -> Property
 prop_head = eqOn (not . null) List.head (head . fromList)
@@ -61,9 +62,6 @@ prop_unfoldr f n =
 
 prop_foldr :: (Int -> Int -> Int) -> Int -> [Int] -> Bool
 prop_foldr f x = eqWith (List.foldr f x) (foldr f x . fromList)
-
-prop_traverse :: (Int -> [Int]) -> [Int] -> Bool
-prop_traverse f = eqWith (traverse f) (List.map toList . traverse f . fromList)
 
 prop_map :: (Int -> Int) -> [Int] -> Bool
 prop_map f = eqWith (List.map f) (toList . map f . fromList)
@@ -97,7 +95,6 @@ props =
   , ("tail",          property prop_tail)
   , ("unfoldr",       property prop_unfoldr)
   , ("foldr",         property prop_foldr)
-  , ("traverse",      property prop_traverse)
   , ("map",           property prop_map)
   , ("map fusion",    property (prop_map_fusion (+1) (+1)))
   , ("read . show",   property prop_show_read)
