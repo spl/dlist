@@ -30,7 +30,7 @@ install:
  - cabal-1.18 install --only-dependencies --enable-tests
 
 script:
- - cabal-1.18 configure --enable-tests -v2
+ - cabal-1.18 configure --solver=modular --enable-tests -v2
  - cabal-1.18 build
  - cabal-1.18 test
  - cabal-1.18 check
