@@ -38,5 +38,5 @@ test-suite test
                         Cabal,
                         QuickCheck >= 2.6 && < 2.7,
                         pqc >= 0.8 && < 0.9
-  ghc-options:          -threaded -with-rtsopts=-N
+  ghc-options:          -threaded -rtsopts
 
