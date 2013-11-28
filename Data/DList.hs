@@ -43,9 +43,6 @@ module Data.DList (
   , Monoid(..)
   , (<>)
 
-  -- * MonadPlus
-  , maybeReturn
-
   ) where
 
 import Prelude hiding (concat, foldr, map, head, tail, replicate)
@@ -275,6 +272,3 @@ instance Foldable DList where
   {-# INLINE foldr' #-}
 #endif
 
--- Use this to convert Maybe a into DList a, or indeed into any other MonadPlus instance.
-maybeReturn :: MonadPlus m => Maybe a -> m a
-maybeReturn = maybe mzero return
