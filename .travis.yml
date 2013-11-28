@@ -32,8 +32,7 @@ script:
  - cabal-1.18 configure --enable-tests -v2
  - cabal-1.18 build
  - cabal-1.18 test
-# disabled due to -O2
-# - cabal-1.18 check
+ - cabal-1.18 check
  - cabal-1.18 sdist
  - export SRC_TGZ=$(cabal-1.18 info . | awk '{print $2 ".tar.gz";exit}') ;
    cd dist/;
