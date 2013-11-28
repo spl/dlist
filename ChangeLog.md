@@ -10,9 +10,8 @@ Version 0.6 (*expected*)
   https://github.com/spl/dlist
 * Add `Eq`, `Ord`, `Read`, `Show`, `Alternative`, `Foldable`, `Traversable`
   instances
-* Deprecate functions in favor of their type class equivalents: `append`,
-  `concat`, `empty`, `map`, `foldr`
-* Deprecate `DL`, `unDL` and add `apply` ([#4](https://github.com/spl/dlist/issues/4))
+* Make DList abstract (see [#4](https://github.com/spl/dlist/issues/4))
+* Add `apply` to use instead of `unDL`
 * Stop supporting `base < 2`
 * Update tests to run `cabal test` using parallel QuickCheck (`pqc`)
 * Add scripts for running `hpc`

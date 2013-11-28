@@ -17,7 +17,7 @@
 
 module Data.DList (
 
-   DList(..)         -- abstract, instance Monoid, Functor, Applicative, Monad, MonadPlus
+   DList
 
   -- * Construction
   ,fromList      -- :: [a] -> DList a
@@ -49,8 +49,8 @@ module Data.DList (
   ) where
 
 import Prelude hiding (concat, foldr, map, head, tail, replicate)
-import qualified Prelude as P
-import Control.Monad
+import qualified Data.List as List
+import Control.Monad as M
 import Data.Monoid
 import Data.Function (on)
 
@@ -90,8 +90,6 @@ import qualified Control.Applicative (empty)
 -- >       flatten (Branch x y) = flatten x >> flatten y
 --
 newtype DList a = DL { unDL :: [a] -> [a] }
-{-# DEPRECATED DL "'DL' is unsafe (see <https://github.com/spl/dlist/issues/4 #4>). 'DL' will be removed in the next major version." #-}
-{-# DEPRECATED unDL "Use 'apply'. 'unDL' will be removed in the next major version." #-}
 
 -- | Converting a normal list to a dlist
 fromList    :: [a] -> DList a
@@ -109,10 +107,10 @@ toList      = ($[]) . unDL
 apply       :: DList a -> [a] -> [a]
 apply       = unDL
 
+-- | Create a difference list containing no elements
 empty       :: DList a
 empty       = DL id
 {-# INLINE empty #-}
-{-# DEPRECATED empty "Use 'mempty' or 'Control.Applicative.empty'. 'empty' may be removed in the next major version." #-}
 
 -- | Create difference list with given single element
 singleton   :: a -> DList a
@@ -131,15 +129,15 @@ snoc        :: DList a -> a -> DList a
 snoc xs x   = DL (unDL xs . (x:))
 {-# INLINE snoc #-}
 
+-- | /O(1)/, Appending difference lists
 append       :: DList a -> DList a -> DList a
 append xs ys = DL (unDL xs . unDL ys)
 {-# INLINE append #-}
-{-# DEPRECATED append "Use 'mappend', '<>', or 'Control.Applicative.<|>'. 'append' may be removed in the next major version." #-}
 
+-- | /O(spine)/, Concatenate difference lists
 concat       :: [DList a] -> DList a
-concat       = mconcat
+concat       = List.foldr append empty
 {-# INLINE concat #-}
-{-# DEPRECATED concat "Use 'mconcat'. 'concat' may be removed in the next major version." #-}
 
 -- | /O(n)/, Create a difference list of the given number of elements
 replicate :: Int -> a -> DList a
@@ -170,15 +168,15 @@ unfoldr pf b =
     Nothing     -> empty
     Just (a, b') -> cons a (unfoldr pf b')
 
+-- | Foldr over difference lists
 foldr        :: (a -> b -> b) -> b -> DList a -> b
-foldr        = F.foldr
+foldr f b    = List.foldr f b . toList
 {-# INLINE foldr #-}
-{-# DEPRECATED foldr "Use 'Data.Foldable.foldr'. 'foldr' may be removed in the next major version." #-}
 
+-- | Map over difference lists.
 map          :: (a -> b) -> DList a -> DList b
-map          = fmap
+map f        = foldr (cons . f) empty
 {-# INLINE map #-}
-{-# DEPRECATED map "Use 'fmap'. 'map' may be removed in the next major version." #-}
 
 instance Eq a => Eq (DList a) where
     (==) = (==) `on` toList
@@ -220,7 +218,7 @@ infixr 6 <>
 #endif
 
 instance Functor DList where
-    fmap f = F.foldr (cons . f) empty
+    fmap = map
     {-# INLINE fmap #-}
 
 instance Applicative DList where
@@ -238,7 +236,7 @@ instance Monad DList where
     -- = concat . List.map k . toList $ m
     -- = List.foldr append empty . List.map k . toList $ m
     -- = List.foldr (append . k) empty . toList $ m
-    = F.foldr (append . k) empty m
+    = foldr (append . k) empty m
   {-# INLINE (>>=) #-}
 
   return x = singleton x
@@ -258,22 +256,22 @@ instance Foldable DList where
   foldMap f   = F.foldMap f . toList
   {-# INLINE foldMap #-}
 
-  foldr f x   = P.foldr f x . toList
+  foldr f x   = List.foldr f x . toList
   {-# INLINE foldr #-}
 
-  foldl f x   = P.foldl f x . toList
+  foldl f x   = List.foldl f x . toList
   {-# INLINE foldl #-}
 
-  foldr1 f    = F.foldr1 f . toList
+  foldr1 f    = List.foldr1 f . toList
   {-# INLINE foldr1 #-}
 
-  foldl1 f    = P.foldl1 f . toList
+  foldl1 f    = List.foldl1 f . toList
   {-# INLINE foldl1 #-}
 
 -- CPP: foldl', foldr' added to Foldable in 7.6.1
 -- http://www.haskell.org/ghc/docs/7.6.1/html/users_guide/release-7-6-1.html
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 706
-  foldl' f x  = F.foldl' f x . toList
+  foldl' f x  = List.foldl' f x . toList
   {-# INLINE foldl' #-}
 
   foldr' f x  = F.foldr' f x . toList
@@ -287,10 +285,10 @@ instance Traversable DList where
   sequenceA   = fmap fromList . T.sequenceA . toList
   {-# INLINE sequenceA #-}
 
-  mapM f      = liftM fromList . P.mapM f . toList
+  mapM f      = liftM fromList . M.mapM f . toList
   {-# INLINE mapM #-}
 
-  sequence    = liftM fromList . P.sequence . toList
+  sequence    = liftM fromList . M.sequence . toList
   {-# INLINE sequence #-}
 
 -- Use this to convert Maybe a into DList a, or indeed into any other MonadPlus instance.
