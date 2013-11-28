@@ -8,8 +8,7 @@ Version 0.6 (*expected*)
 * Maintenance and development taken over by Sean Leather
 * Migrate repository from http://code.haskell.org/~dons/code/dlist/ to
   https://github.com/spl/dlist
-* Add `Eq`, `Ord`, `Read`, `Show`, `Alternative`, `Foldable`, `Traversable`
-  instances
+* Add instances: `Eq`, `Ord`, `Read`, `Show`, `Alternative`, and `Foldable`
 * Make DList abstract (see [#4](https://github.com/spl/dlist/issues/4))
 * Add `apply` to use instead of `unDL`
 * Stop supporting `base < 2`

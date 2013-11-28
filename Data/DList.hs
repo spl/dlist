@@ -57,9 +57,6 @@ import Data.Function (on)
 import Data.Foldable (Foldable)
 import qualified Data.Foldable as F
 
-import Data.Traversable (Traversable)
-import qualified Data.Traversable as T
-
 #ifdef __GLASGOW_HASKELL__
 import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
                   readListPrecDefault)
@@ -277,19 +274,6 @@ instance Foldable DList where
   foldr' f x  = F.foldr' f x . toList
   {-# INLINE foldr' #-}
 #endif
-
-instance Traversable DList where
-  traverse f  = fmap fromList . T.traverse f . toList
-  {-# INLINE traverse #-}
-
-  sequenceA   = fmap fromList . T.sequenceA . toList
-  {-# INLINE sequenceA #-}
-
-  mapM f      = liftM fromList . M.mapM f . toList
-  {-# INLINE mapM #-}
-
-  sequence    = liftM fromList . M.sequence . toList
-  {-# INLINE sequence #-}
 
 -- Use this to convert Maybe a into DList a, or indeed into any other MonadPlus instance.
 maybeReturn :: MonadPlus m => Maybe a -> m a
