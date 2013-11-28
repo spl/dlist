@@ -5,14 +5,14 @@
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.DList
--- Copyright   :  (c) Don Stewart 2006-2007
--- License     :  BSD-style (see the file LICENSE)
+-- Copyright   :  (c) Don Stewart 2006-2009, (c) Sean Leather 2013
+-- License     :  See LICENSE file
 --
--- Maintainer  :  dons@cse.unsw.edu.au
--- Stability   :  experimental
--- Portability :  portable (Haskell 98)
+-- Maintainer  :  sean.leather@gmail.com
+-- Stability   :  stable
+-- Portability :  portable
 --
--- Difference lists: a data structure for O(1) append on lists.
+-- Difference lists: a data structure for /O(1)/ append on lists.
 --
 -----------------------------------------------------------------------------
 
@@ -61,15 +61,15 @@ import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
 import Control.Applicative(Applicative(..), Alternative, (<|>))
 import qualified Control.Applicative (empty)
 
--- | A difference list is a function that given a list, returns the
--- original contents of the difference list prepended at the given list
+-- | A difference list is a function that, given a list, returns the original
+-- contents of the difference list prepended to the given list.
 --
--- This structure supports /O(1)/ append and snoc operations on lists,
--- making it very useful for append-heavy uses, such as logging and
--- pretty printing.
+-- This structure supports /O(1)/ append and snoc operations on lists, making it
+-- very useful for append-heavy uses (esp. left-nested uses of 'List.++'), such
+-- as logging and pretty printing.
 --
--- For example, using DList as the state type when printing a tree with
--- the Writer monad
+-- Here is an example using DList as the state type when printing a tree with
+-- the Writer monad:
 --
 -- > import Control.Monad.Writer
 -- > import Data.DList
@@ -86,12 +86,12 @@ newtype DList a = DL { unDL :: [a] -> [a] }
 {-# DEPRECATED DL "It will be removed in dlist-v0.7 (see <https://github.com/spl/dlist/issues/4 #4>)." #-}
 {-# DEPRECATED unDL "It will be removed in dlist-v0.7. Use 'apply' instead." #-}
 
--- | Converting a normal list to a dlist
+-- | Convert a list to a dlist
 fromList    :: [a] -> DList a
 fromList    = DL . (++)
 {-# INLINE fromList #-}
 
--- | Converting a dlist back to a normal list
+-- | Convert a dlist to a list
 toList      :: DList a -> [a]
 toList      = ($[]) . unDL
 {-# INLINE toList #-}
@@ -102,73 +102,73 @@ toList      = ($[]) . unDL
 apply       :: DList a -> [a] -> [a]
 apply       = unDL
 
--- | Create a difference list containing no elements
+-- | Create a dlist containing no elements
 empty       :: DList a
 empty       = DL id
 {-# INLINE empty #-}
 
--- | Create difference list with given single element
+-- | Create dlist with a single element
 singleton   :: a -> DList a
 singleton   = DL . (:)
 {-# INLINE singleton #-}
 
--- | /O(1)/, Prepend a single element to a difference list
+-- | /O(1)/. Prepend a single element to a dlist
 infixr `cons`
 cons        :: a -> DList a -> DList a
 cons x xs   = DL ((x:) . unDL xs)
 {-# INLINE cons #-}
 
--- | /O(1)/, Append a single element at a difference list
+-- | /O(1)/. Append a single element to a dlist
 infixl `snoc`
 snoc        :: DList a -> a -> DList a
 snoc xs x   = DL (unDL xs . (x:))
 {-# INLINE snoc #-}
 
--- | /O(1)/, Appending difference lists
+-- | /O(1)/. Append dlists
 append       :: DList a -> DList a -> DList a
 append xs ys = DL (unDL xs . unDL ys)
 {-# INLINE append #-}
 
--- | /O(spine)/, Concatenate difference lists
+-- | /O(spine)/. Concatenate dlists
 concat       :: [DList a] -> DList a
 concat       = List.foldr append empty
 {-# INLINE concat #-}
 
--- | /O(n)/, Create a difference list of the given number of elements
+-- | /O(n)/. Create a dlist of the given number of elements
 replicate :: Int -> a -> DList a
 replicate n x = DL $ \xs -> let go m | m <= 0    = xs
                                      | otherwise = x : go (m-1)
                             in go n
 {-# INLINE replicate #-}
 
--- | /O(length dl)/, List elimination, head, tail.
+-- | /O(n)/. List elimination for dlists
 list :: b -> (a -> DList a -> b) -> DList a -> b
 list nill consit dl =
   case toList dl of
     [] -> nill
     (x : xs) -> consit x (fromList xs)
 
--- | Return the head of the list
+-- | /O(n)/. Return the head of the dlist
 head :: DList a -> a
 head = list (error "Data.DList.head: empty dlist") const
 
--- | Return the tail of the list
+-- | /O(n)/. Return the tail of the dlist
 tail :: DList a -> DList a
 tail = list (error "Data.DList.tail: empty dlist") (flip const)
 
--- | Unfoldr for difference lists
+-- | /O(n)/. Unfoldr for dlists
 unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
 unfoldr pf b =
   case pf b of
     Nothing     -> empty
     Just (a, b') -> cons a (unfoldr pf b')
 
--- | Foldr over difference lists
+-- | /O(n)/. Foldr over difference lists
 foldr        :: (a -> b -> b) -> b -> DList a -> b
 foldr f b    = List.foldr f b . toList
 {-# INLINE foldr #-}
 
--- | Map over difference lists.
+-- | /O(n)/. Map over difference lists.
 map          :: (a -> b) -> DList a -> DList b
 map f        = foldr (cons . f) empty
 {-# INLINE map #-}
