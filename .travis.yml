@@ -31,8 +31,7 @@ install:
 script:
  - cabal-1.18 configure --enable-tests -v2
  - cabal-1.18 build
-# disable test-suite as it requires too much RAM
-# - cabal-1.18 test
+ - cabal-1.18 test
 # disabled due to -O2
 # - cabal-1.18 check
  - cabal-1.18 sdist
