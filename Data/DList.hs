@@ -39,10 +39,6 @@ module Data.DList (
   ,foldr         -- :: (a -> b -> b) -> b -> DList a -> b
   ,map           -- :: (a -> b) -> DList a -> DList b
 
-  -- * Monoidal interface
-  , Monoid(..)
-  , (<>)
-
   ) where
 
 import Prelude hiding (concat, foldr, map, head, tail, replicate)
@@ -201,15 +197,6 @@ instance Show a => Show (DList a) where
 instance Monoid (DList a) where
     mempty  = empty
     mappend = append
-
--- CPP: (<>) added in 7.4.1
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ < 704
--- | An infix synonym for 'mappend'
-(<>) :: Monoid m => m -> m -> m
-(<>) = mappend
-{-# INLINE (<>) #-}
-infixr 6 <>
-#endif
 
 instance Functor DList where
     fmap = map
