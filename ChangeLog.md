@@ -2,8 +2,8 @@
 Change Log
 ==========
 
-Version 0.6 (*expected*)
--------------------------
+Version 0.6 (2013-11-29) *Black Friday*
+---------------------------------------
 
 #### Development changes
 
