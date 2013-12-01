@@ -11,7 +11,7 @@ Version 0.6.0.1 (2013-12-01) *World AIDS Day*
 
 #### Contributors
 
-* (Michael Snoyman)[https://github.com/snoyberg]
+* [Michael Snoyman](https://github.com/snoyberg)
 
 Version 0.6 (2013-11-29) *Black Friday*
 ---------------------------------------
@@ -43,6 +43,6 @@ Version 0.6 (2013-11-29) *Black Friday*
 
 #### Contributors
 
-* (Bas van Dijk)[https://github.com/basvandijk]
-* (Herbert Valerio Riedel)[https://github.com/hvr]
+* [Bas van Dijk](https://github.com/basvandijk)
+* [Herbert Valerio Riedel](https://github.com/hvr)
 
