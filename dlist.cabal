@@ -28,7 +28,9 @@ source-repository head
   location:             git://github.com/spl/dlist.git
 
 library
-  build-depends:        base >= 2 && < 5
+  build-depends:
+                        base >= 2 && < 5,
+                        deepseq >= 1.1 && < 2
   ghc-options:          -Wall
   extensions:           CPP
   exposed-modules:      Data.DList

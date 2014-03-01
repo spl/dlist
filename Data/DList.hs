@@ -46,6 +46,7 @@ module Data.DList (
 
 import Prelude hiding (concat, foldr, map, head, tail, replicate)
 import qualified Data.List as List
+import Control.DeepSeq (NFData(..))
 import Control.Monad as M
 import Data.Monoid
 import Data.Function (on)
@@ -263,6 +264,9 @@ instance Foldable DList where
   foldr' f x  = F.foldr' f x . toList
   {-# INLINE foldr' #-}
 #endif
+
+instance NFData a => NFData (DList a) where
+   rnf x = rnf (toList x)
 
 maybeReturn :: MonadPlus m => Maybe a -> m a
 maybeReturn = maybe mzero return
