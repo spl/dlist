@@ -18,7 +18,7 @@
 
 module Data.DList (
 
-   DList(..)
+   DList
 
   -- * Construction
   ,fromList      -- :: [a] -> DList a
@@ -39,8 +39,6 @@ module Data.DList (
   ,unfoldr       -- :: (b -> Maybe (a, b)) -> b -> DList a
   ,foldr         -- :: (a -> b -> b) -> b -> DList a -> b
   ,map           -- :: (a -> b) -> DList a -> DList b
-
-  ,maybeReturn
 
   ) where
 
@@ -85,8 +83,6 @@ import qualified Control.Applicative (empty)
 -- >       flatten (Branch x y) = flatten x >> flatten y
 --
 newtype DList a = DL { unDL :: [a] -> [a] }
-{-# DEPRECATED DL "It will be removed in dlist-v0.7 (see <https://github.com/spl/dlist/issues/4 #4>)." #-}
-{-# DEPRECATED unDL "It will be removed in dlist-v0.7. Use 'apply' instead." #-}
 
 -- | Convert a list to a dlist
 fromList    :: [a] -> DList a
@@ -273,8 +269,4 @@ instance NFData a => NFData (DList a) where
 instance IsString (DList Char) where
   fromString = fromList
   {-# INLINE fromString #-}
-
-maybeReturn :: MonadPlus m => Maybe a -> m a
-maybeReturn = maybe mzero return
-{-# DEPRECATED maybeReturn "It will be removed in dlist-v0.7." #-}
 

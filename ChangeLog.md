@@ -9,6 +9,7 @@ Version NEXT (????-??-??)
 
 * Add `NFData` instance (and `deepseq` dependency)
 * Add `IsString` instance
+* Remove deprecated entities
 
 Version 0.6.0.1 (2013-12-01) *World AIDS Day*
 ---------------------------------------------
