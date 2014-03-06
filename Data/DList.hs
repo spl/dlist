@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -Wall -O2 #-}
 {-# OPTIONS_HADDOCK prune #-}
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
