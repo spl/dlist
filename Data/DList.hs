@@ -1,6 +1,7 @@
 {-# OPTIONS_GHC -Wall -O2 #-}
 {-# OPTIONS_HADDOCK prune #-}
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -50,6 +51,7 @@ import Control.DeepSeq (NFData(..))
 import Control.Monad as M
 import Data.Monoid
 import Data.Function (on)
+import Data.String (IsString(..))
 
 import Data.Foldable (Foldable)
 import qualified Data.Foldable as F
@@ -267,6 +269,9 @@ instance Foldable DList where
 
 instance NFData a => NFData (DList a) where
    rnf x = rnf (toList x)
+
+instance IsString (DList Char) where
+  fromString = fromList
 
 maybeReturn :: MonadPlus m => Maybe a -> m a
 maybeReturn = maybe mzero return

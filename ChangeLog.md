@@ -8,6 +8,7 @@ Version NEXT (????-??-??)
 #### Package changes
 
 * Add `NFData` instance (and `deepseq` dependency)
+* Add `IsString` instance
 
 Version 0.6.0.1 (2013-12-01) *World AIDS Day*
 ---------------------------------------------
