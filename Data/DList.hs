@@ -267,10 +267,12 @@ instance Foldable DList where
 #endif
 
 instance NFData a => NFData (DList a) where
-   rnf x = rnf (toList x)
+  rnf = rnf . toList
+  {-# INLINE rnf #-}
 
 instance IsString (DList Char) where
   fromString = fromList
+  {-# INLINE fromString #-}
 
 maybeReturn :: MonadPlus m => Maybe a -> m a
 maybeReturn = maybe mzero return
