@@ -31,7 +31,7 @@ library
   build-depends:
                         base >= 4 && < 5,
                         deepseq >= 1.1 && < 2
-  ghc-options:          -Wall -O2
+  ghc-options:          -Wall
   extensions:           CPP
   exposed-modules:      Data.DList
 
