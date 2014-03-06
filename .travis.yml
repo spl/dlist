@@ -1,7 +1,6 @@
 # See https://github.com/hvr/multi-ghc-travis for more information
 
 env:
- - GHCVER=6.12.3
  - GHCVER=7.0.1
  - GHCVER=7.0.2
  - GHCVER=7.0.3
@@ -18,7 +17,6 @@ env:
 
 matrix:
   allow_failures:
-   - env: GHCVER=6.12.3
    - env: GHCVER=head
 
 before_install:
