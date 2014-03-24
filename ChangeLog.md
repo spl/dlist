@@ -2,6 +2,13 @@
 Change Log
 ==========
 
+Version 0.7.0.1 (2014-03-24) *World Tuberculosis Day*
+-----------------------------------------------------
+
+#### Package changes
+
+* Change QuickCheck upper bound from 2.7 to 2.8
+
 Version 0.7 (2014-03-17) *St. Patrick's Day*
 --------------------------------------------
 
