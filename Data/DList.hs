@@ -51,12 +51,17 @@ import Data.Monoid
 import Data.Function (on)
 import Data.String (IsString(..))
 
+
 import Data.Foldable (Foldable)
 import qualified Data.Foldable as F
 
 #ifdef __GLASGOW_HASKELL__
 import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
                   readListPrecDefault)
+#endif
+
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+import qualified GHC.Exts as Exts
 #endif
 
 import Control.Applicative(Applicative(..), Alternative, (<|>))
@@ -271,3 +276,12 @@ instance IsString (DList Char) where
   fromString = fromList
   {-# INLINE fromString #-}
 
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+instance Exts.IsList (DList a) where
+  type Item (DList a) = a
+  fromList = fromList
+  {-# INLINE fromList #-}
+  
+  toList = toList
+  {-# INLINE toList #-}
+#endif
