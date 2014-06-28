@@ -2,6 +2,13 @@
 Change Log
 ==========
 
+Version 0.7.1 (2014-06-28) *100th Anniversary of the Assassination of Franz Ferdinand*
+--------------------------------------------------------------------------------------
+
+#### Package changes
+
+* Add `IsList` instance for GHC >= 7.8 ([Icelandjack](https://github.com/Icelandjack))
+
 Version 0.7.0.1 (2014-03-24) *World Tuberculosis Day*
 -----------------------------------------------------
 
