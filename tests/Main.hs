@@ -1,4 +1,9 @@
 {-# OPTIONS_GHC -Wall #-}
+{-# LANGUAGE CPP #-}
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+-- For the IsList test:
+{-# LANGUAGE OverloadedLists #-}
+#endif
 
 --------------------------------------------------------------------------------
 
@@ -78,6 +83,17 @@ prop_read_show x = eqWith id (show . f . read) $ "fromList " ++ show x
     f :: DList Int -> DList Int
     f = id
 
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+-- | Test that the IsList instance methods compile and work with simple lists
+prop_IsList :: Bool
+prop_IsList = test_fromList [1,2,3] && test_toList (fromList [1,2,3])
+  where
+    test_fromList, test_toList :: DList Int -> Bool
+    test_fromList x = x == fromList [1,2,3]
+    test_toList [1,2,3] = True
+    test_toList _       = False
+#endif
+
 --------------------------------------------------------------------------------
 
 props :: [(String, Property)]
@@ -98,6 +114,9 @@ props =
   , ("map fusion",    property (prop_map_fusion (+1) (+1)))
   , ("read . show",   property prop_show_read)
   , ("show . read",   property prop_read_show)
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+  , ("IsList",        property prop_IsList)
+#endif
   ]
 
 --------------------------------------------------------------------------------

@@ -2,6 +2,10 @@
 {-# OPTIONS_HADDOCK prune #-}
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+-- For the IsList instance:
+{-# LANGUAGE TypeFamilies #-}
+#endif
 
 -----------------------------------------------------------------------------
 -- |
@@ -55,8 +59,16 @@ import Data.Foldable (Foldable)
 import qualified Data.Foldable as F
 
 #ifdef __GLASGOW_HASKELL__
+
 import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
                   readListPrecDefault)
+
+#if __GLASGOW_HASKELL__ >= 708
+import GHC.Exts (IsList)
+-- This is for the IsList methods, which conflict with fromList, toList:
+import qualified GHC.Exts
+#endif
+
 #endif
 
 import Control.Applicative(Applicative(..), Alternative, (<|>))
@@ -270,4 +282,13 @@ instance NFData a => NFData (DList a) where
 instance IsString (DList Char) where
   fromString = fromList
   {-# INLINE fromString #-}
+
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+instance IsList (DList a) where
+  type Item (DList a) = a
+  fromList = fromList
+  {-# INLINE fromList #-}
+  toList = toList
+  {-# INLINE toList #-}
+#endif
 
