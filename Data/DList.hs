@@ -23,7 +23,7 @@
 
 module Data.DList (
 
-   DList
+   DList(..)
 
   -- * Construction
   ,fromList      -- :: [a] -> DList a
