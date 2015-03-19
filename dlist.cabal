@@ -1,5 +1,5 @@
 name:                   dlist
-version:                0.7.1
+version:                0.7.1.1
 synopsis:               Difference lists
 description:
   Difference lists are a list-like type supporting O(1) append. This is
@@ -21,7 +21,7 @@ tested-with:            GHC==7.0.4,
                         GHC==7.2.2,
                         GHC==7.4.2,
                         GHC==7.6.3,
-                        GHC==7.8.1
+                        GHC==7.8.4
 
 source-repository head
   type:                 git

@@ -2,6 +2,13 @@
 Change Log
 ==========
 
+Version 0.7.1.1 (2015-03-19) *St Joseph's Day*
+----------------------------------------------
+
+#### Package changes
+
+* Change QuickCheck upper bound from 2.8 to 2.9
+
 Version 0.7.1 (2014-06-28) *100th Anniversary of the Assassination of Franz Ferdinand*
 --------------------------------------------------------------------------------------
 
