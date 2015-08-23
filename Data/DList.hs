@@ -51,12 +51,16 @@ import Prelude hiding (concat, foldr, map, head, tail, replicate)
 import qualified Data.List as List
 import Control.DeepSeq (NFData(..))
 import Control.Monad as M
-import Data.Monoid
 import Data.Function (on)
 import Data.String (IsString(..))
 
-import Data.Foldable (Foldable)
 import qualified Data.Foldable as F
+
+#if !MIN_VERSION_base(4,8,0)
+import Data.Monoid
+import Data.Foldable (Foldable)
+import Control.Applicative(Applicative(..))
+#endif
 
 #ifdef __GLASGOW_HASKELL__
 
@@ -71,7 +75,7 @@ import qualified GHC.Exts
 
 #endif
 
-import Control.Applicative(Applicative(..), Alternative, (<|>))
+import Control.Applicative(Alternative, (<|>))
 import qualified Control.Applicative (empty)
 
 -- | A difference list is a function that, given a list, returns the original
