@@ -35,7 +35,7 @@ See the [ChangeLog.md](https://github.com/spl/dlist/blob/master/ChangeLog.md) fi
    Douglas M. Auclair. 2008-08-13.
 
 2. [A Sort of Difference](https://archive.is/20140131124629/http://web.archive.org/web/20080918101635/comonad.com/reader/2008/a-sort-of-difference/).
-   The Comonad.Reader. 2008-09-18.
+   Edward Kmett. 2008-09-18.
 
 3. [Reference for technique wanted](http://thread.gmane.org/gmane.comp.lang.haskell.cafe/82827).
    Richard O'Keefe, et al. 2010-10-31.
