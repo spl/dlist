@@ -223,7 +223,8 @@ instance Functor DList where
     {-# INLINE fmap #-}
 
 instance Applicative DList where
-    pure  = return
+    pure  = singleton
+    {-# INLINE pure #-}
     (<*>) = ap
 
 instance Alternative DList where
@@ -240,7 +241,7 @@ instance Monad DList where
     = foldr (append . k) empty m
   {-# INLINE (>>=) #-}
 
-  return x = singleton x
+  return   = pure
   {-# INLINE return #-}
 
   fail _   = empty
