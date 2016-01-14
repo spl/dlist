@@ -1,5 +1,8 @@
 # See https://github.com/hvr/multi-ghc-travis for more information
 
+# Explicitly request legacy build environment
+sudo: required
+
 env:
  # Use CABALVER=1.16 for GHCVER<7.6, as there is no package for earlier cabal
  # versions in the PPA.
@@ -8,7 +11,8 @@ env:
  - GHCVER=7.4.2  CABALVER=1.16
  - GHCVER=7.6.3  CABALVER=1.16
  - GHCVER=7.8.4  CABALVER=1.18
- - GHCVER=7.10.2 CABALVER=1.22
+ - GHCVER=7.10.3 CABALVER=1.22
+ - GHCVER=8.0.1  CABALVER=1.24
  - GHCVER=head   CABALVER=head
 
 matrix:
@@ -33,11 +37,4 @@ script:
  - cabal test
  - cabal check
  - cabal sdist
- - export SRC_TGZ=$(cabal info . | awk '{print $2 ".tar.gz";exit}');
-   cd dist/;
-   if [ -f "$SRC_TGZ" ]; then
-      cabal install "$SRC_TGZ";
-   else
-      echo "expected '$SRC_TGZ' not found";
-      exit 1;
-   fi
+ - cabal install --force-reinstalls dist/*-*.tar.gz
