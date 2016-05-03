@@ -1,11 +1,7 @@
 {-# OPTIONS_GHC -O2 #-}
 {-# OPTIONS_HADDOCK prune #-}
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE FlexibleInstances #-}
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
--- For the IsList instance:
-{-# LANGUAGE TypeFamilies #-}
-#endif
+{-# LANGUAGE TypeFamilies #-} -- For the IsList and IsString instances
 
 -----------------------------------------------------------------------------
 -- |
@@ -284,7 +280,11 @@ instance NFData a => NFData (DList a) where
   rnf = rnf . toList
   {-# INLINE rnf #-}
 
-instance IsString (DList Char) where
+-- This is _not_ a flexible instance to allow certain uses of overloaded
+-- strings. See tests/OverloadedStrings.hs for an example and
+-- https://git.haskell.org/ghc.git/commitdiff/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
+-- for the same change made to the IsString instance for lists.
+instance a ~ Char => IsString (DList a) where
   fromString = fromList
   {-# INLINE fromString #-}
 

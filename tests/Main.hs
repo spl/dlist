@@ -18,6 +18,8 @@ import Test.QuickCheck
 
 import Data.DList
 
+import OverloadedStrings (testOverloadedStrings)
+
 --------------------------------------------------------------------------------
 
 eqWith :: Eq b => (a -> b) -> (a -> b) -> a -> Bool
@@ -122,5 +124,6 @@ props =
 --------------------------------------------------------------------------------
 
 main :: IO ()
-main = quickCheck $ conjoin $ List.map (uncurry label) props
-
+main = do
+  testOverloadedStrings
+  quickCheck $ conjoin $ List.map (uncurry label) props
