@@ -284,7 +284,7 @@ instance NFData a => NFData (DList a) where
   rnf = rnf . toList
   {-# INLINE rnf #-}
 
-instance IsString (DList Char) where
+instance a ~ Char => IsString (DList a) where
   fromString = fromList
   {-# INLINE fromString #-}
 
