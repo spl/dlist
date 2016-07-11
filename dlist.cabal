@@ -44,4 +44,4 @@ test-suite test
   build-depends:        dlist,
                         base,
                         Cabal,
-                        QuickCheck >= 2.7 && < 2.9
+                        QuickCheck >= 2.7 && < 2.10
