@@ -32,7 +32,7 @@ install:
  - cabal install --only-dependencies --enable-tests
 
 script:
- - cabal configure --enable-tests -v2
+ - cabal configure --enable-tests -v2 --ghc-options="-Werror"
  - cabal build
  - cabal test
  - cabal check

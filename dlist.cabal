@@ -33,9 +33,9 @@ library
   build-depends:
                         base >= 4 && < 5,
                         deepseq >= 1.1 && < 2
-  ghc-options:          -Wall
   extensions:           CPP
   exposed-modules:      Data.DList
+  ghc-options:          -Wall
 
 test-suite test
   type:                 exitcode-stdio-1.0
@@ -45,3 +45,4 @@ test-suite test
                         base,
                         Cabal,
                         QuickCheck >= 2.7 && < 2.10
+  ghc-options:          -Wall
