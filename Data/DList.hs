@@ -17,29 +17,28 @@
 --
 -----------------------------------------------------------------------------
 
-module Data.DList (
-
-   DList
+module Data.DList
+  ( DList
 
   -- * Construction
-  ,fromList      -- :: [a] -> DList a
-  ,toList        -- :: DList a -> [a]
-  ,apply         -- :: DList a -> [a] -> [a]
+  , fromList
+  , toList
+  , apply
 
   -- * Basic functions
-  ,empty         -- :: DList a
-  ,singleton     -- :: a -> DList a
-  ,cons          -- :: a -> DList a -> DList a
-  ,snoc          -- :: DList a -> a -> DList a
-  ,append        -- :: DList a -> DList a -> DList a
-  ,concat        -- :: [DList a] -> DList a
-  ,replicate     -- :: Int -> a -> DList a
-  ,list          -- :: b -> (a -> DList a -> b) -> DList a -> b
-  ,head          -- :: DList a -> a
-  ,tail          -- :: DList a -> DList a
-  ,unfoldr       -- :: (b -> Maybe (a, b)) -> b -> DList a
-  ,foldr         -- :: (a -> b -> b) -> b -> DList a -> b
-  ,map           -- :: (a -> b) -> DList a -> DList b
+  , empty
+  , singleton
+  , cons
+  , snoc
+  , append
+  , concat
+  , replicate
+  , list
+  , head
+  , tail
+  , unfoldr
+  , foldr
+  , map
 
   ) where
 
