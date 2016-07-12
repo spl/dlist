@@ -1,9 +1,12 @@
 {-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE CPP #-}
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
--- For the IsList test:
-{-# LANGUAGE OverloadedLists #-}
+{-# LANGUAGE OverloadedLists #-} -- For the IsList test
+#if __GLASGOW_HASKELL__ == 708
+{-# LANGUAGE PatternSynonyms #-} -- For pattern synonym use only in GHC 7.8
 #endif
+#endif
+
 
 --------------------------------------------------------------------------------
 
@@ -99,6 +102,12 @@ prop_IsList = test_fromList [1,2,3] && test_toList (fromList [1,2,3])
     test_fromList x = x == fromList [1,2,3]
     test_toList [1,2,3] = True
     test_toList _       = False
+
+prop_patterns :: [Int] -> Bool
+prop_patterns xs = case fromList xs of
+  Nil       -> xs == []
+  Cons y ys -> xs == (y:ys)
+  _         -> False
 #endif
 
 #if MIN_VERSION_base(4,9,0)
@@ -134,6 +143,7 @@ props =
   , ("show . read",       property prop_read_show)
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
   , ("IsList",            property prop_IsList)
+  , ("patterns",          property prop_patterns)
 #endif
 #if MIN_VERSION_base(4,9,0)
   , ("Semigroup <>",      property prop_Semigroup_append)

@@ -3,6 +3,10 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE TypeFamilies #-} -- For the IsList and IsString instances
 
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+{-# LANGUAGE PatternSynonyms, ViewPatterns #-}
+#endif
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.DList
@@ -18,7 +22,12 @@
 -----------------------------------------------------------------------------
 
 module Data.DList
+
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 800
+  ( DList(Nil, Cons)
+#else
   ( DList
+#endif
 
   -- * Construction
   , fromList
@@ -39,6 +48,12 @@ module Data.DList
   , unfoldr
   , foldr
   , map
+
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708 && __GLASGOW_HASKELL__ < 800
+  -- * Pattern Synonyms
+  , pattern Nil
+  , pattern Cons
+#endif
 
   ) where
 
@@ -109,6 +124,22 @@ fromList    = DL . (++)
 toList      :: DList a -> [a]
 toList      = ($[]) . unDL
 {-# INLINE toList #-}
+
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+-- | A unidirectional pattern synonym using 'toList' in a view pattern and
+-- matching on @[]@
+#if __GLASGOW_HASKELL__ >= 710
+pattern Nil :: DList a
+#endif
+pattern Nil <- (toList -> [])
+
+-- | A unidirectional pattern synonym using 'toList' in a view pattern and
+-- matching on @x:xs@ such that you have the pattern @Cons x xs@
+#if __GLASGOW_HASKELL__ >= 710
+pattern Cons :: a -> [a] -> DList a
+#endif
+pattern Cons x xs <- (toList -> x:xs)
+#endif
 
 -- | Apply a dlist to a list to get the underlying list with an extension
 --
