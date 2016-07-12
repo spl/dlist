@@ -58,6 +58,10 @@ import Data.Foldable (Foldable)
 import Control.Applicative(Applicative(..))
 #endif
 
+#if MIN_VERSION_base(4,9,0)
+import Data.Semigroup (Semigroup(..))
+#endif
+
 #ifdef __GLASGOW_HASKELL__
 
 import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
@@ -297,3 +301,14 @@ instance IsList (DList a) where
   {-# INLINE toList #-}
 #endif
 
+#if MIN_VERSION_base(4,9,0)
+instance Semigroup (DList a) where
+  (<>) = append
+  {-# INLINE (<>) #-}
+  stimes n x
+    | n < 0     = error "Data.DList.stimes: negative multiplier"
+    | otherwise = rep n
+    where
+      rep 0 = empty
+      rep i = x <> rep (pred i)
+#endif

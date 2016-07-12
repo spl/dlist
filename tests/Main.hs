@@ -20,6 +20,11 @@ import Data.DList
 
 import OverloadedStrings (testOverloadedStrings)
 
+#if MIN_VERSION_base(4,9,0)
+import Data.Semigroup (Semigroup(..))
+import Data.List.NonEmpty (NonEmpty(..))
+#endif
+
 --------------------------------------------------------------------------------
 
 eqWith :: Eq b => (a -> b) -> (a -> b) -> a -> Bool
@@ -96,28 +101,44 @@ prop_IsList = test_fromList [1,2,3] && test_toList (fromList [1,2,3])
     test_toList _       = False
 #endif
 
+#if MIN_VERSION_base(4,9,0)
+prop_Semigroup_append :: [Int] -> [Int] -> Bool
+prop_Semigroup_append xs ys = xs <> ys == toList (fromList xs <> fromList ys)
+
+prop_Semigroup_sconcat :: NonEmpty [Int] -> Bool
+prop_Semigroup_sconcat xs = sconcat xs == toList (sconcat (fmap fromList xs))
+
+prop_Semigroup_stimes :: Int -> [Int] -> Bool
+prop_Semigroup_stimes n xs = stimes n xs == toList (stimes n (fromList xs))
+#endif
+
 --------------------------------------------------------------------------------
 
 props :: [(String, Property)]
 props =
-  [ ("model",         property prop_model)
-  , ("empty",         property prop_empty)
-  , ("singleton",     property prop_singleton)
-  , ("cons",          property prop_cons)
-  , ("snoc",          property prop_snoc)
-  , ("append",        property prop_append)
-  , ("concat",        property prop_concat)
-  , ("replicate",     property prop_replicate)
-  , ("head",          property prop_head)
-  , ("tail",          property prop_tail)
-  , ("unfoldr",       property prop_unfoldr)
-  , ("foldr",         property prop_foldr)
-  , ("map",           property prop_map)
-  , ("map fusion",    property (prop_map_fusion (+1) (+1)))
-  , ("read . show",   property prop_show_read)
-  , ("show . read",   property prop_read_show)
+  [ ("model",             property prop_model)
+  , ("empty",             property prop_empty)
+  , ("singleton",         property prop_singleton)
+  , ("cons",              property prop_cons)
+  , ("snoc",              property prop_snoc)
+  , ("append",            property prop_append)
+  , ("concat",            property prop_concat)
+  , ("replicate",         property prop_replicate)
+  , ("head",              property prop_head)
+  , ("tail",              property prop_tail)
+  , ("unfoldr",           property prop_unfoldr)
+  , ("foldr",             property prop_foldr)
+  , ("map",               property prop_map)
+  , ("map fusion",        property (prop_map_fusion (+1) (+1)))
+  , ("read . show",       property prop_show_read)
+  , ("show . read",       property prop_read_show)
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
-  , ("IsList",        property prop_IsList)
+  , ("IsList",            property prop_IsList)
+#endif
+#if MIN_VERSION_base(4,9,0)
+  , ("Semigroup <>",      property prop_Semigroup_append)
+  , ("Semigroup sconcat", property prop_Semigroup_sconcat)
+  , ("Semigroup stimes",  property prop_Semigroup_stimes)
 #endif
   ]
 
