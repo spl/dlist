@@ -1,5 +1,5 @@
 name:                   dlist
-version:                0.7.1.2
+version:                0.8
 synopsis:               Difference lists
 description:
   Difference lists are a list-like type supporting O(1) append. This is

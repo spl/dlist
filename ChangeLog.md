@@ -2,6 +2,25 @@
 Change Log
 ==========
 
+Version 0.8 (2016-07-17) *Constitution Day in South Korea*
+----------------------------------------------------------
+
+#### New features
+
+* Add pattern synonyms `Nil` and `Cons` for GHC >= 7.8
+* Add `Semigroup` instance for GHC >= 8 (base >= 4.9)
+* Use inflexible instance for `IsString` to improve support for overloaded
+  strings ([Baldur Blöndal](https://github.com/Icelandjack))
+
+#### Package changes
+
+* Change QuickCheck upper bound from 2.9 to 2.10
+
+#### Development changes
+
+* Add `-Wall -Werror` testing
+* Add testing for GHC 8.0.1 to Travis-CI
+
 Version 0.7.1.2 (2015-08-23) *International Day for the Remembrance of the Slave Trade and its Abolition*
 ---------------------------------------------------------------------------------------------------------
 
@@ -20,9 +39,10 @@ Version 0.7.1.1 (2015-03-19) *St Joseph's Day*
 Version 0.7.1 (2014-06-28) *100th Anniversary of the Assassination of Franz Ferdinand*
 --------------------------------------------------------------------------------------
 
-#### Package changes
+#### New features
 
-* Add `IsList` instance for GHC >= 7.8 ([Icelandjack](https://github.com/Icelandjack))
+* Add `IsList` instance for GHC >= 7.8
+  ([Baldur Blöndal](https://github.com/Icelandjack))
 
 Version 0.7.0.1 (2014-03-24) *World Tuberculosis Day*
 -----------------------------------------------------
@@ -34,7 +54,7 @@ Version 0.7.0.1 (2014-03-24) *World Tuberculosis Day*
 Version 0.7 (2014-03-17) *St. Patrick's Day*
 --------------------------------------------
 
-#### Package changes
+#### New features
 
 * Add `NFData` instance (and `deepseq` dependency)
 * Add `IsString` instance
