@@ -8,7 +8,7 @@ Version 0.8.0.1 (2016-07-29) *58th Anniversary of the Creation of NASA*
 #### Package changes
 
 * Change QuickCheck lower bound to 2.9 for GHC >= 8 (base >= 4.9)
-  ([Adam Bergmark](https://github.com/bergmark)])
+  ([Adam Bergmark](https://github.com/bergmark))
 
 Version 0.8 (2016-07-17) *Constitution Day in South Korea*
 ----------------------------------------------------------
