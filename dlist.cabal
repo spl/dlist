@@ -44,5 +44,10 @@ test-suite test
   build-depends:        dlist,
                         base,
                         Cabal,
-                        QuickCheck >= 2.7 && < 2.10
-  ghc-options:          -Wall
+                        QuickCheck < 2.10
+  if impl(ghc >= 8)
+    -- QuickCheck-2.9 introduced support for Semigroup and NonEmpty in base.
+    -- It is required for testing base >= 4.9 (GHC >= 8).
+    build-depends:      QuickCheck >= 2.9
+  else
+    build-depends:      QuickCheck >= 2.7
