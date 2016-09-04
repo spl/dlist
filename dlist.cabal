@@ -40,6 +40,7 @@ library
 test-suite test
   type:                 exitcode-stdio-1.0
   main-is:              Main.hs
+  other-modules:        OverloadedStrings
   hs-source-dirs:       tests
   build-depends:        dlist,
                         base,
