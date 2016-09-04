@@ -1,6 +1,6 @@
 # Difference Lists in Haskell
 
-[![Build Status](https://travis-ci.org/spl/dlist.png?branch=master)](https://travis-ci.org/spl/dlist)
+[![Travis CI](https://img.shields.io/travis/spl/dlist.svg?maxAge=2592000)](https://travis-ci.org/spl/dlist)
 [![Hackage](https://img.shields.io/hackage/v/dlist.svg?maxAge=2592000)](https://hackage.haskell.org/package/dlist)
 
 ## Summary
