@@ -2,6 +2,14 @@
 Change Log
 ==========
 
+Version 0.8.0.2 (2016-09-04) *World Sexual Health Day*
+------------------------------------------------------
+
+#### Package changes
+
+* Fix test suite: add missing module `OverloadedStrings`
+  ([Sergei Trofimovich](https://github.com/trofi))
+
 Version 0.8.0.1 (2016-07-29) *58th Anniversary of the Creation of NASA*
 -----------------------------------------------------------------------
 
