@@ -1,4 +1,5 @@
 # See https://github.com/hvr/multi-ghc-travis for more information
+language: generic
 
 # Explicitly request legacy build environment
 sudo: required
