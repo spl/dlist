@@ -32,9 +32,12 @@ install:
  - cabal install --only-dependencies --enable-tests
 
 script:
+ - export VER=$(git describe --tags --abbrev=0 | sed 's/v//')
+ - cabal check
+ - cabal sdist
+ - cabal unpack dist/dlist-$VER.tar.gz
+ - cd dlist-$VER
  - cabal configure --enable-tests -v2 --ghc-options="-Werror"
  - cabal build
  - cabal test
- - cabal check
- - cabal sdist
- - cabal install --force-reinstalls dist/*-*.tar.gz
+ - cabal install --force-reinstalls
