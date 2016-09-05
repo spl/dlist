@@ -30,8 +30,10 @@ The release process is as follows:
 
 15. Publish tag as a release on [releases](https://github.com/spl/dlist/releases).
 
-16. `cabal sdist`
+16. Delete branch `version-bump` on [branches](https://github.com/spl/dlist/branches).
 
-17. `cabal upload dist/dlist-$VER.tar.gz`
+17. `cabal sdist`
 
-18. Delete branch `version-bump` on [branches](https://github.com/spl/dlist/branches).
+18. `cabal upload dist/dlist-$VER.tar.gz`
+
+19. Check build on [Hackage](https://hackage.haskell.org/package/dlist).
