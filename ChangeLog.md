@@ -45,7 +45,7 @@ Version 0.7.1.2 (2015-08-23) *International Day for the Remembrance of the Slave
 * Fix GHC 7.10 warnings due to imports
   ([Mikhail Glushenkov](https://github.com/23Skidoo))
 
-Version 0.7.1.1 (2015-03-19) *St Joseph's Day*
+Version 0.7.1.1 (2015-03-19) *St. Joseph's Day*
 ----------------------------------------------
 
 #### Package changes
@@ -110,6 +110,6 @@ Version 0.6 (2013-11-29) *Black Friday*
 
 #### Deprecations
 
-* Deprecate DList constructor and record selector to make it abstract
+* Deprecate `DList` constructor and record selector to make it abstract
   (see [#4](https://github.com/spl/dlist/issues/4))
 * Deprecate `maybeReturn` which is not directly relevant to dlists
