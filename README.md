@@ -1,7 +1,8 @@
 # Difference Lists in Haskell
 
-[![Travis CI](https://img.shields.io/travis/spl/dlist.svg?maxAge=2592000)](https://travis-ci.org/spl/dlist)
-[![Hackage](https://img.shields.io/hackage/v/dlist.svg?maxAge=2592000)](https://hackage.haskell.org/package/dlist)
+[![Hackage](https://img.shields.io/hackage/v/dlist.svg?maxAge=3600)](https://hackage.haskell.org/package/dlist "dlist on Hackage")
+[![Hackage dependencies](https://img.shields.io/hackage-deps/v/dlist.svg?maxAge=3600)](http://packdeps.haskellers.com/feed?needle=dlist "dlist updated Hackage dependencies")
+[![Travis CI](https://img.shields.io/travis/spl/dlist.svg?maxAge=3600)](https://travis-ci.org/spl/dlist "dlist build history on Travis CI")
 
 ## Summary
 
