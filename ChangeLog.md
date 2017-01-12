@@ -2,6 +2,15 @@
 Change Log
 ==========
 
+Version 0.8.1 (2017-mm-dd)
+--------------------------
+
+#### Package changes
+
+* Add `Data.DList.Internal` module with exported constructor of `DList`.
+
+* Fix `stimes` test
+
 Version 0.8.0.2 (2016-09-04) *World Sexual Health Day*
 ------------------------------------------------------
 

@@ -1,5 +1,5 @@
 name:                   dlist
-version:                0.8.0.2
+version:                0.8.1
 synopsis:               Difference lists
 description:
   Difference lists are a list-like type supporting O(1) append. This is
@@ -35,6 +35,7 @@ library
                         deepseq >= 1.1 && < 2
   extensions:           CPP
   exposed-modules:      Data.DList
+  exposed-modules:      Data.DList.Internal
   ghc-options:          -Wall
 
 test-suite test
