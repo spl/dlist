@@ -118,7 +118,8 @@ prop_Semigroup_sconcat :: NonEmpty [Int] -> Bool
 prop_Semigroup_sconcat xs = sconcat xs == toList (sconcat (fmap fromList xs))
 
 prop_Semigroup_stimes :: Int -> [Int] -> Bool
-prop_Semigroup_stimes n xs = stimes n xs == toList (stimes n (fromList xs))
+prop_Semigroup_stimes n xs =
+  n < 0 || stimes n xs == toList (stimes n (fromList xs))
 #endif
 
 --------------------------------------------------------------------------------
