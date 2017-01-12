@@ -23,10 +23,8 @@ import Data.DList
 
 import OverloadedStrings (testOverloadedStrings)
 
-#if MIN_VERSION_base(4,9,0)
 import Data.Semigroup (Semigroup(..))
 import Data.List.NonEmpty (NonEmpty(..))
-#endif
 
 --------------------------------------------------------------------------------
 
@@ -110,7 +108,6 @@ prop_patterns xs = case fromList xs of
   _         -> False
 #endif
 
-#if MIN_VERSION_base(4,9,0)
 prop_Semigroup_append :: [Int] -> [Int] -> Bool
 prop_Semigroup_append xs ys = xs <> ys == toList (fromList xs <> fromList ys)
 
@@ -120,7 +117,6 @@ prop_Semigroup_sconcat xs = sconcat xs == toList (sconcat (fmap fromList xs))
 prop_Semigroup_stimes :: Int -> [Int] -> Bool
 prop_Semigroup_stimes n xs = n < 0 ||
   stimes n xs == toList (stimes n (fromList xs))
-#endif
 
 --------------------------------------------------------------------------------
 
@@ -146,11 +142,9 @@ props =
   , ("IsList",            property prop_IsList)
   , ("patterns",          property prop_patterns)
 #endif
-#if MIN_VERSION_base(4,9,0)
   , ("Semigroup <>",      property prop_Semigroup_append)
   , ("Semigroup sconcat", property prop_Semigroup_sconcat)
   , ("Semigroup stimes",  property prop_Semigroup_stimes)
-#endif
   ]
 
 --------------------------------------------------------------------------------

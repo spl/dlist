@@ -11,6 +11,9 @@ Version 0.8.1 (2017-mm-dd)
 
 * Fix `stimes` test
 
+* Add conditional `semigroups` dependency. This makes `Semigroup` instance
+  available universally.
+
 Version 0.8.0.2 (2016-09-04) *World Sexual Health Day*
 ------------------------------------------------------
 

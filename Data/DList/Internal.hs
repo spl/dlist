@@ -72,14 +72,12 @@ import Data.String (IsString(..))
 import qualified Data.Foldable as F
 
 #if !MIN_VERSION_base(4,8,0)
-import Data.Monoid
+import Data.Monoid (Monoid (..))
 import Data.Foldable (Foldable)
 import Control.Applicative(Applicative(..))
 #endif
 
-#if MIN_VERSION_base(4,9,0)
 import Data.Semigroup (Semigroup(..))
-#endif
 
 #ifdef __GLASGOW_HASKELL__
 
@@ -336,7 +334,6 @@ instance IsList (DList a) where
   {-# INLINE toList #-}
 #endif
 
-#if MIN_VERSION_base(4,9,0)
 instance Semigroup (DList a) where
   (<>) = append
   {-# INLINE (<>) #-}
@@ -346,4 +343,3 @@ instance Semigroup (DList a) where
     where
       rep 0 = empty
       rep i = x <> rep (pred i)
-#endif
