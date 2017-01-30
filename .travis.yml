@@ -30,7 +30,7 @@ before_install:
 
 install:
  - travis_retry cabal update
- - cabal install --only-dependencies --enable-tests
+ - cabal install -j --only-dependencies --enable-tests
 
 script:
  - export VER=$(git describe --tags --abbrev=0 | sed 's/v//')
