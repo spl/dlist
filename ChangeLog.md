@@ -2,6 +2,16 @@
 Change Log
 ==========
 
+Version 0.8.0.3 (2017-07-04) *Independence Day in the United States*
+--------------------------------------------------------------------
+
+#### Package changes
+
+* Change QuickCheck upper bound from 2.10 to 2.11 and import the `Arbitrary`
+  `NonEmpty` instance from quickcheck-instances for 2.10
+* Fix `stimes` property in test suite
+  ([Oleg Grenrus](https://github.com/phadej))
+
 Version 0.8.0.2 (2016-09-04) *World Sexual Health Day*
 ------------------------------------------------------
 
