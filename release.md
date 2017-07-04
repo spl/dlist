@@ -14,7 +14,7 @@ The release process is as follows:
 
 7. `git push -u origin`
 
-8. Check release notes in [ChangeLog.md](./ChangeLog.md).
+8. Check release notes in [ChangeLog.md](https://github.com/spl/dlist/blob/version-bump/ChangeLog.md).
 
 9. `git tag v$VER`
 
