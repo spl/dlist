@@ -24,8 +24,16 @@ import Data.DList
 import OverloadedStrings (testOverloadedStrings)
 
 #if MIN_VERSION_base(4,9,0)
+-- base-4.9 introduced Semigroup and NonEmpty.
 import Data.Semigroup (Semigroup(..))
 import Data.List.NonEmpty (NonEmpty(..))
+
+-- QuickCheck-2.10 dropped the Arbitrary NonEmpty instance, so we import it from
+-- quickcheck-instances.
+#if MIN_VERSION_QuickCheck(2,10,0)
+import Test.QuickCheck.Instances ()
+#endif
+
 #endif
 
 --------------------------------------------------------------------------------

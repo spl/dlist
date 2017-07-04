@@ -46,9 +46,11 @@ test-suite test
                         base,
                         Cabal,
                         QuickCheck < 2.11
-  if impl(ghc >= 8)
-    -- QuickCheck-2.9 introduced support for Semigroup and NonEmpty in base.
-    -- It is required for testing base >= 4.9 (GHC >= 8).
-    build-depends:      QuickCheck >= 2.9
+  -- Semigroup and NonEmpty were introduced in base-4.9 (ghc-8).
+  -- QuickCheck-2.9 included support. QuickCheck-2.10 dropped support.
+  -- quickcheck-instances-0.3.15 has the Arbitrary NonEmpty instance.
+  if impl(ghc > 8)
+    build-depends:      QuickCheck >= 2.9,
+                        quickcheck-instances >= 0.3.15 && < 0.4
   else
     build-depends:      QuickCheck >= 2.7
