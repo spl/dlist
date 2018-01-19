@@ -45,7 +45,7 @@ test-suite test
   build-depends:        dlist,
                         base,
                         Cabal,
-                        QuickCheck < 2.11
+                        QuickCheck < 2.12
   -- Semigroup and NonEmpty were introduced in base-4.9 (ghc-8).
   -- QuickCheck-2.9 included support. QuickCheck-2.10 dropped support.
   -- quickcheck-instances-0.3.15 has the Arbitrary NonEmpty instance.
