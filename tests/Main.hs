@@ -1,7 +1,4 @@
-{-# OPTIONS_GHC -Wall #-}
-#if MIN_VERSION_base(4,9,0)
-{-# OPTIONS_GHC -fno-warn-orphans #-}
-#endif
+{-# OPTIONS_GHC -Wall -fno-warn-orphans #-}
 
 {-# LANGUAGE CPP #-}
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
