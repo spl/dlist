@@ -2,6 +2,16 @@
 Change Log
 ==========
 
+Version 0.8.0.4 (2018-01-19) *Kokborok Day*
+-------------------------------------------
+
+#### Package changes
+
+* Change QuickCheck upper bound from 2.11 to 2.12
+* Make `Data.DList` trustworthy
+  ([Bertram Felgenhauer](https://github.com/int-e))
+* Remove quickcheck-instances dependency for tests
+
 Version 0.8.0.3 (2017-07-04) *Independence Day in the United States*
 --------------------------------------------------------------------
 
