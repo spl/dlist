@@ -1,4 +1,8 @@
 {-# OPTIONS_GHC -Wall #-}
+#if MIN_VERSION_base(4,9,0)
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+#endif
+
 {-# LANGUAGE CPP #-}
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE OverloadedLists #-} -- For the IsList test
@@ -15,9 +19,10 @@ module Main (main) where
 --------------------------------------------------------------------------------
 
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
+
 import qualified Data.List as List
-import Text.Show.Functions ()
 import Test.QuickCheck
+import Text.Show.Functions ()
 
 import Data.DList
 
@@ -25,15 +30,10 @@ import OverloadedStrings (testOverloadedStrings)
 
 #if MIN_VERSION_base(4,9,0)
 -- base-4.9 introduced Semigroup and NonEmpty.
+import Control.Applicative (liftA2) -- Arbitrary1 NonEmpty instance
+import Data.Maybe (mapMaybe) -- Arbitrary1 NonEmpty instance
+import Data.List.NonEmpty (NonEmpty(..), nonEmpty)
 import Data.Semigroup (Semigroup(..))
-import Data.List.NonEmpty (NonEmpty(..))
-
--- QuickCheck-2.10 dropped the Arbitrary NonEmpty instance, so we import it from
--- quickcheck-instances.
-#if MIN_VERSION_QuickCheck(2,10,0)
-import Test.QuickCheck.Instances ()
-#endif
-
 #endif
 
 --------------------------------------------------------------------------------
@@ -121,6 +121,21 @@ prop_patterns xs = case fromList xs of
 #if MIN_VERSION_base(4,9,0)
 prop_Semigroup_append :: [Int] -> [Int] -> Bool
 prop_Semigroup_append xs ys = xs <> ys == toList (fromList xs <> fromList ys)
+
+-- We include the instances for NonEmpty because QuickCheck (>= 2.10) does not.
+-- We could alternatively depend on quickcheck-instances (>= 0.3.15), but
+-- quickcheck-instances has sometimes lagged behind newer GHC/base versions. By
+-- including the instances here, we do not need to track the
+-- quickcheck-instances version, thus simplifying dlist.cabal and reducing the
+-- maintenance effort.
+
+instance Arbitrary1 NonEmpty where
+  liftArbitrary arb = liftA2 (:|) arb (liftArbitrary arb)
+  liftShrink shr (x :| xs) = mapMaybe nonEmpty . liftShrink shr $ x : xs
+
+instance Arbitrary a => Arbitrary (NonEmpty a) where
+  arbitrary = arbitrary1
+  shrink = shrink1
 
 prop_Semigroup_sconcat :: NonEmpty [Int] -> Bool
 prop_Semigroup_sconcat xs = sconcat xs == toList (sconcat (fmap fromList xs))
