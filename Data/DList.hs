@@ -87,8 +87,8 @@ import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
 
 #if __GLASGOW_HASKELL__ >= 708
 import GHC.Exts (IsList)
--- This is for the IsList methods, which conflict with fromList, toList:
-import qualified GHC.Exts
+-- Make IsList type and methods visible for instance.
+import qualified GHC.Exts (IsList(Item, fromList, toList))
 #endif
 
 #endif
