@@ -4,7 +4,11 @@
 {-# LANGUAGE TypeFamilies #-} -- For the IsList and IsString instances
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
-{-# LANGUAGE PatternSynonyms, ViewPatterns #-}
+{-# LANGUAGE PatternSynonyms #-}
+-- Mark this module as trustworthy even though we import 'IsList' from GHC.Exts,
+-- which is marked unsafe. 'IsList' is safe.
+{-# LANGUAGE Trustworthy #-}
+{-# LANGUAGE ViewPatterns #-}
 #endif
 
 -----------------------------------------------------------------------------
