@@ -15,13 +15,12 @@ env:
  - GHCVER=7.10.3 CABALVER=1.22
  - GHCVER=8.0.2  CABALVER=1.24
  - GHCVER=8.2.2  CABALVER=2.0
- - GHCVER=8.4.1  CABALVER=2.0
+ - GHCVER=8.4.3  CABALVER=2.0
  - GHCVER=head   CABALVER=head
 
 matrix:
   allow_failures:
    # The text here should match the last line(s) above exactly.
-   - env: GHCVER=8.4.1  CABALVER=2.0
    - env: GHCVER=head   CABALVER=head
 
 before_install:
