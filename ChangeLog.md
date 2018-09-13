@@ -2,6 +2,13 @@
 Change Log
 ==========
 
+Version 0.8.0.5 (2018-09-13) *Day of the Programmer*
+----------------------------------------------------
+
+#### Package changes
+
+* Change QuickCheck upper bound from 2.12 to 2.13
+
 Version 0.8.0.4 (2018-01-19) *Kokborok Day*
 -------------------------------------------
 
