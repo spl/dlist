@@ -2,6 +2,13 @@
 Change Log
 ==========
 
+Version 0.8.0.6 (2019-03-29) *Martyrs' Day in Madagascar*
+---------------------------------------------------------
+
+#### Package changes
+
+* Change QuickCheck upper bound from 2.13 to 2.14
+
 Version 0.8.0.5 (2018-09-13) *Day of the Programmer*
 ----------------------------------------------------
 
