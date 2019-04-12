@@ -279,10 +279,12 @@ instance Monad DList where
   return   = pure
   {-# INLINE return #-}
 
-#if !MIN_VERSION_base(4,9,0)
+#if !MIN_VERSION_base(4,13,0)
   fail _   = empty
   {-# INLINE fail #-}
-#else
+#endif
+
+#if MIN_VERSION_base(4,9,0)
 instance MonadFail DList where
 
   fail _   = empty
