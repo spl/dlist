@@ -98,6 +98,9 @@ prop_read_show x = eqWith id (show . f . read) $ "fromList " ++ show x
     f :: DList Int -> DList Int
     f = id
 
+prop_fail :: String -> Bool
+prop_fail str = fail str == (empty :: DList ())
+
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 -- | Test that the IsList instance methods compile and work with simple lists
 prop_IsList :: Bool
@@ -156,6 +159,7 @@ props =
   , ("replicate",         property prop_replicate)
   , ("head",              property prop_head)
   , ("tail",              property prop_tail)
+  , ("fail",              property prop_fail)
   , ("unfoldr",           property prop_unfoldr)
   , ("foldr",             property prop_foldr)
   , ("map",               property prop_map)
