@@ -2,6 +2,16 @@
 Change Log
 ==========
 
+Version 0.8.0.7 (2019-08-05) *Independence Day in Burkina Faso*
+---------------------------------------------------------------
+
+#### Package changes
+
+* Add `MonadFail` instance for GHC >= 8.8
+  ([Vanessa McHale](https://github.com/vmchale))
+* Change `deepseq` upper bound to 1.5
+  ([Herbert Valerio Riedel](https://github.com/hvr))
+
 Version 0.8.0.6 (2019-03-29) *Martyrs' Day in Madagascar*
 ---------------------------------------------------------
 
