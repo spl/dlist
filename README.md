@@ -17,7 +17,7 @@ See [ChangeLog.md](./ChangeLog.md) for recent changes.
 1. A novel representation of lists and its application to the function
    “reverse.” John Hughes. Information Processing Letters. Volume 22, Issue 3.
    1986-03. Pages 141-144.
-  [[PDF](http://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/lists.pdf)]
+  [[PDF](https://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/lists.pdf)]
 
    This is the original source for a representation of lists as first-class functions.
 
@@ -25,20 +25,20 @@ See [ChangeLog.md](./ChangeLog.md) for recent changes.
 
 1. [Difference list](https://en.wikipedia.org/wiki/Difference_list). Wikipedia.
 
-2. [Difference lists](https://wiki.haskell.org/Difference_list). Haskell.org Wiki.
+2. [Difference list](https://wiki.haskell.org/Difference_list). Haskell.org Wiki.
 
-3. [What is a DList?](https://stackoverflow.com/questions/3352418/what-is-a-dlist).
+3. [What is a DList?](https://stackoverflow.com/questions/3352418/what-is-a-dlist)
    Stack Overflow.
 
 ### Blogs and Discussion
 
-1. [Using Difference Lists](http://logicaltypes.blogspot.com/2008/08/using-difference-lists.html).
+1. [Using Difference Lists](https://logicaltypes.blogspot.com/2008/08/using-difference-lists.html).
    Douglas M. Auclair. 2008-08-13.
 
-2. [A Sort of Difference](https://archive.is/20140131124629/http://web.archive.org/web/20080918101635/comonad.com/reader/2008/a-sort-of-difference/).
+2. [A Sort of Difference](https://web.archive.org/web/20080918101635/comonad.com/reader/2008/a-sort-of-difference/).
    Edward Kmett. 2008-09-18.
 
-3. [Reference for technique wanted](http://thread.gmane.org/gmane.comp.lang.haskell.cafe/82827).
+3. [Reference for technique wanted](https://www.mail-archive.com/haskell-cafe@haskell.org/msg83699.html).
    Richard O'Keefe, et al. 2010-10-31.
 
 4. [24 Days of Hackage: dlist](https://ocharles.org.uk/blog/posts/2012-12-14-24-days-of-hackage-dlist.html).
@@ -51,7 +51,7 @@ See [ChangeLog.md](./ChangeLog.md) for recent changes.
    ([On Reddit](https://www.reddit.com/r/haskell/comments/1w5duf/demystifying_dlist/)).
    Tom Ellis. 2014-01-24.
 
-7. [keepEquals with Difference Lists](http://logicaltypes.blogspot.com/2014/06/keepequals-with-difference-lists.html),
+7. [keepEquals with Difference Lists](https://logicaltypes.blogspot.com/2014/06/keepequals-with-difference-lists.html).
    Douglas M. Auclair. 2014-06-21.
 
 ### Books
