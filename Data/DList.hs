@@ -78,7 +78,9 @@ import Control.Applicative(Applicative(..))
 
 #if MIN_VERSION_base(4,9,0)
 import Data.Semigroup (Semigroup(..))
-import Control.Monad.Fail (MonadFail (..))
+#if !MIN_VERSION_base(4,13,0)
+import Control.Monad.Fail (MonadFail(..))
+#endif
 #endif
 
 #ifdef __GLASGOW_HASKELL__
