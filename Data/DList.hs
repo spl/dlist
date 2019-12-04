@@ -200,7 +200,7 @@ list nill consit dl =
     [] -> nill
     (x : xs) -> consit x (fromList xs)
 
--- | /O(n)/. Return the head of the dlist
+-- | /O(1)/. Return the head of the dlist
 head :: DList a -> a
 head = list (error "Data.DList.head: empty dlist") const
 
