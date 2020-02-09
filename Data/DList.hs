@@ -325,6 +325,12 @@ instance Foldable DList where
   {-# INLINE foldr' #-}
 #endif
 
+-- CPP: toList added to Foldable in base-4.8.0.0
+#if MIN_VERSION_base(4,8,0)
+  toList = Data.DList.toList
+  {-# INLINE toList #-}
+#endif
+
 instance NFData a => NFData (DList a) where
   rnf = rnf . toList
   {-# INLINE rnf #-}
