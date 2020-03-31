@@ -52,4 +52,4 @@ test-suite test
                         -- QuickCheck-2.10 is the first version supporting
                         -- base-4.9 (ghc-8) without the Arbitrary NonEmpty
                         -- instance, which we include ourselves.
-                        QuickCheck >= 2.10 && < 2.14
+                        QuickCheck >= 2.10 && < 2.15
