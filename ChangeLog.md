@@ -2,6 +2,13 @@
 Change Log
 ==========
 
+Version 0.8.0.8 (2020-04-02) *World Autism Awareness Day*
+---------------------------------------------------------
+
+#### Package changes
+
+* Change QuickCheck upper bound from 2.14 to 2.15
+
 Version 0.8.0.7 (2019-08-05) *Independence Day in Burkina Faso*
 ---------------------------------------------------------------
 
