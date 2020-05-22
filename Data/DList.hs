@@ -225,6 +225,14 @@ map          :: (a -> b) -> DList a -> DList b
 map f        = foldr (cons . f) empty
 {-# INLINE map #-}
 
+-- | /O(n)/. Intersperses an element over difference lists.
+intersperse :: a -> DList a -> DList a
+intersperse sep = fromList . List.intersperse sep . toList
+
+-- | O/(n)/. Intercalate an element over nested difference lists.
+intercalate :: DList a -> [DList a] -> DList a
+intercalate sep = concat . List.intersperse sep
+
 instance Eq a => Eq (DList a) where
     (==) = (==) `on` toList
 

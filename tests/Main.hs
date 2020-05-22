@@ -89,6 +89,14 @@ prop_map_fusion :: (Int -> Int) -> (a -> Int) -> [a] -> Bool
 prop_map_fusion f g =
   eqWith (List.map f . List.map g) (toList . map f . map g . fromList)
 
+prop_intersperse :: Int -> [Int] -> Bool
+prop_intersperse sep =
+  eqWith (List.intersperse sep) (toList . intersperse sep . fromList)
+
+prop_intercalate :: [Int] -> [[Int]] -> Bool
+prop_intercalate sep =
+  eqWith (List.intercalate sep) (toList . intercalate (fromList sep) . List.map fromList)
+
 prop_show_read :: [Int] -> Bool
 prop_show_read = eqWith id (read . show)
 
@@ -164,6 +172,8 @@ props =
   , ("foldr",             property prop_foldr)
   , ("map",               property prop_map)
   , ("map fusion",        property (prop_map_fusion (+1) (+1)))
+  , ("intersperse",       property prop_intersperse)
+  , ("intercalate",       property prop_intercalate)
   , ("read . show",       property prop_show_read)
   , ("show . read",       property prop_read_show)
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
