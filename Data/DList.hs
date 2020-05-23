@@ -52,6 +52,7 @@ module Data.DList
   , unfoldr
   , foldr
   , map
+  , intercalate
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708 && __GLASGOW_HASKELL__ < 800
   -- * Pattern Synonyms
@@ -224,6 +225,10 @@ foldr f b    = List.foldr f b . toList
 map          :: (a -> b) -> DList a -> DList b
 map f        = foldr (cons . f) empty
 {-# INLINE map #-}
+
+-- | /O(spine)/ Intercalate over difference lists.
+intercalate :: DList a -> [DList a] -> DList a
+intercalate sep = concat . List.intersperse sep
 
 instance Eq a => Eq (DList a) where
     (==) = (==) `on` toList
