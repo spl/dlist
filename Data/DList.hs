@@ -2,6 +2,8 @@
 {-# OPTIONS_HADDOCK prune #-}
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE TypeFamilies #-} -- For the IsList and IsString instances
+{-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE PatternSynonyms #-}
@@ -64,6 +66,7 @@ module Data.DList
 
 import Prelude hiding (concat, foldr, map, head, tail, replicate)
 import qualified Data.List as List
+import Control.Applicative (liftA2)
 import Control.DeepSeq (NFData(..))
 import Control.Monad as M
 import Data.Function (on)
@@ -272,6 +275,13 @@ instance Applicative DList where
 instance Alternative DList where
     empty = empty
     (<|>) = append
+
+instance Traversable DList where
+    traverse :: forall f a b . (Applicative f) => (a -> f b) -> DList a -> f (DList b)
+    traverse f = foldr liftCons (pure empty)
+      where
+        liftCons :: a -> f (DList b) -> f (DList b)
+        liftCons a = liftA2 cons (f a)
 
 instance Monad DList where
   m >>= k
