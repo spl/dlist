@@ -64,6 +64,7 @@ module Data.DList
 
 import Prelude hiding (concat, foldr, map, head, tail, replicate)
 import qualified Data.List as List
+import Control.Applicative (liftA2)
 import Control.DeepSeq (NFData(..))
 import Control.Monad as M
 import Data.Function (on)
@@ -74,6 +75,7 @@ import qualified Data.Foldable as F
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid
 import Data.Foldable (Foldable)
+import Data.Traversable (Traversable(traverse))
 import Control.Applicative(Applicative(..))
 #endif
 
@@ -335,6 +337,12 @@ instance Foldable DList where
   toList = Data.DList.toList
   {-# INLINE toList #-}
 #endif
+
+instance Traversable DList where
+  {-# INLINE traverse #-}
+  traverse f = foldr cons_f (pure empty)
+    where
+      cons_f x = liftA2 cons (f x)
 
 instance NFData a => NFData (DList a) where
   rnf = rnf . toList

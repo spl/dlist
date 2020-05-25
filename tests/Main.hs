@@ -25,6 +25,10 @@ import Data.DList
 
 import OverloadedStrings (testOverloadedStrings)
 
+#if !MIN_VERSION_base(4,8,0)
+import Data.Traversable (Traversable(traverse))
+#endif
+
 #if MIN_VERSION_base(4,9,0)
 -- base-4.9 introduced Semigroup and NonEmpty.
 import Control.Applicative (liftA2) -- Arbitrary1 NonEmpty instance
@@ -105,6 +109,10 @@ prop_read_show x = eqWith id (show . f . read) $ "fromList " ++ show x
 prop_fail :: String -> Bool
 prop_fail str = fail str == (empty :: DList ())
 
+prop_Traversable_traverse :: [Int] -> Bool
+prop_Traversable_traverse xs =
+  (traverse (\x -> [x]) xs :: [[Int]]) == fmap toList (traverse (\x -> [x]) (fromList xs))
+
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 -- | Test that the IsList instance methods compile and work with simple lists
 prop_IsList :: Bool
@@ -153,32 +161,33 @@ prop_Semigroup_stimes n xs =
 
 props :: [(String, Property)]
 props =
-  [ ("model",             property prop_model)
-  , ("empty",             property prop_empty)
-  , ("singleton",         property prop_singleton)
-  , ("cons",              property prop_cons)
-  , ("snoc",              property prop_snoc)
-  , ("append",            property prop_append)
-  , ("concat",            property prop_concat)
-  , ("replicate",         property prop_replicate)
-  , ("head",              property prop_head)
-  , ("tail",              property prop_tail)
-  , ("fail",              property prop_fail)
-  , ("unfoldr",           property prop_unfoldr)
-  , ("foldr",             property prop_foldr)
-  , ("map",               property prop_map)
-  , ("map fusion",        property (prop_map_fusion (+1) (+1)))
-  , ("intercalate",       property prop_intercalate)
-  , ("read . show",       property prop_show_read)
-  , ("show . read",       property prop_read_show)
+  [ ("model",                property prop_model)
+  , ("empty",                property prop_empty)
+  , ("singleton",            property prop_singleton)
+  , ("cons",                 property prop_cons)
+  , ("snoc",                 property prop_snoc)
+  , ("append",               property prop_append)
+  , ("concat",               property prop_concat)
+  , ("replicate",            property prop_replicate)
+  , ("head",                 property prop_head)
+  , ("tail",                 property prop_tail)
+  , ("fail",                 property prop_fail)
+  , ("unfoldr",              property prop_unfoldr)
+  , ("foldr",                property prop_foldr)
+  , ("map",                  property prop_map)
+  , ("map fusion",           property (prop_map_fusion (+1) (+1)))
+  , ("intercalate",          property prop_intercalate)
+  , ("read . show",          property prop_show_read)
+  , ("show . read",          property prop_read_show)
+  , ("Traversable traverse", property prop_Traversable_traverse)
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
-  , ("IsList",            property prop_IsList)
-  , ("patterns",          property prop_patterns)
+  , ("IsList",               property prop_IsList)
+  , ("patterns",             property prop_patterns)
 #endif
 #if MIN_VERSION_base(4,9,0)
-  , ("Semigroup <>",      property prop_Semigroup_append)
-  , ("Semigroup sconcat", property prop_Semigroup_sconcat)
-  , ("Semigroup stimes",  property prop_Semigroup_stimes)
+  , ("Semigroup <>",         property prop_Semigroup_append)
+  , ("Semigroup sconcat",    property prop_Semigroup_sconcat)
+  , ("Semigroup stimes",     property prop_Semigroup_stimes)
 #endif
   ]
 
