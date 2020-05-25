@@ -78,6 +78,7 @@ import qualified Data.Foldable as F
 import Data.Monoid
 import Data.Foldable (Foldable)
 import Control.Applicative(Applicative(..))
+import Data.Traversable (Traversable(..))
 #endif
 
 #if MIN_VERSION_base(4,9,0)
@@ -277,7 +278,7 @@ instance Alternative DList where
     (<|>) = append
 
 instance Traversable DList where
-    traverse :: forall f a b . (Applicative f) => (a -> f b) -> DList a -> f (DList b)
+    traverse :: forall a f b . (Applicative f) => (a -> f b) -> DList a -> f (DList b)
     traverse f = foldr liftCons (pure empty)
       where
         liftCons :: a -> f (DList b) -> f (DList b)
