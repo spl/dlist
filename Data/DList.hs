@@ -2,8 +2,6 @@
 {-# OPTIONS_HADDOCK prune #-}
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE TypeFamilies #-} -- For the IsList and IsString instances
-{-# LANGUAGE InstanceSigs #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE PatternSynonyms #-}
@@ -278,11 +276,7 @@ instance Alternative DList where
     (<|>) = append
 
 instance Traversable DList where
-    traverse :: forall a f b . (Applicative f) => (a -> f b) -> DList a -> f (DList b)
-    traverse f = foldr liftCons (pure empty)
-      where
-        liftCons :: a -> f (DList b) -> f (DList b)
-        liftCons a = liftA2 cons (f a)
+    traverse f = foldr (\a -> liftA2 cons (f a)) (pure empty)
 
 instance Monad DList where
   m >>= k
