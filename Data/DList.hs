@@ -78,7 +78,7 @@ import Control.Applicative(Applicative(..))
 #endif
 
 #if MIN_VERSION_base(4,9,0)
-import Data.Semigroup (Semigroup(..))
+import Data.Semigroup (Semigroup(..), stimesMonoid)
 #if !MIN_VERSION_base(4,13,0)
 import Control.Monad.Fail (MonadFail(..))
 #endif
@@ -361,10 +361,7 @@ instance IsList (DList a) where
 instance Semigroup (DList a) where
   (<>) = append
   {-# INLINE (<>) #-}
-  stimes n x
+  stimes n
     | n < 0     = error "Data.DList.stimes: negative multiplier"
-    | otherwise = rep n
-    where
-      rep 0 = empty
-      rep i = x <> rep (pred i)
+    | otherwise = stimesMonoid n
 #endif
