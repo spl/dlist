@@ -80,7 +80,7 @@ import Control.Applicative(Applicative(..))
 #endif
 
 #if MIN_VERSION_base(4,9,0)
-import Data.Semigroup (Semigroup(..))
+import Data.Semigroup (Semigroup(..), stimesMonoid)
 #if !MIN_VERSION_base(4,13,0)
 import Control.Monad.Fail (MonadFail(..))
 #endif
@@ -369,10 +369,12 @@ instance IsList (DList a) where
 instance Semigroup (DList a) where
   (<>) = append
   {-# INLINE (<>) #-}
-  stimes n x
-    | n < 0     = error "Data.DList.stimes: negative multiplier"
-    | otherwise = rep n
-    where
-      rep 0 = empty
-      rep i = x <> rep (pred i)
+
+  -- We use `compare n 0` since the same expression is used in `stimesMonoid`
+  -- and we should get a lazy advantage. However, we prefer the error to be
+  -- sourced here instead of `stimesMonoid`.
+  stimes n = case compare n 0 of
+    LT -> error "Data.DList.stimes: negative multiplier"
+    _ -> stimesMonoid n
+  {-# INLINE stimes #-}
 #endif
