@@ -69,7 +69,6 @@ jobs:
           cabal sdist
           cabal unpack dist/dlist-*.tar.gz
           cd dlist-*/
-          cabal configure --enable-tests -v2 --ghc-options="-Werror"
-          cabal build
-          cabal test
+          cabal build --enable-tests
+          cabal test --enable-tests
           cabal install
