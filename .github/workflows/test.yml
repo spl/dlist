@@ -19,16 +19,18 @@ jobs:
           - 7.4.2
           - 7.6.3
           - 7.8.4
+        cabal-version:
+          - '1.18'
     steps:
       - name: Install ghc-${{ matrix.ghc-version }}
         run: |
           sudo add-apt-repository -y ppa:hvr/ghc
           sudo apt-get update
-          sudo apt-get install ghc-${{ matrix.ghc-version }} cabal-install-1.18
+          sudo apt-get install ghc-${{ matrix.ghc-version }} cabal-install-${{ matrix.cabal-version }}
       - uses: actions/checkout@v2
       - name: Check, build, test
         run: |
-          export PATH=/opt/ghc/${{ matrix.ghc-version }}/bin:/opt/cabal/1.18/bin:$PATH
+          export PATH=/opt/ghc/${{ matrix.ghc-version }}/bin:/opt/cabal/${{ matrix.cabal-version }}/bin:$PATH
           ghc --version
           cabal --version
           cabal update
@@ -54,6 +56,8 @@ jobs:
           - '8.6'
           - '8.8'
           - '8.10'
+        cabal-version:
+          - latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-haskell@v1
