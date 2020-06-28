@@ -1,0 +1,43 @@
+# This workflow builds and runs tests across different versions of GHC.
+
+name: test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ghc-version:
+          - 7.0.4
+          - 7.2.2
+          - 7.4.2
+          - 7.6.3
+          - 7.8.4
+    steps:
+      - name: Install ghc-${{ matrix.ghc-version }}
+        run: |
+          sudo add-apt-repository -y ppa:hvr/ghc
+          sudo apt-get update
+          sudo apt-get install ghc-${{ matrix.ghc-version }}
+          sudo apt-get install cabal-install-1.18
+          export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
+      - uses: actions/checkout@v2
+      - name: Check, build, test
+        run: |
+          cabal update
+          cabal install --only-dependencies --enable-tests
+          cabal check
+          cabal sdist
+          export VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
+          cabal unpack dist/dlist-$VERSION.tar.gz
+          cd dlist-$VERSION
+          cabal configure --enable-tests -v2 --ghc-options="-Werror"
+          cabal build
+          cabal test
+          cabal install --force-reinstalls
