@@ -9,7 +9,7 @@ on:
   pull_request:
 
 jobs:
-  old:
+  old-style:
     runs-on: ubuntu-16.04
     strategy:
       matrix:
@@ -42,7 +42,7 @@ jobs:
           cabal test
           cabal install --force-reinstalls
 
-  new:
+  new-style:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -64,11 +64,8 @@ jobs:
           ghc --version
           cabal --version
           cabal update
-          cabal install --only-dependencies --enable-tests
           cabal check
           cabal sdist
-          cabal unpack dist/dlist-*.tar.gz
+          cabal unpack dist-newstyle/sdist/dlist-*.tar.gz
           cd dlist-*/
-          cabal build --enable-tests
-          cabal test --enable-tests
-          cabal install
+          cabal test
