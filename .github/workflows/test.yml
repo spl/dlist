@@ -35,11 +35,8 @@ jobs:
           cabal install --only-dependencies --enable-tests
           cabal check
           cabal sdist
-          ls dist
-          #git describe --tags --abbrev=0
-          export VERSION=$(cd $GITHUB_WORKSPACE; git describe --tags --abbrev=0 | sed 's/v//')
-          cabal unpack dist/dlist-$VERSION.tar.gz
-          cd dlist-$VERSION
+          cabal unpack dist/dlist-*.tar.gz
+          cd dlist-*/
           cabal configure --enable-tests -v2 --ghc-options="-Werror"
           cabal build
           cabal test
