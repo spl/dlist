@@ -9,7 +9,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  old:
     runs-on: ubuntu-16.04
     strategy:
       matrix:
@@ -41,3 +41,35 @@ jobs:
           cabal build
           cabal test
           cabal install --force-reinstalls
+
+  new:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ghc-version:
+          - '7.10'
+          - '8.0'
+          - '8.2'
+          - '8.4'
+          - '8.6'
+          - '8.8'
+          - '8.10'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-haskell@v1
+        with:
+          ghc-version: ${{ matrix.ghc-version }}
+      - name: Check, build, test
+        run: |
+          ghc --version
+          cabal --version
+          cabal update
+          cabal install --only-dependencies --enable-tests
+          cabal check
+          cabal sdist
+          cabal unpack dist/dlist-*.tar.gz
+          cd dlist-*/
+          cabal configure --enable-tests -v2 --ghc-options="-Werror"
+          cabal build
+          cabal test
+          cabal install
