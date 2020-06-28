@@ -34,11 +34,11 @@ jobs:
           ghc --version
           cabal --version
           cabal update
-          cabal install --only-dependencies --enable-tests
-          cabal check
           cabal sdist
           cabal unpack dist/dlist-*.tar.gz
           cd dlist-*/
+          cabal check
+          cabal install --only-dependencies --enable-tests
           cabal configure --enable-tests -v2 --ghc-options="-Werror"
           cabal build
           cabal test
@@ -68,8 +68,8 @@ jobs:
           ghc --version
           cabal --version
           cabal update
-          cabal check
           cabal sdist
           cabal unpack dist-newstyle/sdist/dlist-*.tar.gz
           cd dlist-*/
+          cabal check
           cabal test
