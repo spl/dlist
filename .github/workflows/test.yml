@@ -25,10 +25,10 @@ jobs:
           sudo add-apt-repository -y ppa:hvr/ghc
           sudo apt-get update
           sudo apt-get install ghc-${{ matrix.ghc-version }} cabal-install-1.18
-          export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
       - uses: actions/checkout@v2
       - name: Check, build, test
         run: |
+          export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
           cabal update
           cabal install --only-dependencies --enable-tests
           cabal check
