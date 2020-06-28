@@ -37,7 +37,7 @@ jobs:
           cabal sdist
           ls dist
           git describe --tags --abbrev=0
-          export VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
+          export VERSION=$(cd $GITHUB_WORKSPACE; git describe --tags --abbrev=0 | sed 's/v//')
           cabal unpack dist/dlist-$VERSION.tar.gz
           cd dlist-$VERSION
           cabal configure --enable-tests -v2 --ghc-options="-Werror"
