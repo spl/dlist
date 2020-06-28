@@ -28,7 +28,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Check, build, test
         run: |
-          export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
+          export PATH=/opt/ghc/${{ matrix.ghc-version }}/bin:/opt/cabal/1.18/bin:$PATH
+          ghc --version
+          cabal --version
           cabal update
           cabal install --only-dependencies --enable-tests
           cabal check
