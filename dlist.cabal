@@ -13,7 +13,7 @@ maintainer:             Sean Leather <sean.leather@gmail.com>
 copyright:              2006-2009 Don Stewart, 2013-2020 Sean Leather, contributors
 homepage:               https://github.com/spl/dlist
 bug-reports:            https://github.com/spl/dlist/issues
-extra-source-files:     README.md,
+extra-source-files:     readme.md,
                         ChangeLog.md
 build-type:             Simple
 cabal-version:          >= 1.9.2
