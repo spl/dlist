@@ -61,5 +61,5 @@ See [ChangeLog.md](./ChangeLog.md) for recent changes.
 
 ## License
 
-[BSD 3-Clause "New" or "Revised" License](./license.md) © Don Stewart, Sean
+[BSD 3-Clause “New” or “Revised” License](./license.md) © Don Stewart, Sean
 Leather, contributors
