@@ -58,3 +58,8 @@ See [ChangeLog.md](./ChangeLog.md) for recent changes.
 
 1. [Chapter 13. Data Structures](http://book.realworldhaskell.org/read/data-structures.html).
    Real World Haskell. 2008-12-05.
+
+## License
+
+[BSD 3-Clause "New" or "Revised" License](./license.md) © Don Stewart, Sean
+Leather, contributors
