@@ -1,0 +1,76 @@
+# This workflow builds and runs tests across different versions of GHC.
+
+name: test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  old-style:
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        ghc-version:
+          - '7.0.4'
+          - '7.2.2'
+          - '7.4.2'
+          - '7.6.3'
+          - '7.8.4'
+        cabal-version:
+          - '1.18'
+    steps:
+      - name: Install ghc-${{ matrix.ghc-version }}
+        run: |
+          sudo add-apt-repository -y ppa:hvr/ghc
+          sudo apt-get update
+          sudo apt-get install ghc-${{ matrix.ghc-version }} cabal-install-${{ matrix.cabal-version }}
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: |
+          export PATH=/opt/ghc/${{ matrix.ghc-version }}/bin:/opt/cabal/${{ matrix.cabal-version }}/bin:$PATH
+          ghc --version
+          cabal --version
+          cabal update
+          cabal sdist
+          cabal unpack dist/dlist-*.tar.gz
+          cd dlist-*/
+          cabal check
+          cabal install --only-dependencies --enable-tests
+          cabal configure --enable-tests -v2 --ghc-options="-Werror"
+          cabal build
+          cabal test
+          cabal install --force-reinstalls
+
+  new-style:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ghc-version:
+          - '7.10'
+          - '8.0'
+          - '8.2'
+          - '8.4'
+          - '8.6'
+          - '8.8'
+          - '8.10'
+        cabal-version:
+          - latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install ghc-${{ matrix.ghc-version }}
+        uses: actions/setup-haskell@v1
+        with:
+          ghc-version: ${{ matrix.ghc-version }}
+      - name: Run tests
+        run: |
+          ghc --version
+          cabal --version
+          cabal update
+          cabal sdist
+          cabal unpack dist-newstyle/sdist/dlist-*.tar.gz
+          cd dlist-*/
+          cabal check
+          cabal test
