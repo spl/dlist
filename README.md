@@ -1,8 +1,8 @@
 # Difference Lists in Haskell
 
+[![test-badge](https://github.com/spl/dlist/workflows/test/badge.svg)][test]
 [![Hackage](https://img.shields.io/hackage/v/dlist.svg?maxAge=3600)](https://hackage.haskell.org/package/dlist "dlist on Hackage")
 [![Hackage dependencies](https://img.shields.io/hackage-deps/v/dlist.svg?maxAge=3600)](http://packdeps.haskellers.com/feed?needle=dlist "dlist updated Hackage dependencies")
-[![Travis CI](https://img.shields.io/travis/spl/dlist.svg?maxAge=3600)](https://travis-ci.org/spl/dlist "dlist build history on Travis CI")
 
 ## Summary
 
@@ -63,3 +63,6 @@ See [ChangeLog.md](./ChangeLog.md) for recent changes.
 
 [BSD 3-Clause “New” or “Revised” License](./license.md) © Don Stewart, Sean
 Leather, contributors
+
+[test-badge]: https://github.com/spl/dlist/workflows/test/badge.svg
+[test]: https://github.com/spl/dlist/actions?query=workflow%3Atest
