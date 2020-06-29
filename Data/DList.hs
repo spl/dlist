@@ -14,8 +14,8 @@
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.DList
--- Copyright   :  (c) 2006-2009 Don Stewart, 2013-2019 Sean Leather
--- License     :  See LICENSE file
+-- Copyright   :  (c) 2006-2009 Don Stewart, 2013-2020 Sean Leather
+-- License     :  See license.md file
 --
 -- Maintainer  :  sean.leather@gmail.com
 -- Stability   :  stable
