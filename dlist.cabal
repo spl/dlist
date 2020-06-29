@@ -7,10 +7,10 @@ description:
   Writer monad), where list append quickly becomes too expensive.
 category:               Data
 license:                BSD3
-license-file:           LICENSE
+license-file:           license.md
 author:                 Don Stewart
 maintainer:             Sean Leather <sean.leather@gmail.com>
-copyright:              2006-2009 Don Stewart, 2013-2019 Sean Leather
+copyright:              2006-2009 Don Stewart, 2013-2020 Sean Leather, contributors
 homepage:               https://github.com/spl/dlist
 bug-reports:            https://github.com/spl/dlist/issues
 extra-source-files:     README.md,
