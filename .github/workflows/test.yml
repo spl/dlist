@@ -14,11 +14,11 @@ jobs:
     strategy:
       matrix:
         ghc-version:
-          - 7.0.4
-          - 7.2.2
-          - 7.4.2
-          - 7.6.3
-          - 7.8.4
+          - '7.0.4'
+          - '7.2.2'
+          - '7.4.2'
+          - '7.6.3'
+          - '7.8.4'
         cabal-version:
           - '1.18'
     steps:
@@ -28,7 +28,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install ghc-${{ matrix.ghc-version }} cabal-install-${{ matrix.cabal-version }}
       - uses: actions/checkout@v2
-      - name: Check, build, test
+      - name: Run tests
         run: |
           export PATH=/opt/ghc/${{ matrix.ghc-version }}/bin:/opt/cabal/${{ matrix.cabal-version }}/bin:$PATH
           ghc --version
@@ -60,10 +60,11 @@ jobs:
           - latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-haskell@v1
+      - name: Install ghc-${{ matrix.ghc-version }}
+        uses: actions/setup-haskell@v1
         with:
           ghc-version: ${{ matrix.ghc-version }}
-      - name: Check, build, test
+      - name: Run tests
         run: |
           ghc --version
           cabal --version
