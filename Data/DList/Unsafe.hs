@@ -60,7 +60,7 @@ import Data.Function (on)
 import qualified Data.List as List
 import Data.String (IsString (..))
 import qualified Data.Traversable as Traversable
-import qualified GHC.Exts as GhcExts
+import qualified GHC.Exts
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
 
 -----------------------------------------------------------------------------
@@ -343,7 +343,7 @@ instance a ~ Char => IsString (DList a) where
   fromString = fromList
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
-instance GhcExts.IsList (DList a) where
+instance GHC.Exts.IsList (DList a) where
   type Item (DList a) = a
 
   {-# INLINE fromList #-}
