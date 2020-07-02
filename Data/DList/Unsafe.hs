@@ -273,7 +273,7 @@ instance Monad DList where
     foldr (append . k) empty m
 
   {-# INLINE return #-}
-  return = pure
+  return = Applicative.pure
 
 #if !MIN_VERSION_base(4,13,0)
   {-# INLINE fail #-}
@@ -295,7 +295,7 @@ instance MonadPlus DList where
 
 instance Foldable.Foldable DList where
   {-# INLINE fold #-}
-  fold = mconcat . toList
+  fold = Applicative.mconcat . toList
 
   {-# INLINE foldMap #-}
   foldMap f = Foldable.foldMap f . toList
@@ -330,7 +330,7 @@ instance Foldable.Foldable DList where
 
 instance Traversable.Traversable DList where
   {-# INLINE traverse #-}
-  traverse f = foldr cons_f (pure empty)
+  traverse f = foldr cons_f (Applicative.pure empty)
     where
       cons_f x = Applicative.liftA2 cons (f x)
 
