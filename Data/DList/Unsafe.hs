@@ -1,6 +1,15 @@
+-- Options passed to GHC
+{-# OPTIONS_GHC -O2 #-}
+-- Options passed to Haddock
+{-# OPTIONS_HADDOCK hide #-}
+
+-----------------------------------------------------------------------------
+
 {-# LANGUAGE CPP #-}
+
 -- For the IsList and IsString instances
 {-# LANGUAGE TypeFamilies #-}
+
 -- GHC >= 7.8
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE PatternSynonyms #-}
@@ -10,10 +19,6 @@
 {-# LANGUAGE Unsafe #-}
 {-# LANGUAGE ViewPatterns #-}
 #endif
--- Options for GHC
-{-# OPTIONS_GHC -O2 #-}
--- Options for Haddock
-{-# OPTIONS_HADDOCK hide #-}
 
 -----------------------------------------------------------------------------
 
@@ -67,6 +72,8 @@ import Data.Function (on)
 import qualified Data.List as List
 import Data.String (IsString (..))
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
+
+-----------------------------------------------------------------------------
 
 -- | A difference list is a function that, given a list, returns the original
 -- contents of the difference list prepended to the given list.
