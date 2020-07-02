@@ -6,22 +6,22 @@
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE PatternSynonyms #-}
--- Mark this module as unsafe because we export 'UnsafeDList' and
--- 'unsafeFromDList', which allow someone to break the invariant implied by the
--- 'DList' newtype.
+-- The 'Data.DList.Unsafe' module exports 'UnsafeDList' and 'unsafeFromDList',
+-- which allow breaking the invariant of the 'DList' newtype. Therefore, we mark
+-- 'Data.DList.Unsafe' as unsafe.
 {-# LANGUAGE Unsafe #-}
 {-# LANGUAGE ViewPatterns #-}
 #endif
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.DList
--- Copyright   :  (c) 2006-2009 Don Stewart, 2013-2020 Sean Leather
--- License     :  See license.md file
+-- Module: Data.DList.Unsafe
+-- Copyright: © 2006-2009 Don Stewart, 2013-2020 Sean Leather
+-- License: BSD-3-Clause
 --
--- Maintainer  :  sean.leather@gmail.com
--- Stability   :  stable
--- Portability :  portable
+-- Maintainer: sean.leather@gmail.com
+-- Stability: stable
+-- Portability: portable
 --
 -- Difference lists: a data structure for /O(1)/ append on lists.
 --
@@ -93,13 +93,13 @@ import qualified Control.Applicative (empty)
 newtype DList a = UnsafeDList { unsafeFromDList :: [a] -> [a] }
 
 -- | Convert a list to a dlist
-fromList    :: [a] -> DList a
-fromList    = UnsafeDList . (++)
+fromList :: [a] -> DList a
+fromList = UnsafeDList . (++)
 {-# INLINE fromList #-}
 
 -- | Convert a dlist to a list
-toList      :: DList a -> [a]
-toList      = ($[]) . unsafeFromDList
+toList :: DList a -> [a]
+toList = ($[]) . unsafeFromDList
 {-# INLINE toList #-}
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
@@ -121,39 +121,39 @@ pattern Cons x xs <- (toList -> x:xs)
 -- | Apply a dlist to a list to get the underlying list with an extension
 --
 -- > apply (fromList xs) ys = xs ++ ys
-apply       :: DList a -> [a] -> [a]
-apply       = unsafeFromDList
+apply :: DList a -> [a] -> [a]
+apply = unsafeFromDList
 
 -- | Create a dlist containing no elements
-empty       :: DList a
-empty       = UnsafeDList id
+empty :: DList a
+empty = UnsafeDList id
 {-# INLINE empty #-}
 
 -- | Create dlist with a single element
-singleton   :: a -> DList a
-singleton   = UnsafeDList . (:)
+singleton :: a -> DList a
+singleton = UnsafeDList . (:)
 {-# INLINE singleton #-}
 
 -- | /O(1)/. Prepend a single element to a dlist
 infixr `cons`
-cons        :: a -> DList a -> DList a
-cons x xs   = UnsafeDList ((x:) . unsafeFromDList xs)
+cons :: a -> DList a -> DList a
+cons x xs = UnsafeDList ((x:) . unsafeFromDList xs)
 {-# INLINE cons #-}
 
 -- | /O(1)/. Append a single element to a dlist
 infixl `snoc`
-snoc        :: DList a -> a -> DList a
-snoc xs x   = UnsafeDList (unsafeFromDList xs . (x:))
+snoc :: DList a -> a -> DList a
+snoc xs x = UnsafeDList (unsafeFromDList xs . (x:))
 {-# INLINE snoc #-}
 
 -- | /O(1)/. Append dlists
-append       :: DList a -> DList a -> DList a
+append :: DList a -> DList a -> DList a
 append xs ys = UnsafeDList (unsafeFromDList xs . unsafeFromDList ys)
 {-# INLINE append #-}
 
 -- | /O(spine)/. Concatenate dlists
-concat       :: [DList a] -> DList a
-concat       = List.foldr append empty
+concat :: [DList a] -> DList a
+concat = List.foldr append empty
 {-# INLINE concat #-}
 
 -- | /O(n)/. Create a dlist of the given number of elements
@@ -186,13 +186,13 @@ unfoldr pf b =
     Just (a, b') -> cons a (unfoldr pf b')
 
 -- | /O(n)/. Foldr over difference lists
-foldr        :: (a -> b -> b) -> b -> DList a -> b
-foldr f b    = List.foldr f b . toList
+foldr :: (a -> b -> b) -> b -> DList a -> b
+foldr f b = List.foldr f b . toList
 {-# INLINE foldr #-}
 
 -- | /O(n)/. Map over difference lists.
-map          :: (a -> b) -> DList a -> DList b
-map f        = foldr (cons . f) empty
+map :: (a -> b) -> DList a -> DList b
+map f = foldr (cons . f) empty
 {-# INLINE map #-}
 
 -- | /O(spine)/. Intercalate over difference lists
@@ -226,7 +226,7 @@ instance Show a => Show (DList a) where
     showString "fromList " . shows (toList dl)
 
 instance Monoid (DList a) where
-    mempty  = empty
+    mempty = empty
     mappend = append
 
 instance Functor DList where
@@ -234,7 +234,7 @@ instance Functor DList where
     {-# INLINE fmap #-}
 
 instance Applicative DList where
-    pure  = singleton
+    pure = singleton
     {-# INLINE pure #-}
     (<*>) = ap
 
@@ -252,11 +252,11 @@ instance Monad DList where
     = foldr (append . k) empty m
   {-# INLINE (>>=) #-}
 
-  return   = pure
+  return = pure
   {-# INLINE return #-}
 
 #if !MIN_VERSION_base(4,13,0)
-  fail _   = empty
+  fail _ = empty
   {-# INLINE fail #-}
 #endif
 
@@ -267,35 +267,35 @@ instance MonadFail DList where
 #endif
 
 instance MonadPlus DList where
-  mzero    = empty
-  mplus    = append
+  mzero = empty
+  mplus = append
 
 instance Foldable DList where
-  fold        = mconcat . toList
+  fold = mconcat . toList
   {-# INLINE fold #-}
 
-  foldMap f   = F.foldMap f . toList
+  foldMap f = F.foldMap f . toList
   {-# INLINE foldMap #-}
 
-  foldr f x   = List.foldr f x . toList
+  foldr f x = List.foldr f x . toList
   {-# INLINE foldr #-}
 
-  foldl f x   = List.foldl f x . toList
+  foldl f x = List.foldl f x . toList
   {-# INLINE foldl #-}
 
-  foldr1 f    = List.foldr1 f . toList
+  foldr1 f = List.foldr1 f . toList
   {-# INLINE foldr1 #-}
 
-  foldl1 f    = List.foldl1 f . toList
+  foldl1 f = List.foldl1 f . toList
   {-# INLINE foldl1 #-}
 
 -- CPP: foldl', foldr' added to Foldable in 7.6.1
 -- http://www.haskell.org/ghc/docs/7.6.1/html/users_guide/release-7-6-1.html
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 706
-  foldl' f x  = List.foldl' f x . toList
+  foldl' f x = List.foldl' f x . toList
   {-# INLINE foldl' #-}
 
-  foldr' f x  = F.foldr' f x . toList
+  foldr' f x = F.foldr' f x . toList
   {-# INLINE foldr' #-}
 #endif
 

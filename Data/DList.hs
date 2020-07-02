@@ -3,20 +3,22 @@
 {-# LANGUAGE CPP #-}
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
--- Mark this module as trustworthy even though we import 'IsList' from GHC.Exts,
--- which is marked unsafe. 'IsList' is safe.
+-- The 'Data.DList' module exports only the safe aspects of 'Data.DList.Unsafe'.
+-- Specifically, it does not export the 'DList' constructor 'UnsafeDList' or
+-- record label 'unsafeFromDList'. Therefore, we mark 'Data.DList' as
+-- trustworthy.
 {-# LANGUAGE Trustworthy #-}
 #endif
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.DList
--- Copyright   :  (c) 2006-2009 Don Stewart, 2013-2020 Sean Leather
--- License     :  See license.md file
+-- Module: Data.DList
+-- Copyright: © 2006-2009 Don Stewart, 2013-2020 Sean Leather
+-- License: BSD-3-Clause
 --
--- Maintainer  :  sean.leather@gmail.com
--- Stability   :  stable
--- Portability :  portable
+-- Maintainer: sean.leather@gmail.com
+-- Stability: stable
+-- Portability: portable
 --
 -- Difference lists: a data structure for /O(1)/ append on lists.
 --
@@ -61,6 +63,6 @@ module Data.DList
 
 import Data.DList.Unsafe
 
--- This module exists only to export names from 'Data.DList.Unsafe'. Some
--- conflict with 'Prelude', so we hide all names imported from 'Prelude'.
+-- The 'Data.DList' module exists only to export names from 'Data.DList.Unsafe'.
+-- Some names conflict with 'Prelude', so we hide all imports from 'Prelude'.
 import Prelude ()
