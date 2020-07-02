@@ -3,6 +3,7 @@
 {-# LANGUAGE CPP #-}
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+{-# LANGUAGE PatternSynonyms #-}
 -- The 'Data.DList' module exports only the safe aspects of 'Data.DList.Unsafe'.
 -- Specifically, it does not export the 'DList' constructor 'UnsafeDList' or
 -- record label 'unsafeFromDList'. Therefore, we mark 'Data.DList' as
