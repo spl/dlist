@@ -1,9 +1,7 @@
-{-# OPTIONS_GHC -O2 #-}
-{-# OPTIONS_HADDOCK hide #-}
-
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE TypeFamilies #-} -- For the IsList and IsString instances
-
+-- For the IsList and IsString instances
+{-# LANGUAGE TypeFamilies #-}
+-- GHC >= 7.8
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE PatternSynonyms #-}
 -- The 'Data.DList.Unsafe' module exports 'UnsafeDList' and 'unsafeFromDList',
@@ -12,8 +10,13 @@
 {-# LANGUAGE Unsafe #-}
 {-# LANGUAGE ViewPatterns #-}
 #endif
+-- Options for GHC
+{-# OPTIONS_GHC -O2 #-}
+-- Options for Haddock
+{-# OPTIONS_HADDOCK hide #-}
 
 -----------------------------------------------------------------------------
+
 -- |
 -- Module: Data.DList.Unsafe
 -- Copyright: © 2006-2009 Don Stewart, 2013-2020 Sean Leather
@@ -24,20 +27,9 @@
 -- Portability: portable
 --
 -- Difference lists: a data structure for /O(1)/ append on lists.
---
------------------------------------------------------------------------------
-
 module Data.DList.Unsafe where
 
-import Prelude hiding (concat, foldr, map, head, tail, replicate)
-import qualified Data.List as List
-import Control.Applicative (liftA2)
-import Control.DeepSeq (NFData(..))
-import Control.Monad as M
-import Data.Function (on)
-import Data.String (IsString(..))
-
-import qualified Data.Foldable as F
+-----------------------------------------------------------------------------
 
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid
@@ -66,8 +58,15 @@ import qualified GHC.Exts (IsList(Item, fromList, toList))
 
 #endif
 
-import Control.Applicative(Alternative, (<|>))
+import Control.Applicative (Alternative, liftA2, (<|>))
 import qualified Control.Applicative (empty)
+import Control.DeepSeq (NFData (..))
+import Control.Monad as Monad
+import qualified Data.Foldable as Foldable
+import Data.Function (on)
+import qualified Data.List as List
+import Data.String (IsString (..))
+import Prelude hiding (concat, foldr, head, map, replicate, tail)
 
 -- | A difference list is a function that, given a list, returns the original
 -- contents of the difference list prepended to the given list.
@@ -89,8 +88,7 @@ import qualified Control.Applicative (empty)
 -- >     where
 -- >       flatten (Leaf x)     = tell (singleton x)
 -- >       flatten (Branch x y) = flatten x >> flatten y
---
-newtype DList a = UnsafeDList { unsafeFromDList :: [a] -> [a] }
+newtype DList a = UnsafeDList {unsafeFromDList :: [a] -> [a]}
 
 -- | Convert a list to a dlist
 {-# INLINE fromList #-}
@@ -100,7 +98,7 @@ fromList = UnsafeDList . (++)
 -- | Convert a dlist to a list
 {-# INLINE toList #-}
 toList :: DList a -> [a]
-toList = ($[]) . unsafeFromDList
+toList = ($ []) . unsafeFromDList
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 
@@ -116,7 +114,7 @@ pattern Nil <- (toList -> [])
 #if __GLASGOW_HASKELL__ >= 710
 pattern Cons :: a -> [a] -> DList a
 #endif
-pattern Cons x xs <- (toList -> x:xs)
+pattern Cons x xs <- (toList -> x : xs)
 
 #endif
 
@@ -139,15 +137,19 @@ singleton = UnsafeDList . (:)
 
 -- | /O(1)/. Prepend a single element to a dlist
 {-# INLINE cons #-}
-infixr `cons`
+
+infixr 9 `cons`
+
 cons :: a -> DList a -> DList a
-cons x xs = UnsafeDList ((x:) . unsafeFromDList xs)
+cons x xs = UnsafeDList ((x :) . unsafeFromDList xs)
 
 -- | /O(1)/. Append a single element to a dlist
 {-# INLINE snoc #-}
-infixl `snoc`
+
+infixl 9 `snoc`
+
 snoc :: DList a -> a -> DList a
-snoc xs x = UnsafeDList (unsafeFromDList xs . (x:))
+snoc xs x = UnsafeDList (unsafeFromDList xs . (x :))
 
 -- | /O(1)/. Append dlists
 {-# INLINE append #-}
@@ -162,9 +164,11 @@ concat = List.foldr append empty
 -- | /O(n)/. Create a dlist of the given number of elements
 {-# INLINE replicate #-}
 replicate :: Int -> a -> DList a
-replicate n x = UnsafeDList $ \xs -> let go m | m <= 0    = xs
-                                              | otherwise = x : go (m-1)
-                            in go n
+replicate n x = UnsafeDList $ \xs ->
+  let go m
+        | m <= 0 = xs
+        | otherwise = x : go (m -1)
+   in go n
 
 -- | /O(n)/. List elimination for dlists
 list :: b -> (a -> DList a -> b) -> DList a -> b
@@ -187,7 +191,7 @@ tail = list (error "Data.DList.tail: empty dlist") (flip const)
 unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
 unfoldr pf b =
   case pf b of
-    Nothing     -> empty
+    Nothing -> empty
     Just (a, b') -> cons a (unfoldr pf b')
 
 -- | /O(n)/. Foldr over difference lists
@@ -206,10 +210,10 @@ intercalate :: DList a -> [DList a] -> DList a
 intercalate sep = concat . List.intersperse sep
 
 instance Eq a => Eq (DList a) where
-    (==) = (==) `on` toList
+  (==) = (==) `on` toList
 
 instance Ord a => Ord (DList a) where
-    compare = compare `on` toList
+  compare = compare `on` toList
 
 -- The Read and Show instances were adapted from Data.Sequence.
 
@@ -228,8 +232,9 @@ instance Read a => Read (DList a) where
 #endif
 
 instance Show a => Show (DList a) where
-  showsPrec p dl = showParen (p > 10) $
-    showString "fromList " . shows (toList dl)
+  showsPrec p dl =
+    showParen (p > 10) $
+      showString "fromList " . shows (toList dl)
 
 instance Monoid (DList a) where
   {-# INLINE mempty #-}
@@ -258,13 +263,13 @@ instance Alternative DList where
 
 instance Monad DList where
   {-# INLINE (>>=) #-}
-  m >>= k
+  m >>= k =
     -- = concat (toList (fmap k m))
     -- = (concat . toList . fromList . List.map k . toList) m
     -- = concat . List.map k . toList $ m
     -- = List.foldr append empty . List.map k . toList $ m
     -- = List.foldr (append . k) empty . toList $ m
-    = foldr (append . k) empty m
+    foldr (append . k) empty m
 
   {-# INLINE return #-}
   return = pure
@@ -292,7 +297,7 @@ instance Foldable DList where
   fold = mconcat . toList
 
   {-# INLINE foldMap #-}
-  foldMap f = F.foldMap f . toList
+  foldMap f = Foldable.foldMap f . toList
 
   {-# INLINE foldr #-}
   foldr f x = List.foldr f x . toList
@@ -313,7 +318,7 @@ instance Foldable DList where
   foldl' f x = List.foldl' f x . toList
 
   {-# INLINE foldr' #-}
-  foldr' f x = F.foldr' f x . toList
+  foldr' f x = Foldable.foldr' f x . toList
 #endif
 
 -- CPP: toList added to Foldable in base-4.8.0.0
