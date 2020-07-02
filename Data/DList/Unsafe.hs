@@ -295,7 +295,7 @@ instance MonadPlus DList where
 
 instance Foldable.Foldable DList where
   {-# INLINE fold #-}
-  fold = Applicative.mconcat . toList
+  fold = Monoid.mconcat . toList
 
   {-# INLINE foldMap #-}
   foldMap f = Foldable.foldMap f . toList
