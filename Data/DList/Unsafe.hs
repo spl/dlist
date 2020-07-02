@@ -48,6 +48,10 @@ import Control.Monad.Fail (MonadFail(..))
 import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
                   readListPrecDefault)
 
+#if __GLASGOW_HASKELL__ >= 708
+-- Make IsList type and methods visible for instance.
+import qualified GHC.Exts
+#endif
 
 #endif
 
@@ -60,7 +64,6 @@ import Data.Function (on)
 import qualified Data.List as List
 import Data.String (IsString (..))
 import qualified Data.Traversable as Traversable
-import qualified GHC.Exts
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
 
 -----------------------------------------------------------------------------
