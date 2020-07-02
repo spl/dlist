@@ -93,16 +93,17 @@ import qualified Control.Applicative (empty)
 newtype DList a = UnsafeDList { unsafeFromDList :: [a] -> [a] }
 
 -- | Convert a list to a dlist
+{-# INLINE fromList #-}
 fromList :: [a] -> DList a
 fromList = UnsafeDList . (++)
-{-# INLINE fromList #-}
 
 -- | Convert a dlist to a list
+{-# INLINE toList #-}
 toList :: DList a -> [a]
 toList = ($[]) . unsafeFromDList
-{-# INLINE toList #-}
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+
 -- | A unidirectional pattern synonym using 'toList' in a view pattern and
 -- matching on @[]@
 #if __GLASGOW_HASKELL__ >= 710
@@ -116,52 +117,54 @@ pattern Nil <- (toList -> [])
 pattern Cons :: a -> [a] -> DList a
 #endif
 pattern Cons x xs <- (toList -> x:xs)
+
 #endif
 
 -- | Apply a dlist to a list to get the underlying list with an extension
 --
 -- > apply (fromList xs) ys = xs ++ ys
+{-# INLINE apply #-}
 apply :: DList a -> [a] -> [a]
 apply = unsafeFromDList
 
 -- | Create a dlist containing no elements
+{-# INLINE empty #-}
 empty :: DList a
 empty = UnsafeDList id
-{-# INLINE empty #-}
 
 -- | Create dlist with a single element
+{-# INLINE singleton #-}
 singleton :: a -> DList a
 singleton = UnsafeDList . (:)
-{-# INLINE singleton #-}
 
 -- | /O(1)/. Prepend a single element to a dlist
+{-# INLINE cons #-}
 infixr `cons`
 cons :: a -> DList a -> DList a
 cons x xs = UnsafeDList ((x:) . unsafeFromDList xs)
-{-# INLINE cons #-}
 
 -- | /O(1)/. Append a single element to a dlist
+{-# INLINE snoc #-}
 infixl `snoc`
 snoc :: DList a -> a -> DList a
 snoc xs x = UnsafeDList (unsafeFromDList xs . (x:))
-{-# INLINE snoc #-}
 
 -- | /O(1)/. Append dlists
+{-# INLINE append #-}
 append :: DList a -> DList a -> DList a
 append xs ys = UnsafeDList (unsafeFromDList xs . unsafeFromDList ys)
-{-# INLINE append #-}
 
 -- | /O(spine)/. Concatenate dlists
+{-# INLINE concat #-}
 concat :: [DList a] -> DList a
 concat = List.foldr append empty
-{-# INLINE concat #-}
 
 -- | /O(n)/. Create a dlist of the given number of elements
+{-# INLINE replicate #-}
 replicate :: Int -> a -> DList a
 replicate n x = UnsafeDList $ \xs -> let go m | m <= 0    = xs
                                               | otherwise = x : go (m-1)
                             in go n
-{-# INLINE replicate #-}
 
 -- | /O(n)/. List elimination for dlists
 list :: b -> (a -> DList a -> b) -> DList a -> b
@@ -171,10 +174,12 @@ list nill consit dl =
     (x : xs) -> consit x (fromList xs)
 
 -- | /O(1)/. Return the head of the dlist
+{-# INLINE head #-}
 head :: DList a -> a
 head = list (error "Data.DList.head: empty dlist") const
 
 -- | /O(n)/. Return the tail of the dlist
+{-# INLINE tail #-}
 tail :: DList a -> DList a
 tail = list (error "Data.DList.tail: empty dlist") (flip const)
 
@@ -186,16 +191,17 @@ unfoldr pf b =
     Just (a, b') -> cons a (unfoldr pf b')
 
 -- | /O(n)/. Foldr over difference lists
+{-# INLINE foldr #-}
 foldr :: (a -> b -> b) -> b -> DList a -> b
 foldr f b = List.foldr f b . toList
-{-# INLINE foldr #-}
 
 -- | /O(n)/. Map over difference lists.
+{-# INLINE map #-}
 map :: (a -> b) -> DList a -> DList b
 map f = foldr (cons . f) empty
-{-# INLINE map #-}
 
 -- | /O(spine)/. Intercalate over difference lists
+{-# INLINE intercalate #-}
 intercalate :: DList a -> [DList a] -> DList a
 intercalate sep = concat . List.intersperse sep
 
@@ -226,23 +232,32 @@ instance Show a => Show (DList a) where
     showString "fromList " . shows (toList dl)
 
 instance Monoid (DList a) where
-    mempty = empty
-    mappend = append
+  {-# INLINE mempty #-}
+  mempty = empty
+
+  {-# INLINE mappend #-}
+  mappend = append
 
 instance Functor DList where
-    fmap = map
-    {-# INLINE fmap #-}
+  {-# INLINE fmap #-}
+  fmap = map
 
 instance Applicative DList where
-    pure = singleton
-    {-# INLINE pure #-}
-    (<*>) = ap
+  {-# INLINE pure #-}
+  pure = singleton
+
+  {-# INLINE (<*>) #-}
+  (<*>) = ap
 
 instance Alternative DList where
-    empty = empty
-    (<|>) = append
+  {-# INLINE empty #-}
+  empty = empty
+
+  {-# INLINE (<|>) #-}
+  (<|>) = append
 
 instance Monad DList where
+  {-# INLINE (>>=) #-}
   m >>= k
     -- = concat (toList (fmap k m))
     -- = (concat . toList . fromList . List.map k . toList) m
@@ -250,59 +265,61 @@ instance Monad DList where
     -- = List.foldr append empty . List.map k . toList $ m
     -- = List.foldr (append . k) empty . toList $ m
     = foldr (append . k) empty m
-  {-# INLINE (>>=) #-}
 
-  return = pure
   {-# INLINE return #-}
+  return = pure
 
 #if !MIN_VERSION_base(4,13,0)
-  fail _ = empty
   {-# INLINE fail #-}
+  fail _ = empty
 #endif
 
 #if MIN_VERSION_base(4,9,0)
 instance MonadFail DList where
-  fail _ = empty
   {-# INLINE fail #-}
+  fail _ = empty
 #endif
 
 instance MonadPlus DList where
+  {-# INLINE mzero #-}
   mzero = empty
+
+  {-# INLINE mplus #-}
   mplus = append
 
 instance Foldable DList where
-  fold = mconcat . toList
   {-# INLINE fold #-}
+  fold = mconcat . toList
 
-  foldMap f = F.foldMap f . toList
   {-# INLINE foldMap #-}
+  foldMap f = F.foldMap f . toList
 
-  foldr f x = List.foldr f x . toList
   {-# INLINE foldr #-}
+  foldr f x = List.foldr f x . toList
 
-  foldl f x = List.foldl f x . toList
   {-# INLINE foldl #-}
+  foldl f x = List.foldl f x . toList
 
-  foldr1 f = List.foldr1 f . toList
   {-# INLINE foldr1 #-}
+  foldr1 f = List.foldr1 f . toList
 
-  foldl1 f = List.foldl1 f . toList
   {-# INLINE foldl1 #-}
+  foldl1 f = List.foldl1 f . toList
 
 -- CPP: foldl', foldr' added to Foldable in 7.6.1
 -- http://www.haskell.org/ghc/docs/7.6.1/html/users_guide/release-7-6-1.html
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 706
-  foldl' f x = List.foldl' f x . toList
   {-# INLINE foldl' #-}
+  foldl' f x = List.foldl' f x . toList
 
-  foldr' f x = F.foldr' f x . toList
   {-# INLINE foldr' #-}
+  foldr' f x = F.foldr' f x . toList
 #endif
 
 -- CPP: toList added to Foldable in base-4.8.0.0
 #if MIN_VERSION_base(4,8,0)
-  toList = Data.DList.Unsafe.toList
   {-# INLINE toList #-}
+  toList = Data.DList.Unsafe.toList
 #endif
 
 instance Traversable DList where
@@ -312,36 +329,38 @@ instance Traversable DList where
       cons_f x = liftA2 cons (f x)
 
 instance NFData a => NFData (DList a) where
-  rnf = rnf . toList
   {-# INLINE rnf #-}
+  rnf = rnf . toList
 
 -- This is _not_ a flexible instance to allow certain uses of overloaded
 -- strings. See tests/OverloadedStrings.hs for an example and
 -- https://git.haskell.org/ghc.git/commitdiff/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
 -- for the same change made to the IsString instance for lists.
 instance a ~ Char => IsString (DList a) where
-  fromString = fromList
   {-# INLINE fromString #-}
+  fromString = fromList
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
 instance IsList (DList a) where
   type Item (DList a) = a
-  fromList = fromList
+
   {-# INLINE fromList #-}
-  toList = toList
+  fromList = fromList
+
   {-# INLINE toList #-}
+  toList = toList
 #endif
 
 #if MIN_VERSION_base(4,9,0)
 instance Semigroup (DList a) where
-  (<>) = append
   {-# INLINE (<>) #-}
+  (<>) = append
 
   -- We use `compare n 0` since the same expression is used in `stimesMonoid`
   -- and we should get a lazy advantage. However, we prefer the error to be
   -- sourced here instead of `stimesMonoid`.
+  {-# INLINE stimes #-}
   stimes n = case compare n 0 of
     LT -> error "Data.DList.stimes: negative multiplier"
     _ -> stimesMonoid n
-  {-# INLINE stimes #-}
 #endif
