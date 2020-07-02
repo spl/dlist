@@ -38,7 +38,6 @@ module Data.DList.Unsafe where
 
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid
-import Data.Foldable (Foldable)
 import Data.Traversable (Traversable(traverse))
 import Control.Applicative(Applicative(..))
 #endif
@@ -299,7 +298,7 @@ instance MonadPlus DList where
   {-# INLINE mplus #-}
   mplus = append
 
-instance Foldable DList where
+instance Foldable.Foldable DList where
   {-# INLINE fold #-}
   fold = mconcat . toList
 
