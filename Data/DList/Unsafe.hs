@@ -36,12 +36,6 @@ module Data.DList.Unsafe where
 
 -----------------------------------------------------------------------------
 
-#if !MIN_VERSION_base(4,8,0)
-import Data.Monoid
-import Data.Traversable (Traversable(traverse))
-import Control.Applicative(Applicative(..))
-#endif
-
 #if MIN_VERSION_base(4,9,0)
 import Data.Semigroup (Semigroup(..), stimesMonoid)
 #if !MIN_VERSION_base(4,13,0)
@@ -62,14 +56,15 @@ import qualified GHC.Exts (IsList(Item, fromList, toList))
 
 #endif
 
-import Control.Applicative (Alternative, liftA2, (<|>))
-import qualified Control.Applicative (empty)
+import qualified Control.Applicative as Applicative
 import Control.DeepSeq (NFData (..))
 import Control.Monad as Monad
+import qualified Data.Monoid as Monoid
 import qualified Data.Foldable as Foldable
 import Data.Function (on)
 import qualified Data.List as List
 import Data.String (IsString (..))
+import qualified Data.Traversable as Traversable
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
 
 -----------------------------------------------------------------------------
@@ -242,7 +237,7 @@ instance Show a => Show (DList a) where
     showParen (p > 10) $
       showString "fromList " . shows (toList dl)
 
-instance Monoid (DList a) where
+instance Monoid.Monoid (DList a) where
   {-# INLINE mempty #-}
   mempty = empty
 
@@ -253,14 +248,14 @@ instance Functor DList where
   {-# INLINE fmap #-}
   fmap = map
 
-instance Applicative DList where
+instance Applicative.Applicative DList where
   {-# INLINE pure #-}
   pure = singleton
 
   {-# INLINE (<*>) #-}
   (<*>) = ap
 
-instance Alternative DList where
+instance Applicative.Alternative DList where
   {-# INLINE empty #-}
   empty = empty
 
@@ -333,11 +328,11 @@ instance Foldable.Foldable DList where
   toList = Data.DList.Unsafe.toList
 #endif
 
-instance Traversable DList where
+instance Traversable.Traversable DList where
   {-# INLINE traverse #-}
   traverse f = foldr cons_f (pure empty)
     where
-      cons_f x = liftA2 cons (f x)
+      cons_f x = Applicative.liftA2 cons (f x)
 
 instance NFData a => NFData (DList a) where
   {-# INLINE rnf #-}
