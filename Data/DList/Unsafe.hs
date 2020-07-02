@@ -319,7 +319,7 @@ instance Foldable DList where
   foldl1 f = List.foldl1 f . toList
 
 -- CPP: foldl', foldr' added to Foldable in 7.6.1
--- http://www.haskell.org/ghc/docs/7.6.1/html/users_guide/release-7-6-1.html
+-- https://downloads.haskell.org/~ghc/7.6.1/docs/html/users_guide/release-7-6-1.html
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 706
   {-# INLINE foldl' #-}
   foldl' f x = List.foldl' f x . toList
@@ -346,7 +346,7 @@ instance NFData a => NFData (DList a) where
 
 -- This is _not_ a flexible instance to allow certain uses of overloaded
 -- strings. See tests/OverloadedStrings.hs for an example and
--- https://git.haskell.org/ghc.git/commitdiff/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
+-- https://gitlab.haskell.org/ghc/ghc/-/commit/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
 -- for the same change made to the IsString instance for lists.
 instance a ~ Char => IsString (DList a) where
   {-# INLINE fromString #-}
