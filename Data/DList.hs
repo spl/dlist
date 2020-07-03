@@ -5,8 +5,12 @@
 
 {-# LANGUAGE CPP #-}
 
--- GHC >= 7.8
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+#if !defined(__GLASGOW_HASKELL__)
+#error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
+#endif
+
+-- CPP: GHC >= 7.8 for Safe Haskell
+#if __GLASGOW_HASKELL__ >= 708
 -- The 'Data.DList' module exports only the safe aspects of 'Data.DList.Unsafe'.
 -- Specifically, it does not export the 'DList' constructor 'UnsafeDList' or
 -- record label 'unsafeFromDList'. Therefore, we mark 'Data.DList' as
@@ -14,9 +18,8 @@
 {-# LANGUAGE Trustworthy #-}
 #endif
 
--- GHC >= 7.8 && <= 8
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708 && __GLASGOW_HASKELL__ < 800
--- Required for 'pattern' in the export list.
+-- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
+#if __GLASGOW_HASKELL__ >= 708 && __GLASGOW_HASKELL__ < 800
 {-# LANGUAGE PatternSynonyms #-}
 #endif
 
@@ -34,7 +37,8 @@
 -- Difference lists: a data structure for /O(1)/ append on lists.
 module Data.DList
   ( -- * Type
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 800
+-- CPP: GHC >= 8 for pattern synonyms allowed in the constructor
+#if __GLASGOW_HASKELL__ >= 800
     DList(Nil, Cons),
 #else
     DList,
@@ -61,7 +65,8 @@ module Data.DList
     map,
     intercalate,
 
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708 && __GLASGOW_HASKELL__ < 800
+-- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
+#if __GLASGOW_HASKELL__ >= 708 && __GLASGOW_HASKELL__ < 800
     -- * Pattern Synonyms
     pattern Nil,
     pattern Cons,
@@ -72,6 +77,7 @@ where
 -----------------------------------------------------------------------------
 
 import Data.DList.Unsafe
+
 -- The 'Data.DList' module exists only to export names from 'Data.DList.Unsafe'.
 -- Some names conflict with 'Prelude', so we hide all imports from 'Prelude'.
 import Prelude ()

@@ -7,15 +7,19 @@
 
 {-# LANGUAGE CPP #-}
 
+#if !defined(__GLASGOW_HASKELL__)
+#error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
+#endif
+
 -- For the IsList and IsString instances
 {-# LANGUAGE TypeFamilies #-}
 
--- GHC >= 7.8
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+-- CPP: GHC >= 7.8 for pattern synonyms, Safe Haskell, view patterns
+#if __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE PatternSynonyms #-}
 -- The 'Data.DList.Unsafe' module exports 'UnsafeDList' and 'unsafeFromDList',
--- which allow breaking the invariant of the 'DList' newtype. Therefore, we mark
--- 'Data.DList.Unsafe' as unsafe.
+-- which allow breaking the invariant of the 'DList' newtype. Therefore, we
+-- explicitly mark 'Data.DList.Unsafe' as unsafe.
 {-# LANGUAGE Unsafe #-}
 {-# LANGUAGE ViewPatterns #-}
 #endif
@@ -36,23 +40,20 @@ module Data.DList.Unsafe where
 
 -----------------------------------------------------------------------------
 
+-- CPP: base >= 4.9 for Semigroup and MonadFail
 #if MIN_VERSION_base(4,9,0)
 import Data.Semigroup (Semigroup(..), stimesMonoid)
+
+-- CPP: base < 4.13 for MonadFail not exported from Control.Monad
 #if !MIN_VERSION_base(4,13,0)
 import Control.Monad.Fail (MonadFail(..))
 #endif
+
 #endif
 
-#ifdef __GLASGOW_HASKELL__
-
-import Text.Read (Lexeme(Ident), lexP, parens, prec, readPrec, readListPrec,
-                  readListPrecDefault)
-
+-- CPP: GHC >= 7.8 for IsList
 #if __GLASGOW_HASKELL__ >= 708
--- Make IsList type and methods visible for instance.
 import qualified GHC.Exts
-#endif
-
 #endif
 
 import qualified Control.Applicative as Applicative
@@ -65,6 +66,7 @@ import qualified Data.List as List
 import Data.String (IsString (..))
 import qualified Data.Traversable as Traversable
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
+import qualified Text.Read as Read
 
 -----------------------------------------------------------------------------
 
@@ -100,7 +102,10 @@ fromList = UnsafeDList . (++)
 toList :: DList a -> [a]
 toList = ($ []) . unsafeFromDList
 
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+-- CPP: GHC >= 7.8 for pattern synonyms
+#if __GLASGOW_HASKELL__ >= 708
+
+-- CPP: GHC >= 7.10 for pattern synonym signatures
 
 -- | A unidirectional pattern synonym using 'toList' in a view pattern and
 -- matching on @[]@
@@ -135,19 +140,17 @@ empty = UnsafeDList id
 singleton :: a -> DList a
 singleton = UnsafeDList . (:)
 
--- | /O(1)/. Prepend a single element to a dlist
-{-# INLINE cons #-}
-
 infixr 9 `cons`
 
+-- | /O(1)/. Prepend a single element to a dlist
+{-# INLINE cons #-}
 cons :: a -> DList a -> DList a
 cons x xs = UnsafeDList ((x :) . unsafeFromDList xs)
 
--- | /O(1)/. Append a single element to a dlist
-{-# INLINE snoc #-}
-
 infixl 9 `snoc`
 
+-- | /O(1)/. Append a single element to a dlist
+{-# INLINE snoc #-}
 snoc :: DList a -> a -> DList a
 snoc xs x = UnsafeDList (unsafeFromDList xs . (x :))
 
@@ -215,21 +218,14 @@ instance Eq a => Eq (DList a) where
 instance Ord a => Ord (DList a) where
   compare = compare `on` toList
 
--- The Read and Show instances were adapted from Data.Sequence.
+-- The 'Read' and 'Show' instances were adapted from 'Data.Sequence'.
 
 instance Read a => Read (DList a) where
-#ifdef __GLASGOW_HASKELL__
-  readPrec = parens $ prec 10 $ do
-    Ident "fromList" <- lexP
-    dl <- readPrec
+  readPrec = Read.parens $ Read.prec 10 $ do
+    Read.Ident "fromList" <- Read.lexP
+    dl <- Read.readPrec
     return (fromList dl)
-  readListPrec = readListPrecDefault
-#else
-  readsPrec p = readParen (p > 10) $ \r -> do
-    ("fromList", s) <- lex r
-    (dl, t) <- reads s
-    return (fromList dl, t)
-#endif
+  readListPrec = Read.readListPrecDefault
 
 instance Show a => Show (DList a) where
   showsPrec p dl =
@@ -274,11 +270,13 @@ instance Monad DList where
   {-# INLINE return #-}
   return = Applicative.pure
 
+-- CPP: base < 4.13 for fail in Monad
 #if !MIN_VERSION_base(4,13,0)
   {-# INLINE fail #-}
   fail _ = empty
 #endif
 
+-- CPP: base >= 4.9 for MonadFail
 #if MIN_VERSION_base(4,9,0)
 instance MonadFail DList where
   {-# INLINE fail #-}
@@ -311,9 +309,8 @@ instance Foldable.Foldable DList where
   {-# INLINE foldl1 #-}
   foldl1 f = List.foldl1 f . toList
 
--- CPP: foldl', foldr' added to Foldable in 7.6.1
--- https://downloads.haskell.org/~ghc/7.6.1/docs/html/users_guide/release-7-6-1.html
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 706
+-- CPP: GHC >= 7.6 for foldl', foldr' in Foldable
+#if __GLASGOW_HASKELL__ >= 706
   {-# INLINE foldl' #-}
   foldl' f x = List.foldl' f x . toList
 
@@ -321,7 +318,7 @@ instance Foldable.Foldable DList where
   foldr' f x = Foldable.foldr' f x . toList
 #endif
 
--- CPP: toList added to Foldable in base-4.8.0.0
+-- CPP: base >= 4.8 for toList in Foldable
 #if MIN_VERSION_base(4,8,0)
   {-# INLINE toList #-}
   toList = Data.DList.Unsafe.toList
@@ -345,7 +342,8 @@ instance a ~ Char => IsString (DList a) where
   {-# INLINE fromString #-}
   fromString = fromList
 
-#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+-- CPP: GHC >= 7.8 for IsList
+#if __GLASGOW_HASKELL__ >= 708
 instance GHC.Exts.IsList (DList a) where
   type Item (DList a) = a
 
@@ -356,15 +354,15 @@ instance GHC.Exts.IsList (DList a) where
   toList = toList
 #endif
 
+-- CPP: base >= 4.9 for Semigroup
 #if MIN_VERSION_base(4,9,0)
 instance Semigroup (DList a) where
   {-# INLINE (<>) #-}
   (<>) = append
 
-  -- We use `compare n 0` since the same expression is used in `stimesMonoid`
+  -- We use 'compare n 0' since the same expression is used in 'stimesMonoid'
   -- and we should get a lazy advantage. However, we prefer the error to be
-  -- sourced here instead of `stimesMonoid`.
-  {-# INLINE stimes #-}
+  -- sourced here instead of 'stimesMonoid'.
   stimes n = case compare n 0 of
     LT -> error "Data.DList.stimes: negative multiplier"
     _ -> stimesMonoid n
