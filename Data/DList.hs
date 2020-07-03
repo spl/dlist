@@ -13,7 +13,7 @@
 #if __GLASGOW_HASKELL__ >= 708
 -- The 'Data.DList' module exports only the safe aspects of 'Data.DList.Unsafe'.
 -- Specifically, it does not export the 'DList' constructor 'UnsafeDList' or
--- record label 'unsafeFromDList'. Therefore, we mark 'Data.DList' as
+-- record label 'unsafeApplyDList'. Therefore, we mark 'Data.DList' as
 -- trustworthy.
 {-# LANGUAGE Trustworthy #-}
 #endif

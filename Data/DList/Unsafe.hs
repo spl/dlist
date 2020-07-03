@@ -17,10 +17,12 @@
 -- CPP: GHC >= 7.8 for pattern synonyms, Safe Haskell, view patterns
 #if __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE PatternSynonyms #-}
--- The 'Data.DList.Unsafe' module exports 'UnsafeDList' and 'unsafeFromDList',
+
+-- The 'Data.DList.Unsafe' module exports 'UnsafeDList' and 'unsafeApplyDList',
 -- which allow breaking the invariant of the 'DList' newtype. Therefore, we
 -- explicitly mark 'Data.DList.Unsafe' as unsafe.
 {-# LANGUAGE Unsafe #-}
+
 {-# LANGUAGE ViewPatterns #-}
 #endif
 
@@ -35,7 +37,10 @@
 -- Stability: stable
 -- Portability: portable
 --
--- Difference lists: a data structure for /O(1)/ append on lists.
+-- This module exports everything related to 'DList', including the constructor,
+-- 'UnsafeDList', and the record label, 'unsafeApplyDList', both of which can be
+-- used to create unsafe 'DList' values that break the invariant preserved by
+-- the names exported from 'Data.DList'.
 module Data.DList.Unsafe where
 
 -----------------------------------------------------------------------------
@@ -90,7 +95,7 @@ import qualified Text.Read as Read
 -- >     where
 -- >       flatten (Leaf x)     = tell (singleton x)
 -- >       flatten (Branch x y) = flatten x >> flatten y
-newtype DList a = UnsafeDList {unsafeFromDList :: [a] -> [a]}
+newtype DList a = UnsafeDList {unsafeApplyDList :: [a] -> [a]}
 
 -- | Convert a list to a dlist
 {-# INLINE fromList #-}
@@ -100,7 +105,7 @@ fromList = UnsafeDList . (++)
 -- | Convert a dlist to a list
 {-# INLINE toList #-}
 toList :: DList a -> [a]
-toList = ($ []) . unsafeFromDList
+toList = ($ []) . unsafeApplyDList
 
 -- CPP: GHC >= 7.8 for pattern synonyms
 #if __GLASGOW_HASKELL__ >= 708
@@ -128,7 +133,7 @@ pattern Cons x xs <- (toList -> x : xs)
 -- > apply (fromList xs) ys = xs ++ ys
 {-# INLINE apply #-}
 apply :: DList a -> [a] -> [a]
-apply = unsafeFromDList
+apply = unsafeApplyDList
 
 -- | Create a dlist containing no elements
 {-# INLINE empty #-}
@@ -145,19 +150,19 @@ infixr 9 `cons`
 -- | /O(1)/. Prepend a single element to a dlist
 {-# INLINE cons #-}
 cons :: a -> DList a -> DList a
-cons x xs = UnsafeDList ((x :) . unsafeFromDList xs)
+cons x xs = UnsafeDList ((x :) . unsafeApplyDList xs)
 
 infixl 9 `snoc`
 
 -- | /O(1)/. Append a single element to a dlist
 {-# INLINE snoc #-}
 snoc :: DList a -> a -> DList a
-snoc xs x = UnsafeDList (unsafeFromDList xs . (x :))
+snoc xs x = UnsafeDList (unsafeApplyDList xs . (x :))
 
 -- | /O(1)/. Append dlists
 {-# INLINE append #-}
 append :: DList a -> DList a -> DList a
-append xs ys = UnsafeDList (unsafeFromDList xs . unsafeFromDList ys)
+append xs ys = UnsafeDList (unsafeApplyDList xs . unsafeApplyDList ys)
 
 -- | /O(spine)/. Concatenate dlists
 {-# INLINE concat #-}
