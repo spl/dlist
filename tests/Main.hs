@@ -26,20 +26,23 @@ module Main (main) where
 
 --------------------------------------------------------------------------------
 
+import Prelude hiding (concat, foldr, head, map, replicate, tail)
+
 import Data.DList
 import qualified Data.List as List
 import qualified Data.Traversable as Traversable
 import OverloadedStrings (testOverloadedStrings)
 import Test.QuickCheck
 import Text.Show.Functions ()
-import Prelude hiding (concat, foldr, head, map, replicate, tail)
 
+-- CPP: base >= 4.9 for Semigroup, NonEmpty
 #if MIN_VERSION_base(4,9,0)
--- base-4.9 introduced Semigroup and NonEmpty.
-import Control.Applicative (liftA2) -- Arbitrary1 NonEmpty instance
-import Data.Maybe (mapMaybe) -- Arbitrary1 NonEmpty instance
-import Data.List.NonEmpty (NonEmpty(..), nonEmpty)
-import Data.Semigroup (Semigroup(..))
+-- For the Arbitrary1 NonEmpty instance
+import Control.Applicative (liftA2)
+-- For the Arbitrary1 NonEmpty instance
+import Data.Maybe (mapMaybe)
+import Data.List.NonEmpty (NonEmpty (..), nonEmpty)
+import Data.Semigroup (Semigroup (..))
 #endif
 
 --------------------------------------------------------------------------------
@@ -141,7 +144,7 @@ prop_patterns xs = case fromList xs of
 
 #endif
 
--- CPP: base >= 4.9 for Semigroup
+-- CPP: base >= 4.9 for Semigroup, NonEmpty
 #if MIN_VERSION_base(4,9,0)
 
 prop_Semigroup_append :: [Int] -> [Int] -> Bool
