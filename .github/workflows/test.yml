@@ -89,4 +89,4 @@ jobs:
           cd dlist-*/
           cabal check
           cabal haddock
-          ! ghc tests/Safe.hs
+          sh -c '! ghc tests/Safe.hs'
