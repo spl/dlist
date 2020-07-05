@@ -42,6 +42,7 @@ library
   extensions:           CPP
   exposed-modules:      Data.DList
                         Data.DList.Unsafe
+  other-modules:        Data.DList.Internal
   ghc-options:          -Wall
 
 test-suite test
