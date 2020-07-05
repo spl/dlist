@@ -18,15 +18,16 @@
 This module is declared @Safe@ but imports a module declared @Unsafe@.
 Therefore, any attempt to compile this module should fail.
 
-We use @#error@ above just to make it fail for all versions of GHC.
+We use @#error@ above just to make it fail for older versions of GHC that did
+not support Safe Haskell.
 
 Run this test in the top-level directory with the following command:
 
-> ! ghc tests/Safe.hs
+> ! ghc tests/ImportUnsafe.hs
 
 -}
 
-module Safe (main) where
+module ImportUnsafe (main) where
 
 -----------------------------------------------------------------------------
 
