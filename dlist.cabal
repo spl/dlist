@@ -15,6 +15,7 @@ homepage:               https://github.com/spl/dlist
 bug-reports:            https://github.com/spl/dlist/issues
 extra-source-files:     readme.md,
                         ChangeLog.md
+                        tests/Safe.hs
 build-type:             Simple
 cabal-version:          >= 1.9.2
 tested-with:            GHC==7.0.4
