@@ -83,9 +83,10 @@ import qualified Text.Read as Read
 A difference list is a function that, given a list, returns the original
 contents of the difference list prepended to the given list.
 
-This structure supports \(\mathcal{O}\)(@1@) 'append' and 'snoc' operations on
-lists, making it useful for frequent applications of '++' (esp. if they are
-left-nested) with lists such as logging and pretty printing.
+This structure supports&#x00A0;\(\mathcal{O}\)(@1@) 'append' and 'snoc'
+operations on lists, making it useful for replacing frequent applications of
+'++' such as logging and pretty printing (esp. if those uses of '++' are
+left-nested).
 
 Here is an example using @DList@ as the state type when printing a tree with the
 @Writer@ monad:
