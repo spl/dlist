@@ -26,19 +26,17 @@ module Main (main) where
 
 --------------------------------------------------------------------------------
 
-import Prelude hiding (concat, foldr, head, map, replicate, tail)
-
+import qualified Control.Applicative as Applicative
 import Data.DList
 import qualified Data.List as List
 import qualified Data.Traversable as Traversable
 import OverloadedStrings (testOverloadedStrings)
 import Test.QuickCheck
 import Text.Show.Functions ()
+import Prelude hiding (concat, foldr, head, map, replicate, tail)
 
 -- CPP: base >= 4.9 for Semigroup, NonEmpty
 #if MIN_VERSION_base(4,9,0)
--- For the Arbitrary1 NonEmpty instance
-import Control.Applicative (liftA2)
 -- For the Arbitrary1 NonEmpty instance
 import Data.Maybe (mapMaybe)
 import Data.List.NonEmpty (NonEmpty (..), nonEmpty)
@@ -62,7 +60,7 @@ prop_empty :: Bool
 prop_empty = ([] :: [Int]) == (toList empty :: [Int])
 
 prop_singleton :: Int -> Bool
-prop_singleton = eqWith (: []) (toList . singleton)
+prop_singleton = eqWith Applicative.pure (toList . singleton)
 
 prop_cons :: Int -> [Int] -> Bool
 prop_cons c = eqWith (c :) (toList . cons c . fromList)
@@ -120,8 +118,8 @@ prop_fail str = fail str == (empty :: DList ())
 prop_Traversable_traverse :: [Int] -> Bool
 prop_Traversable_traverse xs =
   (==)
-    (Traversable.traverse pure xs :: [[Int]])
-    (fmap toList (Traversable.traverse pure (fromList xs)))
+    (Traversable.traverse Applicative.pure xs :: [[Int]])
+    (fmap toList (Traversable.traverse Applicative.pure (fromList xs)))
 
 -- CPP: GHC >= 7.8 for overloaded lists
 #if __GLASGOW_HASKELL__ >= 708
@@ -158,7 +156,7 @@ prop_Semigroup_append xs ys = xs <> ys == toList (fromList xs <> fromList ys)
 -- maintenance effort.
 
 instance Arbitrary1 NonEmpty where
-  liftArbitrary arb = liftA2 (:|) arb (liftArbitrary arb)
+  liftArbitrary arb = Applicative.liftA2 (:|) arb (liftArbitrary arb)
   liftShrink shr (x :| xs) = mapMaybe nonEmpty . liftShrink shr $ x : xs
 
 instance Arbitrary a => Arbitrary (NonEmpty a) where
