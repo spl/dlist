@@ -20,6 +20,10 @@ Therefore, any attempt to compile this module should fail.
 
 We use @#error@ above just to make it fail for all versions of GHC.
 
+Run this test in the top-level directory with the following command:
+
+> ! ghc tests/Safe.hs
+
 -}
 
 module Safe (main) where
@@ -32,4 +36,4 @@ import Data.DList.Unsafe ()
 #endif
 
 main :: IO ()
-main = putStrLn "This module should fail to compile."
+main = putStrLn "You should not see this message because this module should fail to compile."
