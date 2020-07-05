@@ -197,15 +197,15 @@ props =
 -- CPP: GHC >= 7.8 for IsList, pattern synonyms
 #if __GLASGOW_HASKELL__ >= 708
     ,
-    ("IsList",               property prop_IsList),
-    ("patterns",             property prop_patterns)
+    ("IsList", property prop_IsList),
+    ("patterns", property prop_patterns)
 #endif
 -- CPP: base >= 4.9 for Semigroup
 #if MIN_VERSION_base(4,9,0)
     ,
-    ("Semigroup <>",         property prop_Semigroup_append),
-    ("Semigroup sconcat",    property prop_Semigroup_sconcat),
-    ("Semigroup stimes",     property prop_Semigroup_stimes)
+    ("Semigroup <>", property prop_Semigroup_append),
+    ("Semigroup sconcat", property prop_Semigroup_sconcat),
+    ("Semigroup stimes", property prop_Semigroup_stimes)
 #endif
   ]
 
