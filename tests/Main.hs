@@ -28,11 +28,11 @@ module Main (main) where
 
 import Data.DList
 import qualified Data.List as List
+import qualified Data.Traversable as Traversable
 import OverloadedStrings (testOverloadedStrings)
 import Test.QuickCheck
 import Text.Show.Functions ()
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
-import qualified Data.Traversable as Traversable
 
 #if MIN_VERSION_base(4,9,0)
 -- base-4.9 introduced Semigroup and NonEmpty.
@@ -115,16 +115,17 @@ prop_fail :: String -> Bool
 prop_fail str = fail str == (empty :: DList ())
 
 prop_Traversable_traverse :: [Int] -> Bool
-prop_Traversable_traverse xs = (==)
-  (Traversable.traverse pure xs :: [[Int]])
-  (fmap toList (Traversable.traverse pure (fromList xs)))
+prop_Traversable_traverse xs =
+  (==)
+    (Traversable.traverse pure xs :: [[Int]])
+    (fmap toList (Traversable.traverse pure (fromList xs)))
 
 -- CPP: GHC >= 7.8 for overloaded lists
 #if __GLASGOW_HASKELL__ >= 708
 
 -- | Test that the IsList instance methods compile and work with simple lists
 prop_IsList :: Bool
-prop_IsList = test_fromList [1,2,3] && test_toList (fromList [1, 2, 3])
+prop_IsList = test_fromList [1, 2, 3] && test_toList (fromList [1, 2, 3])
   where
     test_fromList, test_toList :: DList Int -> Bool
     test_fromList x = x == fromList [1, 2, 3]
