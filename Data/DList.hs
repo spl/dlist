@@ -45,6 +45,7 @@ module Data.DList
 -- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
 #elif __GLASGOW_HASKELL__ >= 708
     ,
+    -- ** Bundled Patterns
     pattern Nil,
     pattern Cons,
 #else
@@ -56,7 +57,7 @@ module Data.DList
     toList,
     apply,
 
-    -- * Basic functions
+    -- * Basic Functions
     empty,
     singleton,
     cons,
