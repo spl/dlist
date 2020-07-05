@@ -1,8 +1,3 @@
--- Options passed to Haddock
-{-# OPTIONS_HADDOCK prune #-}
-
------------------------------------------------------------------------------
-
 {-# LANGUAGE CPP #-}
 
 #if !defined(__GLASGOW_HASKELL__)
