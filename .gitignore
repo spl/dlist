@@ -1,5 +1,11 @@
-.*.swp
+# ghc outputs
+*.hi
+*.o
+
+# cabal sandbox outputs
 .cabal-sandbox
 cabal.sandbox.config
+
+# cabal build outputs
 dist
 dist-newstyle
