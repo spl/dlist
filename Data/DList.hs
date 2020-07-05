@@ -6,10 +6,10 @@
 
 -- CPP: GHC >= 7.8 for Safe Haskell
 #if __GLASGOW_HASKELL__ >= 708
--- The 'Data.DList' module exports only the safe aspects of 'Data.DList.Unsafe'.
--- Specifically, it does not export the 'DList' constructor 'UnsafeDList' or
--- record label 'unsafeApplyDList'. Therefore, we mark 'Data.DList' as
--- trustworthy.
+-- The 'Data.DList' module imports the unsafe module 'Data.DList.Unsafe' but
+-- exports only its safe aspects. Specifically, it does not export the 'DList'
+-- constructor 'UnsafeDList' or record label 'unsafeApplyDList'. Therefore, we
+-- mark 'Data.DList' as trustworthy.
 {-# LANGUAGE Trustworthy #-}
 #endif
 
