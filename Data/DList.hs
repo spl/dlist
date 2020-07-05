@@ -13,7 +13,7 @@
 #if __GLASGOW_HASKELL__ >= 708
 {-
 
-The 'Data.DList' module imports the unsafe module 'Data.DList.Unsafe' but
+The 'Data.DList' module imports the unsafe module 'Data.DList.Internal' but
 exports only its safe aspects. Specifically, it does not export the 'DList'
 constructor 'UnsafeDList' or record label 'unsafeApplyDList'. Therefore, we mark
 'Data.DList' as trustworthy.
@@ -83,8 +83,9 @@ where
 
 -----------------------------------------------------------------------------
 
--- The 'Data.DList' module exists only to export names from 'Data.DList.Unsafe'.
--- Some names conflict with 'Prelude', so we hide all imports from 'Prelude'.
+-- The 'Data.DList' module exists only to export names from
+-- 'Data.DList.Internal'. Some names conflict with 'Prelude', so we hide all
+-- imports from 'Prelude'.
 import Prelude ()
 
-import Data.DList.Unsafe
+import Data.DList.Internal
