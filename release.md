@@ -6,7 +6,7 @@ The release process is as follows:
 
 3. `git checkout -b version-bump`
 
-4. Update [ChangeLog.md](./ChangeLog.md) with release notes for version `$VER`.
+4. Update [`changelog.md`](./changelog.md) with release notes for version `$VER`.
 
 5. Update version to `$VER` in [dlist.cabal](./dlist.cabal).
 
@@ -14,7 +14,7 @@ The release process is as follows:
 
 7. `git push -u origin`
 
-8. Check release notes in [ChangeLog.md](https://github.com/spl/dlist/blob/version-bump/ChangeLog.md).
+8. Check release notes in [`changelog.md`](https://github.com/spl/dlist/blob/version-bump/changelog.md).
 
 9. `git tag v$VER`
 
