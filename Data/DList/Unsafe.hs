@@ -28,19 +28,22 @@
 
 -----------------------------------------------------------------------------
 
--- |
--- Module: Data.DList.Unsafe
--- Copyright: © 2006-2009 Don Stewart, 2013-2020 Sean Leather
--- License: BSD-3-Clause
---
--- Maintainer: sean.leather@gmail.com
--- Stability: stable
--- Portability: portable
---
--- This module exports everything related to 'DList', including the constructor,
--- 'UnsafeDList', and the record label, 'unsafeApplyDList', both of which can be
--- used to create unsafe 'DList' values that break the invariant preserved by
--- the names exported from 'Data.DList'.
+{-|
+
+Module: Data.DList.Unsafe
+Copyright: © 2006-2009 Don Stewart, 2013-2020 Sean Leather
+License: BSD-3-Clause
+
+Maintainer: sean.leather@gmail.com
+Stability: stable
+
+This module exports everything related to 'DList', including the constructor,
+'UnsafeDList', and the record label, 'unsafeApplyDList', both of which can be
+used to create unsafe 'DList' values that break the invariant preserved by the
+names exported from 'Data.DList'.
+
+-}
+
 module Data.DList.Unsafe where
 
 -----------------------------------------------------------------------------
@@ -75,34 +78,86 @@ import qualified Text.Read as Read
 
 -----------------------------------------------------------------------------
 
--- | A difference list is a function that, given a list, returns the original
--- contents of the difference list prepended to the given list.
---
--- This structure supports /O(1)/ append and snoc operations on lists, making it
--- very useful for append-heavy uses (esp. left-nested uses of 'List.++'), such
--- as logging and pretty printing.
---
--- Here is an example using DList as the state type when printing a tree with
--- the Writer monad:
---
--- > import Control.Monad.Writer
--- > import Data.DList
--- >
--- > data Tree a = Leaf a | Branch (Tree a) (Tree a)
--- >
--- > flatten_writer :: Tree x -> DList x
--- > flatten_writer = snd . runWriter . flatten
--- >     where
--- >       flatten (Leaf x)     = tell (singleton x)
--- >       flatten (Branch x y) = flatten x >> flatten y
+{-|
+
+A difference list is a function that, given a list, returns the original
+contents of the difference list prepended to the given list.
+
+This structure supports \(\mathcal{O}\)(@1@) 'append' and 'snoc' operations on
+lists, making it useful for frequent applications of '++' (esp. if they are
+left-nested) with lists such as logging and pretty printing.
+
+Here is an example using @DList@ as the state type when printing a tree with the
+@Writer@ monad:
+
+@
+import Control.Monad.Writer
+import Data.DList
+
+data Tree a = Leaf a | Branch (Tree a) (Tree a)
+
+flatten_writer :: Tree x -> DList x
+flatten_writer = snd . runWriter . flatten
+  where
+    flatten (Leaf x)     = tell (singleton x)
+    flatten (Branch x y) = flatten x >> flatten y
+@
+
+-}
+
 newtype DList a = UnsafeDList {unsafeApplyDList :: [a] -> [a]}
 
--- | Convert a list to a dlist
+{-|
+
+__@fromList xs@__ is a 'DList' representing the list __@xs@__.
+
+@fromList@ obeys the laws:
+
+@
+'toList' . __fromList__ = 'id'
+__fromList__ . 'toList' = 'id'
+@
+
+This function is implemented with '++'. Repeated uses of @fromList@ are just as
+inefficient as repeated uses of '++'. If you find yourself doing some (possibly
+indirect) form of the following, you may not really be taking advantage of the
+'DList' representation and library:
+
+@
+__fromList__ . f . 'toList'
+@
+
+More likely, you will convert from a list, perform some operation on the
+'DList', and convert back to a list:
+
+@
+'toList' . g . __fromList__
+@
+
+-}
+
 {-# INLINE fromList #-}
 fromList :: [a] -> DList a
 fromList = UnsafeDList . (++)
 
--- | Convert a dlist to a list
+{-|
+
+__@toList xs@__ is the list represented by __@xs@__.
+
+@toList@ obeys the laws:
+
+@
+__toList__ . 'fromList' = 'id'
+'fromList' . __toList__ = 'id'
+@
+
+Evaluating @toList xs@ may “collapse” the chain of function composition
+underlying many 'DList' functions ('append' in particular) used to construct
+@xs@. This may affect any efficiency you achieved due to laziness in the
+construction.
+
+-}
+
 {-# INLINE toList #-}
 toList :: DList a -> [a]
 toList = ($ []) . unsafeApplyDList
@@ -112,15 +167,23 @@ toList = ($ []) . unsafeApplyDList
 
 -- CPP: GHC >= 7.10 for pattern synonym signatures
 
--- | A unidirectional pattern synonym using 'toList' in a view pattern and
--- matching on @[]@
+{-|
+
+A unidirectional pattern synonym for 'empty'. This is implemented with 'toList'.
+
+-}
+
 #if __GLASGOW_HASKELL__ >= 710
 pattern Nil :: DList a
 #endif
 pattern Nil <- (toList -> [])
 
--- | A unidirectional pattern synonym using 'toList' in a view pattern and
--- matching on @x:xs@ such that you have the pattern @Cons x xs@
+{-|
+
+A unidirectional pattern synonym for 'cons'. This is implemented with 'toList'.
+
+-}
+
 #if __GLASGOW_HASKELL__ >= 710
 pattern Cons :: a -> [a] -> DList a
 #endif
@@ -128,48 +191,159 @@ pattern Cons x xs <- (toList -> x : xs)
 
 #endif
 
--- | Apply a dlist to a list to get the underlying list with an extension
---
--- > apply (fromList xs) ys = xs ++ ys
+{-|
+
+__@apply xs ys@__ is the list represented by the __@xs@__ after appending
+__@ys@__ to it.
+
+\(\mathcal{O}\)(@1@).
+
+@apply@ obeys the law:
+
+@
+__apply__ ('fromList' xs) ys = xs '++' ys
+@
+
+-}
+
 {-# INLINE apply #-}
 apply :: DList a -> [a] -> [a]
 apply = unsafeApplyDList
 
--- | Create a dlist containing no elements
+{-|
+
+__@empty@__ is a 'DList' with no elements.
+
+@empty@ obeys the law:
+
+@
+'toList' __empty__ = []
+@
+
+-}
+
 {-# INLINE empty #-}
 empty :: DList a
 empty = UnsafeDList id
 
--- | Create dlist with a single element
+{-|
+
+__@singleton x@__ is a 'DList' with the single element __@x@__.
+
+@singleton@ obeys the law:
+
+@
+'toList' (__singleton__ x) = [x]
+@
+
+-}
+
 {-# INLINE singleton #-}
 singleton :: a -> DList a
 singleton = UnsafeDList . (:)
 
+{-|
+
+__@cons x xs@__ is a 'DList' with the 'head' __@x@__ and the 'tail' __@xs@__.
+
+\(\mathcal{O}\)(@1@).
+
+@cons@ obeys the law:
+
+@
+'toList' (__cons__ x xs) = x : 'fromList' xs
+@
+
+-}
+
 infixr 9 `cons`
 
--- | /O(1)/. Prepend a single element to a dlist
 {-# INLINE cons #-}
 cons :: a -> DList a -> DList a
 cons x xs = UnsafeDList ((x :) . unsafeApplyDList xs)
 
 infixl 9 `snoc`
 
--- | /O(1)/. Append a single element to a dlist
+{-|
+
+__@snoc xs x@__ is a 'DList' with the initial 'DList' __@xs@__ and the last
+element __@x@__.
+
+\(\mathcal{O}\)(@1@).
+
+@snoc@ obeys the law:
+
+@
+'toList' (__snoc__ xs x) = 'fromList' xs '++' [x]
+@
+
+Note that 'fromList' is implemented with '++', which means that the right-hand
+side of the equality demonstrates a use of a left-nested append. This is the
+sort of inefficiency that @snoc@ on 'DList's avoids.
+
+-}
+
 {-# INLINE snoc #-}
 snoc :: DList a -> a -> DList a
 snoc xs x = UnsafeDList (unsafeApplyDList xs . (x :))
 
--- | /O(1)/. Append dlists
+{-|
+
+__@append xs ys@__ is a 'DList' obtained from the concatenation of the elements
+of __@xs@__ and __@ys@__.
+
+\(\mathcal{O}\)(@1@).
+
+@append@ obeys the law:
+
+@
+'toList' (__append__ xs ys) = 'fromList' xs '++' 'fromList' ys
+@
+
+Note that 'fromList' is implemented with '++', which means that the right-hand
+side of the equality demonstrates a use of a left-nested append. This is the
+sort of inefficiency that @append@ on 'DList's avoids.
+
+-}
+
 {-# INLINE append #-}
 append :: DList a -> DList a -> DList a
 append xs ys = UnsafeDList (unsafeApplyDList xs . unsafeApplyDList ys)
 
--- | /O(spine)/. Concatenate dlists
+{-|
+
+__@concat xss@__ is a 'DList' representing the concatenation of all 'DList's in
+the list __@xss@__.
+
+\(\mathcal{O}\)(@'length' xss@).
+
+@concat@ obeys the law:
+
+@
+'toList' (__concat__ xss) = 'List.concat' ('List.map' 'toList' xss)
+@
+
+-}
+
 {-# INLINE concat #-}
 concat :: [DList a] -> DList a
 concat = List.foldr append empty
 
--- | /O(n)/. Create a dlist of the given number of elements
+{-|
+
+__@replicate n x@__ is a 'DList' of length __@n@__ with __@x@__ as the value of
+every element.
+
+\(\mathcal{O}\)(@n@).
+
+@replicate@ obeys the law:
+
+@
+'toList' (__replicate__ n x) = 'List.replicate' n x
+@
+
+-}
+
 {-# INLINE replicate #-}
 replicate :: Int -> a -> DList a
 replicate n x = UnsafeDList $ \xs ->
@@ -178,41 +352,148 @@ replicate n x = UnsafeDList $ \xs ->
         | otherwise = x : go (m -1)
    in go n
 
--- | /O(n)/. List elimination for dlists
-list :: b -> (a -> DList a -> b) -> DList a -> b
-list nill consit dl =
-  case toList dl of
-    [] -> nill
-    (x : xs) -> consit x (fromList xs)
+{-|
 
--- | /O(1)/. Return the head of the dlist
+__@list nl cn xs@__ is the case elimination of __@xs@__. If @xs@ is empty, the
+result is __@nl@__. If @xs@ has the head @y@ and tail @ys@, the result is __@cn
+y ys@__.
+
+\(\mathcal{O}\)(@'List.length' ('toList' xs)@).
+
+@list@ obeys the law:
+
+@
+__list__ 'empty' 'cons' = 'id'
+@
+
+Note that @list@ uses 'toList' to get the represented list and 'fromList' to
+get the 'DList' of the tail.
+
+-}
+
+list :: b -> (a -> DList a -> b) -> DList a -> b
+list nl cn dl =
+  case toList dl of
+    [] -> nl
+    (x : xs) -> cn x (fromList xs)
+
+{-|
+
+__@head xs@__ is the first element of __@xs@__. If @xs@ is empty, an 'error' is
+raised.
+
+\(\mathcal{O}\)(@1@).
+
+@head@ obeys the law:
+
+@
+__head__ ('fromList' (x : xs)) = x
+@
+
+Note that @head@ is implemented with 'list'.
+
+-}
+
 {-# INLINE head #-}
 head :: DList a -> a
-head = list (error "Data.DList.head: empty dlist") const
+head = list (error "Data.DList.head: empty DList") const
 
--- | /O(n)/. Return the tail of the dlist
+{-|
+
+__@tail xs@__ is a 'DList' excluding the first element of __@xs@__. If @xs@ is
+empty, an 'error' is raised.
+
+\(\mathcal{O}\)(@'length' ('toList' xs)@).
+
+@tail@ obeys the law:
+
+@
+__tail__ ('fromList' (x : xs)) = xs
+@
+
+Note that @tail@ is implemented with 'list'.
+
+-}
+
 {-# INLINE tail #-}
 tail :: DList a -> DList a
-tail = list (error "Data.DList.tail: empty dlist") (flip const)
+tail = list (error "Data.DList.tail: empty DList") (flip const)
 
--- | /O(n)/. Unfoldr for dlists
+{-|
+
+__@unfoldr f z@__ is the 'DList' constructed from the recursive application of
+__@f@__. The recursion starts with the seed value __@z@__ and ends when, for
+some @z' : b@, @f z' == 'Nothing'@.
+
+\(\mathcal{O}\)(@'length' ('List.unfoldr' f z)@).
+
+@unfoldr@ obeys the law:
+
+@
+'toList' (__unfoldr__ f z) = 'List.unfoldr' f z
+@
+
+-}
+
 unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
-unfoldr pf b =
-  case pf b of
+unfoldr f z =
+  case f z of
     Nothing -> empty
-    Just (a, b') -> cons a (unfoldr pf b')
+    Just (x, z') -> cons x (unfoldr f z')
 
--- | /O(n)/. Foldr over difference lists
+{-|
+
+__@foldr f z xs@__ is the right-fold of __@f@__ over __@xs@__.
+
+\(\mathcal{O}\)(@'length' ('toList' xs)@).
+
+@foldr@ obeys the law:
+
+@
+__foldr__ f z xs = 'List.foldr' f z ('toList' xs)
+@
+
+-}
+
 {-# INLINE foldr #-}
 foldr :: (a -> b -> b) -> b -> DList a -> b
-foldr f b = List.foldr f b . toList
+foldr f z = List.foldr f z . toList
 
--- | /O(n)/. Map over difference lists.
+{-|
+
+__@map f xs@__ is the 'DList' obtained by applying __@f@__ to each element of
+__@xs@__.
+
+\(\mathcal{O}\)(@'length' ('toList' xs)@).
+
+@map@ obeys the law:
+
+@
+'toList' (__map__ f xs) = 'List.map' f ('toList' xs)
+@
+
+-}
+
 {-# INLINE map #-}
 map :: (a -> b) -> DList a -> DList b
 map f = foldr (cons . f) empty
 
--- | /O(spine)/. Intercalate over difference lists
+{-|
+
+__@intercalate xs xss@__ is the concatenation of __@xss@__ after the insertion
+of __@xs@__ between every pair of
+elements.
+
+\(\mathcal{O}\)(@'length' xss@).
+
+@intercalate@ obeys the law:
+
+@
+'toList' (__intercalate__ xs xss) = 'List.intercalate' ('toList' xs) ('map' 'toList' xss)
+@
+
+-}
+
 {-# INLINE intercalate #-}
 intercalate :: DList a -> [DList a] -> DList a
 intercalate sep = concat . List.intersperse sep
