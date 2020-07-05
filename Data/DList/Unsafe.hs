@@ -37,4 +37,4 @@ that break the invariant preserved by the names exported from 'Data.DList'.
 
 module Data.DList.Unsafe (DList (UnsafeDList, unsafeApplyDList)) where
 
-import Data.DList.Internal (DList (UnsafeDList, unsafeApplyDList))
+import Data.DList.Internal
