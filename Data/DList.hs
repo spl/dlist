@@ -37,11 +37,18 @@
 -- Difference lists: a data structure for /O(1)/ append on lists.
 module Data.DList
   ( -- * Type
+    DList
+
 -- CPP: GHC >= 8 for pattern synonyms allowed in the constructor
 #if __GLASGOW_HASKELL__ >= 800
-    DList(Nil, Cons),
+    (Nil, Cons),
+-- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
+#elif __GLASGOW_HASKELL__ >= 708
+    ,
+    pattern Nil,
+    pattern Cons,
 #else
-    DList,
+    ,
 #endif
 
     -- * Conversion
@@ -64,13 +71,6 @@ module Data.DList
     foldr,
     map,
     intercalate,
-
--- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
-#if __GLASGOW_HASKELL__ >= 708 && __GLASGOW_HASKELL__ < 800
-    -- * Pattern Synonyms
-    pattern Nil,
-    pattern Cons,
-#endif
   )
 where
 
