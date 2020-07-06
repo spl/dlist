@@ -18,9 +18,10 @@
 #if __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE PatternSynonyms #-}
 
--- The 'Data.DList.Internal' module exports 'UnsafeDList' and
--- 'unsafeApplyDList', which allow breaking the invariant of the 'DList'
--- newtype. Therefore, we explicitly mark 'Data.DList.Internal' as unsafe.
+-- The 'Data.DList.DNonEmpty.Internal' module exports 'UnsafeDNonEmpty' and
+-- 'unsafeApplyDNonEmpty', which allow breaking the invariant of the 'DNonEmpty'
+-- newtype. Therefore, we explicitly mark 'Data.DList.DNonEmpty.Internal' as
+-- unsafe.
 {-# LANGUAGE Unsafe #-}
 
 {-# LANGUAGE ViewPatterns #-}
@@ -37,7 +38,7 @@ License: BSD-3-Clause
 Maintainer: sean.leather@gmail.com
 Stability: stable
 
-This module includes everything related to 'DList'. It is not directly exposed
+This module includes everything related to 'DNonEmpty'. It is not directly exposed
 to users of the 'dlist' package.
 
 -}
@@ -86,16 +87,16 @@ operations on lists, making it useful for replacing frequent applications of
 '++' such as logging and pretty printing (esp. if those uses of '++' are
 left-nested).
 
-Here is an example using @DList@ as the state type when printing a tree with the
-@Writer@ monad:
+Here is an example using @DNonEmpty@ as the state type when printing a tree with
+the @Writer@ monad:
 
 @
 import Control.Monad.Writer
-import Data.DList
+import Data.DList.DNonEmpty
 
 data Tree a = Leaf a | Branch (Tree a) (Tree a)
 
-flatten_writer :: Tree x -> DList x
+flatten_writer :: Tree x -> DNonEmpty x
 flatten_writer = snd . runWriter . flatten
   where
     flatten (Leaf x)     = tell (singleton x)
@@ -104,11 +105,11 @@ flatten_writer = snd . runWriter . flatten
 
 -}
 
-newtype DList a = UnsafeDList {unsafeApplyDList :: [a] -> [a]}
+newtype DNonEmpty a = UnsafeDNonEmpty {unsafeApplyDNonEmpty :: [a] -> [a]}
 
 {-|
 
-__@fromList xs@__ is a 'DList' representing the list __@xs@__.
+__@fromList xs@__ is a 'DNonEmpty' representing the list __@xs@__.
 
 @fromList@ obeys the laws:
 
@@ -120,14 +121,14 @@ __fromList__ . 'toList' = 'id'
 This function is implemented with '++'. Repeated uses of @fromList@ are just as
 inefficient as repeated uses of '++'. If you find yourself doing some (possibly
 indirect) form of the following, you may not really be taking advantage of the
-'DList' representation and library:
+'DNonEmpty' representation and library:
 
 @
 __fromList__ . f . 'toList'
 @
 
 More likely, you will convert from a list, perform some operation on the
-'DList', and convert back to a list:
+'DNonEmpty', and convert back to a list:
 
 @
 'toList' . g . __fromList__
@@ -136,8 +137,8 @@ More likely, you will convert from a list, perform some operation on the
 -}
 
 {-# INLINE fromList #-}
-fromList :: [a] -> DList a
-fromList = UnsafeDList . (++)
+fromList :: [a] -> DNonEmpty a
+fromList = UnsafeDNonEmpty . (++)
 
 {-|
 
@@ -151,15 +152,15 @@ __toList__ . 'fromList' = 'id'
 @
 
 Evaluating @toList xs@ may “collapse” the chain of function composition
-underlying many 'DList' functions ('append' in particular) used to construct
+underlying many 'DNonEmpty' functions ('append' in particular) used to construct
 @xs@. This may affect any efficiency you achieved due to laziness in the
 construction.
 
 -}
 
 {-# INLINE toList #-}
-toList :: DList a -> [a]
-toList = ($ []) . unsafeApplyDList
+toList :: DNonEmpty a -> [a]
+toList = ($ []) . unsafeApplyDNonEmpty
 
 -- CPP: GHC >= 7.8 for pattern synonyms
 #if __GLASGOW_HASKELL__ >= 708
@@ -173,7 +174,7 @@ A unidirectional pattern synonym for 'empty'. This is implemented with 'toList'.
 -}
 
 #if __GLASGOW_HASKELL__ >= 710
-pattern Nil :: DList a
+pattern Nil :: DNonEmpty a
 #endif
 pattern Nil <- (toList -> [])
 
@@ -184,7 +185,7 @@ A unidirectional pattern synonym for 'cons'. This is implemented with 'toList'.
 -}
 
 #if __GLASGOW_HASKELL__ >= 710
-pattern Cons :: a -> [a] -> DList a
+pattern Cons :: a -> [a] -> DNonEmpty a
 #endif
 pattern Cons x xs <- (toList -> x : xs)
 
@@ -206,12 +207,12 @@ __apply__ ('fromList' xs) ys = xs '++' ys
 -}
 
 {-# INLINE apply #-}
-apply :: DList a -> [a] -> [a]
-apply = unsafeApplyDList
+apply :: DNonEmpty a -> [a] -> [a]
+apply = unsafeApplyDNonEmpty
 
 {-|
 
-__@empty@__ is a 'DList' with no elements.
+__@empty@__ is a 'DNonEmpty' with no elements.
 
 @empty@ obeys the law:
 
@@ -222,12 +223,12 @@ __@empty@__ is a 'DList' with no elements.
 -}
 
 {-# INLINE empty #-}
-empty :: DList a
-empty = UnsafeDList id
+empty :: DNonEmpty a
+empty = UnsafeDNonEmpty id
 
 {-|
 
-__@singleton x@__ is a 'DList' with the single element __@x@__.
+__@singleton x@__ is a 'DNonEmpty' with the single element __@x@__.
 
 @singleton@ obeys the law:
 
@@ -238,12 +239,12 @@ __@singleton x@__ is a 'DList' with the single element __@x@__.
 -}
 
 {-# INLINE singleton #-}
-singleton :: a -> DList a
-singleton = UnsafeDList . (:)
+singleton :: a -> DNonEmpty a
+singleton = UnsafeDNonEmpty . (:)
 
 {-|
 
-__@cons x xs@__ is a 'DList' with the 'head' __@x@__ and the 'tail' __@xs@__.
+__@cons x xs@__ is a 'DNonEmpty' with the 'head' __@x@__ and the 'tail' __@xs@__.
 
 \(\mathcal{O}\)(@1@).
 
@@ -258,15 +259,15 @@ __@cons x xs@__ is a 'DList' with the 'head' __@x@__ and the 'tail' __@xs@__.
 infixr 9 `cons`
 
 {-# INLINE cons #-}
-cons :: a -> DList a -> DList a
-cons x xs = UnsafeDList ((x :) . unsafeApplyDList xs)
+cons :: a -> DNonEmpty a -> DNonEmpty a
+cons x xs = UnsafeDNonEmpty ((x :) . unsafeApplyDNonEmpty xs)
 
 infixl 9 `snoc`
 
 {-|
 
-__@snoc xs x@__ is a 'DList' with the initial 'DList' __@xs@__ and the last
-element __@x@__.
+__@snoc xs x@__ is a 'DNonEmpty' with the initial 'DNonEmpty' __@xs@__ and the
+last element __@x@__.
 
 \(\mathcal{O}\)(@1@).
 
@@ -278,18 +279,18 @@ element __@x@__.
 
 Note that 'fromList' is implemented with '++', which means that the right-hand
 side of the equality demonstrates a use of a left-nested append. This is the
-sort of inefficiency that @snoc@ on 'DList's avoids.
+sort of inefficiency that @snoc@ on 'DNonEmpty's avoids.
 
 -}
 
 {-# INLINE snoc #-}
-snoc :: DList a -> a -> DList a
-snoc xs x = UnsafeDList (unsafeApplyDList xs . (x :))
+snoc :: DNonEmpty a -> a -> DNonEmpty a
+snoc xs x = UnsafeDNonEmpty (unsafeApplyDNonEmpty xs . (x :))
 
 {-|
 
-__@append xs ys@__ is a 'DList' obtained from the concatenation of the elements
-of __@xs@__ and __@ys@__.
+__@append xs ys@__ is a 'DNonEmpty' obtained from the concatenation of the
+elements of __@xs@__ and __@ys@__.
 
 \(\mathcal{O}\)(@1@).
 
@@ -301,18 +302,18 @@ of __@xs@__ and __@ys@__.
 
 Note that 'fromList' is implemented with '++', which means that the right-hand
 side of the equality demonstrates a use of a left-nested append. This is the
-sort of inefficiency that @append@ on 'DList's avoids.
+sort of inefficiency that @append@ on 'DNonEmpty's avoids.
 
 -}
 
 {-# INLINE append #-}
-append :: DList a -> DList a -> DList a
-append xs ys = UnsafeDList (unsafeApplyDList xs . unsafeApplyDList ys)
+append :: DNonEmpty a -> DNonEmpty a -> DNonEmpty a
+append xs ys = UnsafeDNonEmpty (unsafeApplyDNonEmpty xs . unsafeApplyDNonEmpty ys)
 
 {-|
 
-__@concat xss@__ is a 'DList' representing the concatenation of all 'DList's in
-the list __@xss@__.
+__@concat xss@__ is a 'DNonEmpty' representing the concatenation of all
+'DNonEmpty's in the list __@xss@__.
 
 \(\mathcal{O}\)(@'length' xss@).
 
@@ -325,13 +326,13 @@ the list __@xss@__.
 -}
 
 {-# INLINE concat #-}
-concat :: [DList a] -> DList a
+concat :: [DNonEmpty a] -> DNonEmpty a
 concat = List.foldr append empty
 
 {-|
 
-__@replicate n x@__ is a 'DList' of length __@n@__ with __@x@__ as the value of
-every element.
+__@replicate n x@__ is a 'DNonEmpty' of length __@n@__ with __@x@__ as the value
+of every element.
 
 \(\mathcal{O}\)(@n@).
 
@@ -344,8 +345,8 @@ every element.
 -}
 
 {-# INLINE replicate #-}
-replicate :: Int -> a -> DList a
-replicate n x = UnsafeDList $ \xs ->
+replicate :: Int -> a -> DNonEmpty a
+replicate n x = UnsafeDNonEmpty $ \xs ->
   let go m
         | m <= 0 = xs
         | otherwise = x : go (m -1)
@@ -366,11 +367,11 @@ __list__ 'empty' 'cons' = 'id'
 @
 
 Note that @list@ uses 'toList' to get the represented list and 'fromList' to
-get the 'DList' of the tail.
+get the 'DNonEmpty' of the tail.
 
 -}
 
-list :: b -> (a -> DList a -> b) -> DList a -> b
+list :: b -> (a -> DNonEmpty a -> b) -> DNonEmpty a -> b
 list nl cn dl =
   case toList dl of
     [] -> nl
@@ -394,13 +395,13 @@ Note that @head@ is implemented with 'list'.
 -}
 
 {-# INLINE head #-}
-head :: DList a -> a
-head = list (error "Data.DList.head: empty DList") const
+head :: DNonEmpty a -> a
+head = list (error "Data.DList.DNonEmpty.head: empty DNonEmpty") const
 
 {-|
 
-__@tail xs@__ is a 'DList' excluding the first element of __@xs@__. If @xs@ is
-empty, an 'error' is raised.
+__@tail xs@__ is a 'DNonEmpty' excluding the first element of __@xs@__. If @xs@
+is empty, an 'error' is raised.
 
 \(\mathcal{O}\)(@'length' ('toList' xs)@).
 
@@ -415,13 +416,13 @@ Note that @tail@ is implemented with 'list'.
 -}
 
 {-# INLINE tail #-}
-tail :: DList a -> DList a
-tail = list (error "Data.DList.tail: empty DList") (flip const)
+tail :: DNonEmpty a -> DNonEmpty a
+tail = list (error "Data.DList.DNonEmpty.tail: empty DNonEmpty") (flip const)
 
 {-|
 
-__@unfoldr f z@__ is the 'DList' constructed from the recursive application of
-__@f@__. The recursion starts with the seed value __@z@__ and ends when, for
+__@unfoldr f z@__ is the 'DNonEmpty' constructed from the recursive application
+of __@f@__. The recursion starts with the seed value __@z@__ and ends when, for
 some @z' : b@, @f z' == 'Nothing'@.
 
 \(\mathcal{O}\)(@'length' ('List.unfoldr' f z)@).
@@ -434,7 +435,7 @@ some @z' : b@, @f z' == 'Nothing'@.
 
 -}
 
-unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
+unfoldr :: (b -> Maybe (a, b)) -> b -> DNonEmpty a
 unfoldr f z =
   case f z of
     Nothing -> empty
@@ -455,13 +456,13 @@ __foldr__ f z xs = 'List.foldr' f z ('toList' xs)
 -}
 
 {-# INLINE foldr #-}
-foldr :: (a -> b -> b) -> b -> DList a -> b
+foldr :: (a -> b -> b) -> b -> DNonEmpty a -> b
 foldr f z = List.foldr f z . toList
 
 {-|
 
-__@map f xs@__ is the 'DList' obtained by applying __@f@__ to each element of
-__@xs@__.
+__@map f xs@__ is the 'DNonEmpty' obtained by applying __@f@__ to each element
+of __@xs@__.
 
 \(\mathcal{O}\)(@'length' ('toList' xs)@).
 
@@ -474,14 +475,13 @@ __@xs@__.
 -}
 
 {-# INLINE map #-}
-map :: (a -> b) -> DList a -> DList b
+map :: (a -> b) -> DNonEmpty a -> DNonEmpty b
 map f = foldr (cons . f) empty
 
 {-|
 
 __@intercalate xs xss@__ is the concatenation of __@xss@__ after the insertion
-of __@xs@__ between every pair of
-elements.
+of __@xs@__ between every pair of elements.
 
 \(\mathcal{O}\)(@'length' xss@).
 
@@ -494,55 +494,55 @@ elements.
 -}
 
 {-# INLINE intercalate #-}
-intercalate :: DList a -> [DList a] -> DList a
+intercalate :: DNonEmpty a -> [DNonEmpty a] -> DNonEmpty a
 intercalate sep = concat . List.intersperse sep
 
-instance Eq a => Eq (DList a) where
+instance Eq a => Eq (DNonEmpty a) where
   (==) = (==) `on` toList
 
-instance Ord a => Ord (DList a) where
+instance Ord a => Ord (DNonEmpty a) where
   compare = compare `on` toList
 
 -- The 'Read' and 'Show' instances were adapted from 'Data.Sequence'.
 
-instance Read a => Read (DList a) where
+instance Read a => Read (DNonEmpty a) where
   readPrec = Read.parens $ Read.prec 10 $ do
     Read.Ident "fromList" <- Read.lexP
     dl <- Read.readPrec
     return (fromList dl)
   readListPrec = Read.readListPrecDefault
 
-instance Show a => Show (DList a) where
+instance Show a => Show (DNonEmpty a) where
   showsPrec p dl =
     showParen (p > 10) $
       showString "fromList " . shows (toList dl)
 
-instance Monoid.Monoid (DList a) where
+instance Monoid.Monoid (DNonEmpty a) where
   {-# INLINE mempty #-}
   mempty = empty
 
   {-# INLINE mappend #-}
   mappend = append
 
-instance Functor DList where
+instance Functor DNonEmpty where
   {-# INLINE fmap #-}
   fmap = map
 
-instance Applicative.Applicative DList where
+instance Applicative.Applicative DNonEmpty where
   {-# INLINE pure #-}
   pure = singleton
 
   {-# INLINE (<*>) #-}
   (<*>) = ap
 
-instance Applicative.Alternative DList where
+instance Applicative.Alternative DNonEmpty where
   {-# INLINE empty #-}
   empty = empty
 
   {-# INLINE (<|>) #-}
   (<|>) = append
 
-instance Monad DList where
+instance Monad DNonEmpty where
   {-# INLINE (>>=) #-}
   m >>= k =
     -- = concat (toList (fmap k m))
@@ -563,19 +563,19 @@ instance Monad DList where
 
 -- CPP: base >= 4.9 for MonadFail
 #if MIN_VERSION_base(4,9,0)
-instance MonadFail DList where
+instance MonadFail DNonEmpty where
   {-# INLINE fail #-}
   fail _ = empty
 #endif
 
-instance MonadPlus DList where
+instance MonadPlus DNonEmpty where
   {-# INLINE mzero #-}
   mzero = empty
 
   {-# INLINE mplus #-}
   mplus = append
 
-instance Foldable.Foldable DList where
+instance Foldable.Foldable DNonEmpty where
   {-# INLINE fold #-}
   fold = Monoid.mconcat . toList
 
@@ -609,13 +609,13 @@ instance Foldable.Foldable DList where
   toList = Data.DList.DNonEmpty.Internal.toList
 #endif
 
-instance Traversable.Traversable DList where
+instance Traversable.Traversable DNonEmpty where
   {-# INLINE traverse #-}
   traverse f = foldr cons_f (Applicative.pure empty)
     where
       cons_f x = Applicative.liftA2 cons (f x)
 
-instance NFData a => NFData (DList a) where
+instance NFData a => NFData (DNonEmpty a) where
   {-# INLINE rnf #-}
   rnf = rnf . toList
 
@@ -623,14 +623,14 @@ instance NFData a => NFData (DList a) where
 -- strings. See tests/OverloadedStrings.hs for an example and
 -- https://gitlab.haskell.org/ghc/ghc/-/commit/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
 -- for the same change made to the IsString instance for lists.
-instance a ~ Char => IsString (DList a) where
+instance a ~ Char => IsString (DNonEmpty a) where
   {-# INLINE fromString #-}
   fromString = fromList
 
 -- CPP: GHC >= 7.8 for IsList
 #if __GLASGOW_HASKELL__ >= 708
-instance GHC.Exts.IsList (DList a) where
-  type Item (DList a) = a
+instance GHC.Exts.IsList (DNonEmpty a) where
+  type Item (DNonEmpty a) = a
 
   {-# INLINE fromList #-}
   fromList = fromList
@@ -641,7 +641,7 @@ instance GHC.Exts.IsList (DList a) where
 
 -- CPP: base >= 4.9 for Semigroup
 #if MIN_VERSION_base(4,9,0)
-instance Semigroup (DList a) where
+instance Semigroup (DNonEmpty a) where
   {-# INLINE (<>) #-}
   (<>) = append
 
@@ -649,6 +649,6 @@ instance Semigroup (DList a) where
   -- and we should get a lazy advantage. However, we prefer the error to be
   -- sourced here instead of 'stimesMonoid'.
   stimes n = case compare n 0 of
-    LT -> error "Data.DList.stimes: negative multiplier"
+    LT -> error "Data.DList.DNonEmpty.stimes: negative multiplier"
     _ -> stimesMonoid n
 #endif

@@ -12,9 +12,10 @@
 -- CPP: GHC >= 7.8 for Safe Haskell
 #if __GLASGOW_HASKELL__ >= 708
 
--- The 'Data.DList.Unsafe' module exports 'UnsafeDList' and 'unsafeApplyDList',
--- which allow breaking the invariant of the 'DList' newtype. Therefore, we
--- explicitly mark 'Data.DList.Unsafe' as unsafe.
+-- The 'Data.DList.DNonEmpty.Unsafe' module exports 'UnsafeDNonEmpty' and
+-- 'unsafeApplyDNonEmpty', which allow breaking the invariant of the 'DNonEmpty'
+-- newtype. Therefore, we explicitly mark 'Data.DList.DNonEmpty.Unsafe' as
+-- unsafe.
 {-# LANGUAGE Unsafe #-}
 #endif
 
@@ -29,12 +30,13 @@ License: BSD-3-Clause
 Maintainer: sean.leather@gmail.com
 Stability: stable
 
-This module exports the 'DList' constructor, 'UnsafeDList', and the record label,
-'unsafeApplyDList', both of which can be used to create unsafe 'DList' values
-that break the invariant preserved by the names exported from 'Data.DList'.
+This module exports the 'DNonEmpty' constructor, 'UnsafeDNonEmpty', and the
+record label, 'unsafeApplyDNonEmpty', both of which can be used to create unsafe
+'DNonEmpty' values that break the invariant preserved by the names exported from
+'Data.DList.DNonEmpty'.
 
 -}
 
-module Data.DList.DNonEmpty.Unsafe (DList (UnsafeDList, unsafeApplyDList)) where
+module Data.DList.DNonEmpty.Unsafe (DNonEmpty (UnsafeDNonEmpty, unsafeApplyDNonEmpty)) where
 
 import Data.DList.DNonEmpty.Internal

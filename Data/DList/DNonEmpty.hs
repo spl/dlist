@@ -13,10 +13,11 @@
 #if __GLASGOW_HASKELL__ >= 708
 {-
 
-The 'Data.DList' module imports the unsafe module 'Data.DList.Internal' but
-exports only its safe aspects. Specifically, it does not export the 'DList'
-constructor 'UnsafeDList' or record label 'unsafeApplyDList'. Therefore, we mark
-'Data.DList' as trustworthy.
+The 'Data.DList.DNonEmpty' module imports the unsafe module
+'Data.DList.DNonEmpty.Internal' but exports only its safe aspects. Specifically,
+it does not export the 'DNonEmpty' constructor 'UnsafeDNonEmpty' or record label
+'unsafeApplyDNonEmpty'. Therefore, we mark 'Data.DList.DNonEmpty' as
+trustworthy.
 
 -}
 {-# LANGUAGE Trustworthy #-}
@@ -35,15 +36,15 @@ Stability: stable
 
 A __difference list__ is an abstraction representing a list that
 supports&#x00A0;\(\mathcal{O}\)(@1@) 'append' and 'snoc' operations. This module
-provides the type for a difference list, 'DList', and a collection of supporting
-functions for (a) converting to and from lists and (b) operating on 'DList's
-efficiently.
+provides the type for a difference list, 'DNonEmpty', and a collection of
+supporting functions for (a) converting to and from lists and (b) operating on
+'DNonEmpty's efficiently.
 
 -}
 
 module Data.DList.DNonEmpty
   ( -- * Difference List Type
-    DList
+    DNonEmpty
 
 -- CPP: GHC >= 8 for pattern synonyms allowed in the constructor
 #if __GLASGOW_HASKELL__ >= 800
@@ -83,9 +84,9 @@ where
 
 -----------------------------------------------------------------------------
 
--- The 'Data.DList' module exists only to export names from
--- 'Data.DList.Internal'. Some names conflict with 'Prelude', so we hide all
--- imports from 'Prelude'.
+-- The 'Data.DList.DNonEmpty' module exists only to export names from
+-- 'Data.DList.DNonEmpty.Internal'. Some names conflict with 'Prelude', so we
+-- hide all imports from 'Prelude'.
 import Prelude ()
 
 import Data.DList.DNonEmpty.Internal
