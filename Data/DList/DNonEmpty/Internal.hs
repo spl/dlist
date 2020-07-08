@@ -46,11 +46,7 @@ module Data.DList.DNonEmpty.Internal where
 import Control.Monad.Fail (MonadFail(..))
 #endif
 
--- CPP: GHC >= 7.8 for IsList
-#if __GLASGOW_HASKELL__ >= 708
 import qualified GHC.Exts as Exts
-#endif
-
 import Data.Semigroup (sconcat)
 import qualified Control.Applicative as Applicative
 import Control.DeepSeq (NFData (..))
@@ -358,20 +354,14 @@ instance Foldable.Foldable DNonEmpty where
   {-# INLINE foldl1 #-}
   foldl1 f = Foldable.foldl1 f . toNonEmpty
 
--- CPP: GHC >= 7.6 for foldl', foldr' in Foldable
-#if __GLASGOW_HASKELL__ >= 706
   {-# INLINE foldl' #-}
   foldl' f x = Foldable.foldl' f x . toNonEmpty
 
   {-# INLINE foldr' #-}
   foldr' f x = Foldable.foldr' f x . toNonEmpty
-#endif
 
--- CPP: base >= 4.8 for toList in Foldable
-#if MIN_VERSION_base(4,8,0)
-  --{-# INLINE toList #-}
-  --toList = Data.DList.DNonEmpty.Internal.toList
-#endif
+  {-# INLINE toList #-}
+  toList = Exts.toList
 
 instance NFData a => NFData (DNonEmpty a) where
   {-# INLINE rnf #-}
@@ -385,8 +375,6 @@ instance a ~ Char => IsString (DNonEmpty a) where
   {-# INLINE fromString #-}
   fromString = Exts.fromList
 
--- CPP: GHC >= 7.8 for IsList
-#if __GLASGOW_HASKELL__ >= 708
 instance Exts.IsList (DNonEmpty a) where
   type Item (DNonEmpty a) = a
 
@@ -395,7 +383,6 @@ instance Exts.IsList (DNonEmpty a) where
 
   {-# INLINE toList #-}
   toList = DList.toList . toDList
-#endif
 
 instance Semigroup (DNonEmpty a) where
   {-# INLINE (<>) #-}
