@@ -23,7 +23,7 @@
 {-|
 
 Module: Data.DList.Unsafe
-Copyright: © 2020 Sean Leather
+Copyright: © 2006-2009 Don Stewart, 2013-2020 Sean Leather
 License: BSD-3-Clause
 
 Maintainer: sean.leather@gmail.com

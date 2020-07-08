@@ -1,7 +1,7 @@
 {-|
 
 Module: Data.DList.DNonEmpty
-Copyright: © 2006-2009 Don Stewart, 2013-2020 Sean Leather
+Copyright: © 2017-2020 Oleg Grenrus, 2020 Sean Leather
 License: BSD-3-Clause
 
 Maintainer: sean.leather@gmail.com
