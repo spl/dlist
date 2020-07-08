@@ -1,3 +1,5 @@
+{- ORMOLU_DISABLE -}
+
 -- Options passed to GHC
 {-# OPTIONS_GHC -O2 #-}
 -- Options passed to Haddock
@@ -23,28 +25,30 @@ This module includes everything related to 'DNonEmpty'. It is not directly expos
 to users of the 'dlist' package.
 
 -}
+{- ORMOLU_ENABLE -}
 
 module Data.DList.DNonEmpty.Internal where
 
 -----------------------------------------------------------------------------
 
-import qualified GHC.Exts as Exts
-import qualified Data.Semigroup as Semigroup
 import qualified Control.Applicative as Applicative
 import Control.DeepSeq (NFData (..))
+import Control.Monad as Monad
 import Data.DList (DList)
 import qualified Data.DList as DList
-import Control.Monad as Monad
 import qualified Data.Foldable as Foldable
 import Data.Function (on)
 import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
+import qualified Data.Semigroup as Semigroup
 import Data.String (IsString (..))
-import Prelude hiding (head, map, tail)
+import qualified GHC.Exts as Exts
 import qualified Text.Read as Read
+import Prelude hiding (head, map, tail)
 
 -----------------------------------------------------------------------------
 
+{- ORMOLU_DISABLE -}
 {-|
 
 A difference list is a function that, given a list, returns the original
@@ -72,11 +76,13 @@ flatten_writer = snd . runWriter . flatten
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 infixr 5 :|
 
 data DNonEmpty a = a :| DList a
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@fromList xs@__ is a 'DNonEmpty' representing the list __@xs@__.
@@ -105,11 +111,13 @@ More likely, you will convert from a list, perform some operation on the
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE fromNonEmpty #-}
 fromNonEmpty :: NonEmpty a -> DNonEmpty a
 fromNonEmpty ~(x NonEmpty.:| xs) = x :| DList.fromList xs
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@toList xs@__ is the list represented by __@xs@__.
@@ -127,6 +135,7 @@ underlying many 'DNonEmpty' functions ('append' in particular) used to construct
 construction.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE toNonEmpty #-}
 toNonEmpty :: DNonEmpty a -> NonEmpty a
@@ -135,6 +144,7 @@ toNonEmpty ~(x :| xs) = x NonEmpty.:| DList.toList xs
 toDList :: DNonEmpty a -> DList a
 toDList ~(x :| xs) = DList.cons x xs
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@singleton x@__ is a 'DNonEmpty' with the single element __@x@__.
@@ -146,11 +156,13 @@ __@singleton x@__ is a 'DNonEmpty' with the single element __@x@__.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE singleton #-}
 singleton :: a -> DNonEmpty a
 singleton x = x :| DList.empty
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@cons x xs@__ is a 'DNonEmpty' with the 'head' __@x@__ and the 'tail' __@xs@__.
@@ -164,6 +176,7 @@ __@cons x xs@__ is a 'DNonEmpty' with the 'head' __@x@__ and the 'tail' __@xs@__
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 infixr 9 `cons`
 
@@ -173,6 +186,7 @@ cons x ~(y :| ys) = x :| DList.cons y ys
 
 infixl 9 `snoc`
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@snoc xs x@__ is a 'DNonEmpty' with the initial 'DNonEmpty' __@xs@__ and the
@@ -191,11 +205,13 @@ side of the equality demonstrates a use of a left-nested append. This is the
 sort of inefficiency that @snoc@ on 'DNonEmpty's avoids.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE snoc #-}
 snoc :: DNonEmpty a -> a -> DNonEmpty a
 snoc ~(x :| xs) y = x :| DList.snoc xs y
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@append xs ys@__ is a 'DNonEmpty' obtained from the concatenation of the
@@ -214,11 +230,13 @@ side of the equality demonstrates a use of a left-nested append. This is the
 sort of inefficiency that @append@ on 'DNonEmpty's avoids.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE append #-}
 append :: DNonEmpty a -> DNonEmpty a -> DNonEmpty a
 append (x :| xs) ~(y :| ys) = x :| DList.append xs (DList.cons y ys)
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@head xs@__ is the first element of __@xs@__. If @xs@ is empty, an 'error' is
@@ -235,11 +253,13 @@ __head__ ('fromList' (x : xs)) = x
 Note that @head@ is implemented with 'list'.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE head #-}
 head :: DNonEmpty a -> a
 head ~(x :| _) = x
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@tail xs@__ is a 'DList' excluding the first element of __@xs@__. If @xs@ is
@@ -256,11 +276,13 @@ __tail__ ('fromList' (x : xs)) = xs
 Note that @tail@ is implemented with 'list'.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE tail #-}
 tail :: DNonEmpty a -> DList a
 tail ~(_ :| xs) = xs
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@unfoldr f z@__ is the 'DNonEmpty' constructed from the recursive application
@@ -276,6 +298,7 @@ some @z' : b@, @f z' == 'Nothing'@.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 unfoldr :: (b -> (a, Maybe b)) -> b -> DNonEmpty a
 unfoldr f z =
@@ -283,6 +306,7 @@ unfoldr f z =
     (x, Nothing) -> singleton x
     (x, Just z') -> cons x $ unfoldr f z'
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@map f xs@__ is the 'DNonEmpty' obtained by applying __@f@__ to each element
@@ -297,6 +321,7 @@ of __@xs@__.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE map #-}
 map :: (a -> b) -> DNonEmpty a -> DNonEmpty b
@@ -308,13 +333,12 @@ instance Eq a => Eq (DNonEmpty a) where
 instance Ord a => Ord (DNonEmpty a) where
   compare = compare `on` toNonEmpty
 
--- The 'Read' and 'Show' instances were adapted from 'Data.Sequence'.
-
 instance Read a => Read (DNonEmpty a) where
-  readPrec = Read.parens $ Read.prec 10 $ do
-    Read.Ident "fromNonEmpty" <- Read.lexP
-    dl <- Read.readPrec
-    return $ fromNonEmpty dl
+  readPrec = Read.parens $
+    Read.prec 10 $ do
+      Read.Ident "fromNonEmpty" <- Read.lexP
+      dl <- Read.readPrec
+      return $ fromNonEmpty dl
   readListPrec = Read.readListPrecDefault
 
 instance Show a => Show (DNonEmpty a) where
@@ -373,10 +397,15 @@ instance NFData a => NFData (DNonEmpty a) where
   {-# INLINE rnf #-}
   rnf = rnf . toNonEmpty
 
--- This is _not_ a flexible instance to allow certain uses of overloaded
--- strings. See tests/OverloadedStrings.hs for an example and
--- https://gitlab.haskell.org/ghc/ghc/-/commit/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
--- for the same change made to the IsString instance for lists.
+{-
+
+This is _not_ a flexible instance to allow certain uses of overloaded strings.
+See tests/OverloadedStrings.hs for an example and
+https://gitlab.haskell.org/ghc/ghc/-/commit/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
+for the same change made to the IsString instance for lists.
+
+-}
+
 instance a ~ Char => IsString (DNonEmpty a) where
   {-# INLINE fromString #-}
   fromString = Exts.fromList

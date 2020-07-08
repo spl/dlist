@@ -619,10 +619,15 @@ instance NFData a => NFData (DList a) where
   {-# INLINE rnf #-}
   rnf = rnf . toList
 
--- This is _not_ a flexible instance to allow certain uses of overloaded
--- strings. See tests/OverloadedStrings.hs for an example and
--- https://gitlab.haskell.org/ghc/ghc/-/commit/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
--- for the same change made to the IsString instance for lists.
+{-
+
+This is _not_ a flexible instance to allow certain uses of overloaded strings.
+See tests/OverloadedStrings.hs for an example and
+https://gitlab.haskell.org/ghc/ghc/-/commit/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
+for the same change made to the IsString instance for lists.
+
+-}
+
 instance a ~ Char => IsString (DList a) where
   {-# INLINE fromString #-}
   fromString = fromList
