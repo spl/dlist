@@ -47,7 +47,7 @@ import Control.Monad.Fail (MonadFail(..))
 #endif
 
 import qualified GHC.Exts as Exts
-import Data.Semigroup (sconcat)
+import qualified Data.Semigroup as Semigroup
 import qualified Control.Applicative as Applicative
 import Control.DeepSeq (NFData (..))
 import Data.DList (DList)
@@ -330,7 +330,7 @@ instance Applicative.Applicative DNonEmpty where
 
 instance Monad DNonEmpty where
   {-# INLINE (>>=) #-}
-  m >>= k = sconcat $ fmap k $ toNonEmpty m
+  m >>= k = Semigroup.sconcat $ fmap k $ toNonEmpty m
 
   {-# INLINE return #-}
   return = Applicative.pure
@@ -384,6 +384,6 @@ instance Exts.IsList (DNonEmpty a) where
   {-# INLINE toList #-}
   toList = DList.toList . toDList
 
-instance Semigroup (DNonEmpty a) where
+instance Semigroup.Semigroup (DNonEmpty a) where
   {-# INLINE (<>) #-}
   (<>) = append
