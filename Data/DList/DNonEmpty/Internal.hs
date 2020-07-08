@@ -41,15 +41,9 @@ module Data.DList.DNonEmpty.Internal where
 
 -----------------------------------------------------------------------------
 
--- CPP: base >= 4.9 for Semigroup and MonadFail
-#if MIN_VERSION_base(4,9,0)
-import Data.Semigroup (Semigroup(..), stimesMonoid)
-
 -- CPP: base < 4.13 for MonadFail not exported from Control.Monad
 #if !MIN_VERSION_base(4,13,0)
 import Control.Monad.Fail (MonadFail(..))
-#endif
-
 #endif
 
 -- CPP: GHC >= 7.8 for IsList
@@ -57,19 +51,17 @@ import Control.Monad.Fail (MonadFail(..))
 import qualified GHC.Exts as Exts
 #endif
 
+import Data.Semigroup (sconcat)
 import qualified Control.Applicative as Applicative
 import Control.DeepSeq (NFData (..))
 import Data.DList (DList)
 import qualified Data.DList as DList
 import Control.Monad as Monad
-import qualified Data.Monoid as Monoid
 import qualified Data.Foldable as Foldable
 import Data.Function (on)
-import qualified Data.List as List
 import Data.List.NonEmpty (NonEmpty (..))
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.String (IsString (..))
-import qualified Data.Traversable as Traversable
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
 import qualified Text.Read as Read
 
@@ -405,21 +397,6 @@ instance Exts.IsList (DNonEmpty a) where
   toList = DList.toList . toDList
 #endif
 
--- CPP: base >= 4.9 for Semigroup
-#if MIN_VERSION_base(4,9,0)
 instance Semigroup (DNonEmpty a) where
   {-# INLINE (<>) #-}
   (<>) = append
-
-{-
-
-  -- We use 'compare n 0' since the same expression is used in 'stimesMonoid'
-  -- and we should get a lazy advantage. However, we prefer the error to be
-  -- sourced here instead of 'stimesMonoid'.
-  stimes n = case compare n 0 of
-    LT -> error "Data.DList.DNonEmpty.stimes: negative multiplier"
-    _ -> stimesMonoid n
-
--}
-
-#endif
