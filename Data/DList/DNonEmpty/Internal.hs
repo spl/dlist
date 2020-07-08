@@ -221,6 +221,48 @@ append (x :| xs) (y :| ys) = x :| DList.append xs (DList.cons y ys)
 
 {-|
 
+__@head xs@__ is the first element of __@xs@__. If @xs@ is empty, an 'error' is
+raised.
+
+\(\mathcal{O}\)(@1@).
+
+@head@ obeys the law:
+
+@
+__head__ ('fromList' (x : xs)) = x
+@
+
+Note that @head@ is implemented with 'list'.
+
+-}
+
+{-# INLINE head #-}
+head :: DNonEmpty a -> a
+head ~(x :| _) = x
+
+{-|
+
+__@tail xs@__ is a 'DList' excluding the first element of __@xs@__. If @xs@ is
+empty, an 'error' is raised.
+
+\(\mathcal{O}\)(@'length' ('toList' xs)@).
+
+@tail@ obeys the law:
+
+@
+__tail__ ('fromList' (x : xs)) = xs
+@
+
+Note that @tail@ is implemented with 'list'.
+
+-}
+
+{-# INLINE tail #-}
+tail :: DNonEmpty a -> DList a
+tail ~(_ :| xs) = xs
+
+{-|
+
 __@unfoldr f z@__ is the 'DNonEmpty' constructed from the recursive application
 of __@f@__. The recursion starts with the seed value __@z@__ and ends when, for
 some @z' : b@, @f z' == 'Nothing'@.

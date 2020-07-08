@@ -28,6 +28,8 @@ module Data.DList.DNonEmpty
     cons,
     snoc,
     append,
+    head,
+    tail,
     unfoldr,
     map,
   )
