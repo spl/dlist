@@ -134,7 +134,7 @@ toNonEmpty :: DNonEmpty a -> NonEmpty a
 toNonEmpty (DNonEmpty x xs) = x :| DList.toList xs
 
 toDList :: DNonEmpty a -> DList a
-toDList (DNonEmpty x xs) = DList.cons x xs
+toDList ~(DNonEmpty x xs) = DList.cons x xs
 
 {-|
 
@@ -293,8 +293,9 @@ instance Applicative.Applicative DNonEmpty where
   (<*>) = ap
 
 instance Monad DNonEmpty where
-  {-# INLINE (>>=) #-}
-  m >>= k = Semigroup.sconcat $ fmap k $ toNonEmpty m
+  ~(DNonEmpty x xs) >>= k = DNonEmpty y $ DList.append ys $ xs >>= toDList . k
+    where
+      DNonEmpty y ys = k x
 
   {-# INLINE return #-}
   return = Applicative.pure
