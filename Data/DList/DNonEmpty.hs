@@ -9,20 +9,6 @@
 {-# LANGUAGE PatternSynonyms #-}
 #endif
 
--- CPP: GHC >= 7.8 for Safe Haskell
-#if __GLASGOW_HASKELL__ >= 708
-{-
-
-The 'Data.DList.DNonEmpty' module imports the unsafe module
-'Data.DList.DNonEmpty.Internal' but exports only its safe aspects. Specifically,
-it does not export the 'DNonEmpty' constructor 'UnsafeDNonEmpty' or record label
-'unsafeApplyDNonEmpty'. Therefore, we mark 'Data.DList.DNonEmpty' as
-trustworthy.
-
--}
-{-# LANGUAGE Trustworthy #-}
-#endif
-
 -----------------------------------------------------------------------------
 
 {-|

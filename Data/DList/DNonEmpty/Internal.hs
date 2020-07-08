@@ -18,12 +18,6 @@
 #if __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE PatternSynonyms #-}
 
--- The 'Data.DList.DNonEmpty.Internal' module exports 'UnsafeDNonEmpty' and
--- 'unsafeApplyDNonEmpty', which allow breaking the invariant of the 'DNonEmpty'
--- newtype. Therefore, we explicitly mark 'Data.DList.DNonEmpty.Internal' as
--- unsafe.
-{-# LANGUAGE Unsafe #-}
-
 {-# LANGUAGE ViewPatterns #-}
 #endif
 
@@ -65,8 +59,8 @@ import qualified GHC.Exts as Exts
 
 import qualified Control.Applicative as Applicative
 import Control.DeepSeq (NFData (..))
+import Data.DList (DList)
 import qualified Data.DList as DList
-import Data.DList.Unsafe
 import Control.Monad as Monad
 import qualified Data.Monoid as Monoid
 import qualified Data.Foldable as Foldable
@@ -109,9 +103,9 @@ flatten_writer = snd . runWriter . flatten
 
 -}
 
-data DNonEmpty a = UnsafeDNonEmpty {
-  unsafeDNonEmptyHead :: a,
-  unsafeDNonEmptyDList :: DList a
+data DNonEmpty a = DNonEmpty {
+  head :: a,
+  tail :: DList a
 }
 
 {-|
@@ -145,10 +139,7 @@ More likely, you will convert from a list, perform some operation on the
 
 {-# INLINE fromNonEmpty #-}
 fromNonEmpty :: NonEmpty a -> DNonEmpty a
-fromNonEmpty (x :| xs) = UnsafeDNonEmpty {
-  unsafeDNonEmptyHead = x,
-  unsafeDNonEmptyDList = DList.fromList xs
-}
+fromNonEmpty (x :| xs) = DNonEmpty x $ DList.fromList xs
 
 {-|
 
@@ -170,7 +161,7 @@ construction.
 
 {-# INLINE toNonEmpty #-}
 toNonEmpty :: DNonEmpty a -> NonEmpty a
-toNonEmpty (UnsafeDNonEmpty x xs) = x :| DList.toList xs
+toNonEmpty (DNonEmpty x xs) = x :| DList.toList xs
 
 -- CPP: GHC >= 7.8 for pattern synonyms
 #if __GLASGOW_HASKELL__ >= 708
@@ -191,7 +182,7 @@ pattern Cons x xs <- (toNonEmpty -> x :| xs)
 #endif
 
 toDList :: DNonEmpty a -> DList a
-toDList (UnsafeDNonEmpty x xs) = DList.cons x xs
+toDList (DNonEmpty x xs) = DList.cons x xs
 
 {-|
 
@@ -207,7 +198,7 @@ __@singleton x@__ is a 'DNonEmpty' with the single element __@x@__.
 
 {-# INLINE singleton #-}
 singleton :: a -> DNonEmpty a
-singleton x = UnsafeDNonEmpty x DList.empty
+singleton x = DNonEmpty x DList.empty
 
 {-|
 
@@ -227,7 +218,7 @@ infixr 9 `cons`
 
 {-# INLINE cons #-}
 cons :: a -> DNonEmpty a -> DNonEmpty a
-cons x (UnsafeDNonEmpty y ys) = UnsafeDNonEmpty x $ DList.cons y ys
+cons x (DNonEmpty y ys) = DNonEmpty x $ DList.cons y ys
 
 infixl 9 `snoc`
 
@@ -252,7 +243,7 @@ sort of inefficiency that @snoc@ on 'DNonEmpty's avoids.
 
 {-# INLINE snoc #-}
 snoc :: DNonEmpty a -> a -> DNonEmpty a
-snoc (UnsafeDNonEmpty x xs) y = UnsafeDNonEmpty x $ DList.snoc xs y
+snoc (DNonEmpty x xs) y = DNonEmpty x $ DList.snoc xs y
 
 {-|
 
@@ -275,49 +266,7 @@ sort of inefficiency that @append@ on 'DNonEmpty's avoids.
 
 {-# INLINE append #-}
 append :: DNonEmpty a -> DNonEmpty a -> DNonEmpty a
-append (UnsafeDNonEmpty x xs) (UnsafeDNonEmpty y ys) = UnsafeDNonEmpty x $ DList.append xs $ DList.cons y ys
-
-{-|
-
-__@head xs@__ is the first element of __@xs@__. If @xs@ is empty, an 'error' is
-raised.
-
-\(\mathcal{O}\)(@1@).
-
-@head@ obeys the law:
-
-@
-__head__ ('fromList' (x : xs)) = x
-@
-
-Note that @head@ is implemented with 'list'.
-
--}
-
-{-# INLINE head #-}
-head :: DNonEmpty a -> a
-head = NonEmpty.head . toNonEmpty
-
-{-|
-
-__@tail xs@__ is a 'DNonEmpty' excluding the first element of __@xs@__. If @xs@
-is empty, an 'error' is raised.
-
-\(\mathcal{O}\)(@'length' ('toList' xs)@).
-
-@tail@ obeys the law:
-
-@
-__tail__ ('fromList' (x : xs)) = xs
-@
-
-Note that @tail@ is implemented with 'list'.
-
--}
-
-{-# INLINE tail #-}
-tail :: DNonEmpty a -> [a]
-tail = NonEmpty.tail . toNonEmpty
+append (DNonEmpty x xs) (DNonEmpty y ys) = DNonEmpty x $ DList.append xs $ DList.cons y ys
 
 {-|
 
@@ -358,7 +307,7 @@ of __@xs@__.
 
 {-# INLINE map #-}
 map :: (a -> b) -> DNonEmpty a -> DNonEmpty b
-map f (UnsafeDNonEmpty x xs) = UnsafeDNonEmpty (f x) (DList.map f xs)
+map f (DNonEmpty x xs) = DNonEmpty (f x) (DList.map f xs)
 
 instance Eq a => Eq (DNonEmpty a) where
   (==) = (==) `on` toNonEmpty
@@ -453,7 +402,7 @@ instance Exts.IsList (DNonEmpty a) where
   fromList = fromNonEmpty . NonEmpty.fromList
 
   {-# INLINE toList #-}
-  toList = NonEmpty.toList . toNonEmpty
+  toList = DList.toList . toDList
 #endif
 
 -- CPP: base >= 4.9 for Semigroup

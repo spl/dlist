@@ -43,7 +43,6 @@ library
   exposed-modules:      Data.DList
                         Data.DList.Unsafe
                         Data.DList.DNonEmpty
-                        Data.DList.DNonEmpty.Unsafe
   other-modules:        Data.DList.Internal
                         Data.DList.DNonEmpty.Internal
   ghc-options:          -Wall
