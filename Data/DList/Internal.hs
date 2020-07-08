@@ -59,7 +59,7 @@ import Control.Monad.Fail (MonadFail(..))
 
 -- CPP: GHC >= 7.8 for IsList
 #if __GLASGOW_HASKELL__ >= 708
-import qualified GHC.Exts
+import qualified GHC.Exts as Exts
 #endif
 
 import qualified Control.Applicative as Applicative
@@ -259,7 +259,7 @@ infixr 9 `cons`
 
 {-# INLINE cons #-}
 cons :: a -> DList a -> DList a
-cons x xs = UnsafeDList ((x :) . unsafeApplyDList xs)
+cons x xs = UnsafeDList $ (x :) . unsafeApplyDList xs
 
 infixl 9 `snoc`
 
@@ -284,7 +284,7 @@ sort of inefficiency that @snoc@ on 'DList's avoids.
 
 {-# INLINE snoc #-}
 snoc :: DList a -> a -> DList a
-snoc xs x = UnsafeDList (unsafeApplyDList xs . (x :))
+snoc xs x = UnsafeDList $ unsafeApplyDList xs . (x :)
 
 {-|
 
@@ -307,7 +307,7 @@ sort of inefficiency that @append@ on 'DList's avoids.
 
 {-# INLINE append #-}
 append :: DList a -> DList a -> DList a
-append xs ys = UnsafeDList (unsafeApplyDList xs . unsafeApplyDList ys)
+append xs ys = UnsafeDList $ unsafeApplyDList xs . unsafeApplyDList ys
 
 {-|
 
@@ -438,7 +438,7 @@ unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
 unfoldr f z =
   case f z of
     Nothing -> empty
-    Just (x, z') -> cons x (unfoldr f z')
+    Just (x, z') -> cons x $ unfoldr f z'
 
 {-|
 
@@ -629,7 +629,7 @@ instance a ~ Char => IsString (DList a) where
 
 -- CPP: GHC >= 7.8 for IsList
 #if __GLASGOW_HASKELL__ >= 708
-instance GHC.Exts.IsList (DList a) where
+instance Exts.IsList (DList a) where
   type Item (DList a) = a
 
   {-# INLINE fromList #-}

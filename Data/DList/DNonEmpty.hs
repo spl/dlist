@@ -43,42 +43,34 @@ supporting functions for (a) converting to and from lists and (b) operating on
 -}
 
 module Data.DList.DNonEmpty
-  ( -- * Difference List Type
+  ( -- * Non-Empty Difference List Type
     DNonEmpty
 
 -- CPP: GHC >= 8 for pattern synonyms allowed in the constructor
 #if __GLASGOW_HASKELL__ >= 800
-    (Nil, Cons),
+    (Cons),
 #else
     ,
 -- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
 #if __GLASGOW_HASKELL__ >= 708
     -- ** Bundled Patterns
-    pattern Nil,
     pattern Cons,
 #endif
 #endif
 
     -- * Conversion
-    fromList,
-    toList,
-    apply,
+    fromNonEmpty,
+    toNonEmpty,
 
     -- * Basic Functions
-    empty,
     singleton,
     cons,
     snoc,
     append,
-    concat,
-    replicate,
-    list,
     head,
     tail,
     unfoldr,
-    foldr,
     map,
-    intercalate,
   )
 where
 

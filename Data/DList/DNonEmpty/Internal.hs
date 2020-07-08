@@ -60,16 +60,20 @@ import Control.Monad.Fail (MonadFail(..))
 
 -- CPP: GHC >= 7.8 for IsList
 #if __GLASGOW_HASKELL__ >= 708
-import qualified GHC.Exts
+import qualified GHC.Exts as Exts
 #endif
 
 import qualified Control.Applicative as Applicative
 import Control.DeepSeq (NFData (..))
+import qualified Data.DList as DList
+import Data.DList.Unsafe
 import Control.Monad as Monad
 import qualified Data.Monoid as Monoid
 import qualified Data.Foldable as Foldable
 import Data.Function (on)
 import qualified Data.List as List
+import Data.List.NonEmpty (NonEmpty (..))
+import qualified Data.List.NonEmpty as NonEmpty
 import Data.String (IsString (..))
 import qualified Data.Traversable as Traversable
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
@@ -105,7 +109,10 @@ flatten_writer = snd . runWriter . flatten
 
 -}
 
-newtype DNonEmpty a = UnsafeDNonEmpty {unsafeApplyDNonEmpty :: [a] -> [a]}
+data DNonEmpty a = UnsafeDNonEmpty {
+  unsafeDNonEmptyHead :: a,
+  unsafeDNonEmptyDList :: DList a
+}
 
 {-|
 
@@ -136,9 +143,12 @@ More likely, you will convert from a list, perform some operation on the
 
 -}
 
-{-# INLINE fromList #-}
-fromList :: [a] -> DNonEmpty a
-fromList = UnsafeDNonEmpty . (++)
+{-# INLINE fromNonEmpty #-}
+fromNonEmpty :: NonEmpty a -> DNonEmpty a
+fromNonEmpty (x :| xs) = UnsafeDNonEmpty {
+  unsafeDNonEmptyHead = x,
+  unsafeDNonEmptyDList = DList.fromList xs
+}
 
 {-|
 
@@ -158,9 +168,9 @@ construction.
 
 -}
 
-{-# INLINE toList #-}
-toList :: DNonEmpty a -> [a]
-toList = ($ []) . unsafeApplyDNonEmpty
+{-# INLINE toNonEmpty #-}
+toNonEmpty :: DNonEmpty a -> NonEmpty a
+toNonEmpty (UnsafeDNonEmpty x xs) = x :| DList.toList xs
 
 -- CPP: GHC >= 7.8 for pattern synonyms
 #if __GLASGOW_HASKELL__ >= 708
@@ -169,62 +179,19 @@ toList = ($ []) . unsafeApplyDNonEmpty
 
 {-|
 
-A unidirectional pattern synonym for 'empty'. This is implemented with 'toList'.
-
--}
-
-#if __GLASGOW_HASKELL__ >= 710
-pattern Nil :: DNonEmpty a
-#endif
-pattern Nil <- (toList -> [])
-
-{-|
-
-A unidirectional pattern synonym for 'cons'. This is implemented with 'toList'.
+A unidirectional pattern synonym for 'cons'. This is implemented with 'toNonEmpty'.
 
 -}
 
 #if __GLASGOW_HASKELL__ >= 710
 pattern Cons :: a -> [a] -> DNonEmpty a
 #endif
-pattern Cons x xs <- (toList -> x : xs)
+pattern Cons x xs <- (toNonEmpty -> x :| xs)
 
 #endif
 
-{-|
-
-__@apply xs ys@__ is the list represented by the __@xs@__ after appending
-__@ys@__ to it.
-
-\(\mathcal{O}\)(@1@).
-
-@apply@ obeys the law:
-
-@
-__apply__ ('fromList' xs) ys = xs '++' ys
-@
-
--}
-
-{-# INLINE apply #-}
-apply :: DNonEmpty a -> [a] -> [a]
-apply = unsafeApplyDNonEmpty
-
-{-|
-
-__@empty@__ is a 'DNonEmpty' with no elements.
-
-@empty@ obeys the law:
-
-@
-'toList' __empty__ = []
-@
-
--}
-
-{-# INLINE empty #-}
-empty :: DNonEmpty a
-empty = UnsafeDNonEmpty id
+toDList :: DNonEmpty a -> DList a
+toDList (UnsafeDNonEmpty x xs) = DList.cons x xs
 
 {-|
 
@@ -240,7 +207,7 @@ __@singleton x@__ is a 'DNonEmpty' with the single element __@x@__.
 
 {-# INLINE singleton #-}
 singleton :: a -> DNonEmpty a
-singleton = UnsafeDNonEmpty . (:)
+singleton x = UnsafeDNonEmpty x DList.empty
 
 {-|
 
@@ -260,7 +227,7 @@ infixr 9 `cons`
 
 {-# INLINE cons #-}
 cons :: a -> DNonEmpty a -> DNonEmpty a
-cons x xs = UnsafeDNonEmpty ((x :) . unsafeApplyDNonEmpty xs)
+cons x (UnsafeDNonEmpty y ys) = UnsafeDNonEmpty x $ DList.cons y ys
 
 infixl 9 `snoc`
 
@@ -285,7 +252,7 @@ sort of inefficiency that @snoc@ on 'DNonEmpty's avoids.
 
 {-# INLINE snoc #-}
 snoc :: DNonEmpty a -> a -> DNonEmpty a
-snoc xs x = UnsafeDNonEmpty (unsafeApplyDNonEmpty xs . (x :))
+snoc (UnsafeDNonEmpty x xs) y = UnsafeDNonEmpty x $ DList.snoc xs y
 
 {-|
 
@@ -308,74 +275,7 @@ sort of inefficiency that @append@ on 'DNonEmpty's avoids.
 
 {-# INLINE append #-}
 append :: DNonEmpty a -> DNonEmpty a -> DNonEmpty a
-append xs ys = UnsafeDNonEmpty (unsafeApplyDNonEmpty xs . unsafeApplyDNonEmpty ys)
-
-{-|
-
-__@concat xss@__ is a 'DNonEmpty' representing the concatenation of all
-'DNonEmpty's in the list __@xss@__.
-
-\(\mathcal{O}\)(@'length' xss@).
-
-@concat@ obeys the law:
-
-@
-'toList' (__concat__ xss) = 'List.concat' ('List.map' 'toList' xss)
-@
-
--}
-
-{-# INLINE concat #-}
-concat :: [DNonEmpty a] -> DNonEmpty a
-concat = List.foldr append empty
-
-{-|
-
-__@replicate n x@__ is a 'DNonEmpty' of length __@n@__ with __@x@__ as the value
-of every element.
-
-\(\mathcal{O}\)(@n@).
-
-@replicate@ obeys the law:
-
-@
-'toList' (__replicate__ n x) = 'List.replicate' n x
-@
-
--}
-
-{-# INLINE replicate #-}
-replicate :: Int -> a -> DNonEmpty a
-replicate n x = UnsafeDNonEmpty $ \xs ->
-  let go m
-        | m <= 0 = xs
-        | otherwise = x : go (m -1)
-   in go n
-
-{-|
-
-__@list nl cn xs@__ is the case elimination of __@xs@__. If @xs@ is empty, the
-result is __@nl@__. If @xs@ has the head @y@ and tail @ys@, the result is __@cn
-y ys@__.
-
-\(\mathcal{O}\)(@'List.length' ('toList' xs)@).
-
-@list@ obeys the law:
-
-@
-__list__ 'empty' 'cons' = 'id'
-@
-
-Note that @list@ uses 'toList' to get the represented list and 'fromList' to
-get the 'DNonEmpty' of the tail.
-
--}
-
-list :: b -> (a -> DNonEmpty a -> b) -> DNonEmpty a -> b
-list nl cn dl =
-  case toList dl of
-    [] -> nl
-    (x : xs) -> cn x (fromList xs)
+append (UnsafeDNonEmpty x xs) (UnsafeDNonEmpty y ys) = UnsafeDNonEmpty x $ DList.append xs $ DList.cons y ys
 
 {-|
 
@@ -396,7 +296,7 @@ Note that @head@ is implemented with 'list'.
 
 {-# INLINE head #-}
 head :: DNonEmpty a -> a
-head = list (error "Data.DList.DNonEmpty.head: empty DNonEmpty") const
+head = NonEmpty.head . toNonEmpty
 
 {-|
 
@@ -416,8 +316,8 @@ Note that @tail@ is implemented with 'list'.
 -}
 
 {-# INLINE tail #-}
-tail :: DNonEmpty a -> DNonEmpty a
-tail = list (error "Data.DList.DNonEmpty.tail: empty DNonEmpty") (flip const)
+tail :: DNonEmpty a -> [a]
+tail = NonEmpty.tail . toNonEmpty
 
 {-|
 
@@ -435,29 +335,11 @@ some @z' : b@, @f z' == 'Nothing'@.
 
 -}
 
-unfoldr :: (b -> Maybe (a, b)) -> b -> DNonEmpty a
+unfoldr :: (b -> (a, Maybe b)) -> b -> DNonEmpty a
 unfoldr f z =
   case f z of
-    Nothing -> empty
-    Just (x, z') -> cons x (unfoldr f z')
-
-{-|
-
-__@foldr f z xs@__ is the right-fold of __@f@__ over __@xs@__.
-
-\(\mathcal{O}\)(@'length' ('toList' xs)@).
-
-@foldr@ obeys the law:
-
-@
-__foldr__ f z xs = 'List.foldr' f z ('toList' xs)
-@
-
--}
-
-{-# INLINE foldr #-}
-foldr :: (a -> b -> b) -> b -> DNonEmpty a -> b
-foldr f z = List.foldr f z . toList
+    (x, Nothing) -> singleton x
+    (x, Just z') -> cons x $ unfoldr f z'
 
 {-|
 
@@ -476,53 +358,27 @@ of __@xs@__.
 
 {-# INLINE map #-}
 map :: (a -> b) -> DNonEmpty a -> DNonEmpty b
-map f = foldr (cons . f) empty
-
-{-|
-
-__@intercalate xs xss@__ is the concatenation of __@xss@__ after the insertion
-of __@xs@__ between every pair of elements.
-
-\(\mathcal{O}\)(@'length' xss@).
-
-@intercalate@ obeys the law:
-
-@
-'toList' (__intercalate__ xs xss) = 'List.intercalate' ('toList' xs) ('map' 'toList' xss)
-@
-
--}
-
-{-# INLINE intercalate #-}
-intercalate :: DNonEmpty a -> [DNonEmpty a] -> DNonEmpty a
-intercalate sep = concat . List.intersperse sep
+map f (UnsafeDNonEmpty x xs) = UnsafeDNonEmpty (f x) (DList.map f xs)
 
 instance Eq a => Eq (DNonEmpty a) where
-  (==) = (==) `on` toList
+  (==) = (==) `on` toNonEmpty
 
 instance Ord a => Ord (DNonEmpty a) where
-  compare = compare `on` toList
+  compare = compare `on` toNonEmpty
 
 -- The 'Read' and 'Show' instances were adapted from 'Data.Sequence'.
 
 instance Read a => Read (DNonEmpty a) where
   readPrec = Read.parens $ Read.prec 10 $ do
-    Read.Ident "fromList" <- Read.lexP
+    Read.Ident "fromNonEmpty" <- Read.lexP
     dl <- Read.readPrec
-    return (fromList dl)
+    return $ fromNonEmpty dl
   readListPrec = Read.readListPrecDefault
 
 instance Show a => Show (DNonEmpty a) where
   showsPrec p dl =
     showParen (p > 10) $
-      showString "fromList " . shows (toList dl)
-
-instance Monoid.Monoid (DNonEmpty a) where
-  {-# INLINE mempty #-}
-  mempty = empty
-
-  {-# INLINE mappend #-}
-  mappend = append
+      showString "fromNonEmpty " . shows (toNonEmpty dl)
 
 instance Functor DNonEmpty where
   {-# INLINE fmap #-}
@@ -535,89 +391,50 @@ instance Applicative.Applicative DNonEmpty where
   {-# INLINE (<*>) #-}
   (<*>) = ap
 
-instance Applicative.Alternative DNonEmpty where
-  {-# INLINE empty #-}
-  empty = empty
-
-  {-# INLINE (<|>) #-}
-  (<|>) = append
-
 instance Monad DNonEmpty where
   {-# INLINE (>>=) #-}
-  m >>= k =
-    -- = concat (toList (fmap k m))
-    -- = (concat . toList . fromList . List.map k . toList) m
-    -- = concat . List.map k . toList $ m
-    -- = List.foldr append empty . List.map k . toList $ m
-    -- = List.foldr (append . k) empty . toList $ m
-    foldr (append . k) empty m
+  m >>= k = sconcat $ fmap k $ toNonEmpty m
 
   {-# INLINE return #-}
   return = Applicative.pure
 
--- CPP: base < 4.13 for fail in Monad
-#if !MIN_VERSION_base(4,13,0)
-  {-# INLINE fail #-}
-  fail _ = empty
-#endif
-
--- CPP: base >= 4.9 for MonadFail
-#if MIN_VERSION_base(4,9,0)
-instance MonadFail DNonEmpty where
-  {-# INLINE fail #-}
-  fail _ = empty
-#endif
-
-instance MonadPlus DNonEmpty where
-  {-# INLINE mzero #-}
-  mzero = empty
-
-  {-# INLINE mplus #-}
-  mplus = append
-
 instance Foldable.Foldable DNonEmpty where
   {-# INLINE fold #-}
-  fold = Monoid.mconcat . toList
+  fold = Foldable.fold . toNonEmpty
 
   {-# INLINE foldMap #-}
-  foldMap f = Foldable.foldMap f . toList
+  foldMap f = Foldable.foldMap f . toNonEmpty
 
   {-# INLINE foldr #-}
-  foldr f x = List.foldr f x . toList
+  foldr f x = Foldable.foldr f x . toNonEmpty
 
   {-# INLINE foldl #-}
-  foldl f x = List.foldl f x . toList
+  foldl f x = Foldable.foldl f x . toNonEmpty
 
   {-# INLINE foldr1 #-}
-  foldr1 f = List.foldr1 f . toList
+  foldr1 f = Foldable.foldr1 f . toNonEmpty
 
   {-# INLINE foldl1 #-}
-  foldl1 f = List.foldl1 f . toList
+  foldl1 f = Foldable.foldl1 f . toNonEmpty
 
 -- CPP: GHC >= 7.6 for foldl', foldr' in Foldable
 #if __GLASGOW_HASKELL__ >= 706
   {-# INLINE foldl' #-}
-  foldl' f x = List.foldl' f x . toList
+  foldl' f x = Foldable.foldl' f x . toNonEmpty
 
   {-# INLINE foldr' #-}
-  foldr' f x = Foldable.foldr' f x . toList
+  foldr' f x = Foldable.foldr' f x . toNonEmpty
 #endif
 
 -- CPP: base >= 4.8 for toList in Foldable
 #if MIN_VERSION_base(4,8,0)
-  {-# INLINE toList #-}
-  toList = Data.DList.DNonEmpty.Internal.toList
+  --{-# INLINE toList #-}
+  --toList = Data.DList.DNonEmpty.Internal.toList
 #endif
-
-instance Traversable.Traversable DNonEmpty where
-  {-# INLINE traverse #-}
-  traverse f = foldr cons_f (Applicative.pure empty)
-    where
-      cons_f x = Applicative.liftA2 cons (f x)
 
 instance NFData a => NFData (DNonEmpty a) where
   {-# INLINE rnf #-}
-  rnf = rnf . toList
+  rnf = rnf . toNonEmpty
 
 -- This is _not_ a flexible instance to allow certain uses of overloaded
 -- strings. See tests/OverloadedStrings.hs for an example and
@@ -625,18 +442,18 @@ instance NFData a => NFData (DNonEmpty a) where
 -- for the same change made to the IsString instance for lists.
 instance a ~ Char => IsString (DNonEmpty a) where
   {-# INLINE fromString #-}
-  fromString = fromList
+  fromString = Exts.fromList
 
 -- CPP: GHC >= 7.8 for IsList
 #if __GLASGOW_HASKELL__ >= 708
-instance GHC.Exts.IsList (DNonEmpty a) where
+instance Exts.IsList (DNonEmpty a) where
   type Item (DNonEmpty a) = a
 
   {-# INLINE fromList #-}
-  fromList = fromList
+  fromList = fromNonEmpty . NonEmpty.fromList
 
   {-# INLINE toList #-}
-  toList = toList
+  toList = NonEmpty.toList . toNonEmpty
 #endif
 
 -- CPP: base >= 4.9 for Semigroup
@@ -645,10 +462,15 @@ instance Semigroup (DNonEmpty a) where
   {-# INLINE (<>) #-}
   (<>) = append
 
+{-
+
   -- We use 'compare n 0' since the same expression is used in 'stimesMonoid'
   -- and we should get a lazy advantage. However, we prefer the error to be
   -- sourced here instead of 'stimesMonoid'.
   stimes n = case compare n 0 of
     LT -> error "Data.DList.DNonEmpty.stimes: negative multiplier"
     _ -> stimesMonoid n
+
+-}
+
 #endif

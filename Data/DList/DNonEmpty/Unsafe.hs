@@ -37,6 +37,6 @@ record label, 'unsafeApplyDNonEmpty', both of which can be used to create unsafe
 
 -}
 
-module Data.DList.DNonEmpty.Unsafe (DNonEmpty (UnsafeDNonEmpty, unsafeApplyDNonEmpty)) where
+module Data.DList.DNonEmpty.Unsafe (DNonEmpty (UnsafeDNonEmpty, unsafeDNonEmptyHead, unsafeDNonEmptyDList)) where
 
 import Data.DList.DNonEmpty.Internal
