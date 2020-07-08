@@ -5,21 +5,8 @@
 
 -----------------------------------------------------------------------------
 
-{-# LANGUAGE CPP #-}
-
-#if !defined(__GLASGOW_HASKELL__)
-#error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
-#endif
-
 -- For the IsList and IsString instances
 {-# LANGUAGE TypeFamilies #-}
-
--- CPP: GHC >= 7.8 for pattern synonyms, Safe Haskell, view patterns
-#if __GLASGOW_HASKELL__ >= 708
-{-# LANGUAGE PatternSynonyms #-}
-
-{-# LANGUAGE ViewPatterns #-}
-#endif
 
 -----------------------------------------------------------------------------
 
@@ -41,11 +28,6 @@ module Data.DList.DNonEmpty.Internal where
 
 -----------------------------------------------------------------------------
 
--- CPP: base < 4.13 for MonadFail not exported from Control.Monad
-#if !MIN_VERSION_base(4,13,0)
-import Control.Monad.Fail (MonadFail(..))
-#endif
-
 import qualified GHC.Exts as Exts
 import qualified Data.Semigroup as Semigroup
 import qualified Control.Applicative as Applicative
@@ -55,10 +37,10 @@ import qualified Data.DList as DList
 import Control.Monad as Monad
 import qualified Data.Foldable as Foldable
 import Data.Function (on)
-import Data.List.NonEmpty (NonEmpty (..))
+import Data.List.NonEmpty (NonEmpty ((:|)))
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.String (IsString (..))
-import Prelude hiding (concat, foldr, head, map, replicate, tail)
+import Prelude hiding (head, map, tail)
 import qualified Text.Read as Read
 
 -----------------------------------------------------------------------------
@@ -150,24 +132,6 @@ construction.
 {-# INLINE toNonEmpty #-}
 toNonEmpty :: DNonEmpty a -> NonEmpty a
 toNonEmpty (DNonEmpty x xs) = x :| DList.toList xs
-
--- CPP: GHC >= 7.8 for pattern synonyms
-#if __GLASGOW_HASKELL__ >= 708
-
--- CPP: GHC >= 7.10 for pattern synonym signatures
-
-{-|
-
-A unidirectional pattern synonym for 'cons'. This is implemented with 'toNonEmpty'.
-
--}
-
-#if __GLASGOW_HASKELL__ >= 710
-pattern Cons :: a -> [a] -> DNonEmpty a
-#endif
-pattern Cons x xs <- (toNonEmpty -> x :| xs)
-
-#endif
 
 toDList :: DNonEmpty a -> DList a
 toDList (DNonEmpty x xs) = DList.cons x xs

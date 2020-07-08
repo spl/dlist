@@ -1,16 +1,3 @@
-{-# LANGUAGE CPP #-}
-
-#if !defined(__GLASGOW_HASKELL__)
-#error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
-#endif
-
--- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
-#if __GLASGOW_HASKELL__ >= 708 && __GLASGOW_HASKELL__ < 800
-{-# LANGUAGE PatternSynonyms #-}
-#endif
-
------------------------------------------------------------------------------
-
 {-|
 
 Module: Data.DList.DNonEmpty
@@ -30,19 +17,7 @@ supporting functions for (a) converting to and from lists and (b) operating on
 
 module Data.DList.DNonEmpty
   ( -- * Non-Empty Difference List Type
-    DNonEmpty
-
--- CPP: GHC >= 8 for pattern synonyms allowed in the constructor
-#if __GLASGOW_HASKELL__ >= 800
-    (Cons),
-#else
-    ,
--- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
-#if __GLASGOW_HASKELL__ >= 708
-    -- ** Bundled Patterns
-    pattern Cons,
-#endif
-#endif
+    DNonEmpty(head, tail),
 
     -- * Conversion
     fromNonEmpty,
@@ -53,8 +28,6 @@ module Data.DList.DNonEmpty
     cons,
     snoc,
     append,
-    head,
-    tail,
     unfoldr,
     map,
   )
