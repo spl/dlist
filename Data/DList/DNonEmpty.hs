@@ -17,7 +17,7 @@ supporting functions for (a) converting to and from lists and (b) operating on
 
 module Data.DList.DNonEmpty
   ( -- * Non-Empty Difference List Type
-    DNonEmpty(head, tail),
+    DNonEmpty((:|)),
 
     -- * Conversion
     fromNonEmpty,

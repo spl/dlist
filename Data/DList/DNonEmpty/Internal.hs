@@ -37,7 +37,7 @@ import qualified Data.DList as DList
 import Control.Monad as Monad
 import qualified Data.Foldable as Foldable
 import Data.Function (on)
-import Data.List.NonEmpty (NonEmpty ((:|)))
+import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.String (IsString (..))
 import Prelude hiding (head, map, tail)
@@ -73,10 +73,9 @@ flatten_writer = snd . runWriter . flatten
 
 -}
 
-data DNonEmpty a = DNonEmpty {
-  head :: a,
-  tail :: DList a
-}
+infixr 5 :|
+
+data DNonEmpty a = a :| DList a
 
 {-|
 
@@ -109,7 +108,7 @@ More likely, you will convert from a list, perform some operation on the
 
 {-# INLINE fromNonEmpty #-}
 fromNonEmpty :: NonEmpty a -> DNonEmpty a
-fromNonEmpty (x :| xs) = DNonEmpty x $ DList.fromList xs
+fromNonEmpty (x NonEmpty.:| xs) = x :| DList.fromList xs
 
 {-|
 
@@ -131,10 +130,10 @@ construction.
 
 {-# INLINE toNonEmpty #-}
 toNonEmpty :: DNonEmpty a -> NonEmpty a
-toNonEmpty (DNonEmpty x xs) = x :| DList.toList xs
+toNonEmpty (x :| xs) = x NonEmpty.:| DList.toList xs
 
 toDList :: DNonEmpty a -> DList a
-toDList ~(DNonEmpty x xs) = DList.cons x xs
+toDList ~(x :| xs) = DList.cons x xs
 
 {-|
 
@@ -150,7 +149,7 @@ __@singleton x@__ is a 'DNonEmpty' with the single element __@x@__.
 
 {-# INLINE singleton #-}
 singleton :: a -> DNonEmpty a
-singleton x = DNonEmpty x DList.empty
+singleton x = x :| DList.empty
 
 {-|
 
@@ -170,7 +169,7 @@ infixr 9 `cons`
 
 {-# INLINE cons #-}
 cons :: a -> DNonEmpty a -> DNonEmpty a
-cons x (DNonEmpty y ys) = DNonEmpty x $ DList.cons y ys
+cons x (y :| ys) = x :| DList.cons y ys
 
 infixl 9 `snoc`
 
@@ -195,7 +194,7 @@ sort of inefficiency that @snoc@ on 'DNonEmpty's avoids.
 
 {-# INLINE snoc #-}
 snoc :: DNonEmpty a -> a -> DNonEmpty a
-snoc (DNonEmpty x xs) y = DNonEmpty x $ DList.snoc xs y
+snoc (x :| xs) y = x :| DList.snoc xs y
 
 {-|
 
@@ -218,7 +217,7 @@ sort of inefficiency that @append@ on 'DNonEmpty's avoids.
 
 {-# INLINE append #-}
 append :: DNonEmpty a -> DNonEmpty a -> DNonEmpty a
-append (DNonEmpty x xs) (DNonEmpty y ys) = DNonEmpty x $ DList.append xs $ DList.cons y ys
+append (x :| xs) (y :| ys) = x :| DList.append xs (DList.cons y ys)
 
 {-|
 
@@ -259,7 +258,7 @@ of __@xs@__.
 
 {-# INLINE map #-}
 map :: (a -> b) -> DNonEmpty a -> DNonEmpty b
-map f (DNonEmpty x xs) = DNonEmpty (f x) (DList.map f xs)
+map f (x :| xs) = f x :| DList.map f xs
 
 instance Eq a => Eq (DNonEmpty a) where
   (==) = (==) `on` toNonEmpty
@@ -293,9 +292,9 @@ instance Applicative.Applicative DNonEmpty where
   (<*>) = ap
 
 instance Monad DNonEmpty where
-  ~(DNonEmpty x xs) >>= k = DNonEmpty y $ DList.append ys $ xs >>= toDList . k
+  ~(x :| xs) >>= k = y :| DList.append ys (xs >>= toDList . k)
     where
-      DNonEmpty y ys = k x
+      y :| ys = k x
 
   {-# INLINE return #-}
   return = Applicative.pure
