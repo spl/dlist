@@ -14,9 +14,12 @@ module OverloadedStrings (test) where
 
 --------------------------------------------------------------------------------
 
-import Data.DList
+import qualified Data.DList as DList
+import qualified Data.DList.DNonEmpty as DNonEmpty
 
 --------------------------------------------------------------------------------
 
 test :: IO ()
-test = print $ "OverloadedStrings:" `append` " success"
+test = do
+  print $ "OverloadedStrings for DList:     " `DList.append` "success"
+  print $ "OverloadedStrings for DNonEmpty: " `DNonEmpty.append` "success"

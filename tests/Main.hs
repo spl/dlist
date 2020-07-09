@@ -8,11 +8,13 @@ module Main (main) where
 --------------------------------------------------------------------------------
 
 import qualified DListProperties
+import qualified DNonEmptyProperties
 import qualified OverloadedStrings
 
 --------------------------------------------------------------------------------
 
 main :: IO ()
 main = do
-  OverloadedStrings.test
   DListProperties.test
+  DNonEmptyProperties.test
+  OverloadedStrings.test
