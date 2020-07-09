@@ -52,9 +52,10 @@ test-suite test
   type:                 exitcode-stdio-1.0
   main-is:              Main.hs
   other-modules:        DListProperties
-                        DNonEmptyProperties
                         OverloadedStrings
                         QuickCheckUtil
+  if impl(ghc > 8)
+    other-modules:      DNonEmptyProperties
   hs-source-dirs:       tests
   build-depends:        dlist,
                         base,

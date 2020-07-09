@@ -5,6 +5,10 @@
 --------------------------------------------------------------------------------
 
 {-# LANGUAGE CPP #-}
+
+#if !defined(__GLASGOW_HASKELL__)
+#error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
+#endif
 {- ORMOLU_ENABLE -}
 
 --------------------------------------------------------------------------------
@@ -14,8 +18,8 @@ module QuickCheckUtil where
 
 --------------------------------------------------------------------------------
 
--- CPP: base >= 4.9 for NonEmpty
-#if MIN_VERSION_base(4,9,0)
+-- CPP: GHC >= 8 for NonEmpty
+#if __GLASGOW_HASKELL__ >= 800
 import Control.Applicative (liftA2)
 import Data.List.NonEmpty (NonEmpty (..), nonEmpty)
 import Data.Maybe (mapMaybe)
@@ -32,8 +36,8 @@ eqOn c f g x = c x ==> f x == g x
 
 --------------------------------------------------------------------------------
 
--- CPP: base >= 4.9 for NonEmpty
-#if MIN_VERSION_base(4,9,0)
+-- CPP: GHC >= 8 for NonEmpty
+#if __GLASGOW_HASKELL__ >= 800
 
 {-
 
