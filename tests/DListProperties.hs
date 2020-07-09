@@ -1,5 +1,9 @@
+{- ORMOLU_DISABLE -}
+
 -- Options passed to GHC
 {-# OPTIONS_GHC -Wall #-}
+
+--------------------------------------------------------------------------------
 
 {-# LANGUAGE CPP #-}
 
@@ -17,6 +21,7 @@
 #if __GLASGOW_HASKELL__ == 708
 {-# LANGUAGE PatternSynonyms #-}
 #endif
+{- ORMOLU_ENABLE -}
 
 --------------------------------------------------------------------------------
 
@@ -34,11 +39,10 @@ import Data.List.NonEmpty (NonEmpty)
 import qualified Data.Semigroup as Semigroup
 #endif
 import qualified Data.Traversable as Traversable
+import QuickCheckUtil
 import Test.QuickCheck
 import Text.Show.Functions ()
-import QuickCheckUtil
 import Prelude hiding (concat, foldr, head, map, replicate, tail)
-
 
 --------------------------------------------------------------------------------
 
