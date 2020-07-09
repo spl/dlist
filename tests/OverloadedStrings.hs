@@ -1,8 +1,22 @@
-{-# LANGUAGE OverloadedStrings #-}
+{- ORMOLU_DISABLE -}
+-- Options passed to GHC
+{-# OPTIONS_GHC -Wall #-}
 
-module OverloadedStrings (testOverloadedStrings) where
+--------------------------------------------------------------------------------
+
+{-# LANGUAGE OverloadedStrings #-}
+{- ORMOLU_ENABLE -}
+
+--------------------------------------------------------------------------------
+
+-- | Tests using the OverloadedStrings language extension.
+module OverloadedStrings (test) where
+
+--------------------------------------------------------------------------------
 
 import Data.DList
 
-testOverloadedStrings :: IO ()
-testOverloadedStrings = print $ "OverloadedStrings:" `append` " success"
+--------------------------------------------------------------------------------
+
+test :: IO ()
+test = print $ "OverloadedStrings:" `append` " success"
