@@ -1,3 +1,5 @@
+{- ORMOLU_DISABLE -}
+
 -- Options passed to GHC
 {-# OPTIONS_GHC -O2 #-}
 -- Options passed to Haddock
@@ -16,14 +18,23 @@
 
 -- CPP: GHC >= 7.8 for pattern synonyms, Safe Haskell, view patterns
 #if __GLASGOW_HASKELL__ >= 708
+{- ORMOLU_ENABLE -}
+
 {-# LANGUAGE PatternSynonyms #-}
 
--- The 'Data.DList.Internal' module exports 'UnsafeDList' and
--- 'unsafeApplyDList', which allow breaking the invariant of the 'DList'
--- newtype. Therefore, we explicitly mark 'Data.DList.Internal' as unsafe.
+{-
+
+The 'Data.DList.Internal' module exports 'UnsafeDList' and 'unsafeApplyDList',
+which allow breaking the invariant of the 'DList' newtype. Therefore, we
+explicitly mark 'Data.DList.Internal' as unsafe.
+
+-}
+
 {-# LANGUAGE Unsafe #-}
 
 {-# LANGUAGE ViewPatterns #-}
+
+{- ORMOLU_DISABLE -}
 #endif
 
 -----------------------------------------------------------------------------
@@ -41,41 +52,40 @@ This module includes everything related to 'DList'. It is not directly exposed
 to users of the 'dlist' package.
 
 -}
+{- ORMOLU_ENABLE -}
 
 module Data.DList.Internal where
 
 -----------------------------------------------------------------------------
 
--- CPP: base >= 4.9 for Semigroup and MonadFail
+import qualified Control.Applicative as Applicative
+import Control.DeepSeq (NFData (..))
+import qualified Control.Monad as Monad
+-- CPP: base >= 4.9 for MonadFail
+-- CPP: base >= 4.13 for MonadFail exported from Control.Monad
+#if MIN_VERSION_base(4,9,0) && !MIN_VERSION_base(4,13,0)
+import qualified Control.Monad.Fail as Monad
+#endif
+import qualified Data.Foldable as Foldable
+import Data.Function (on)
+import qualified Data.List as List
+import qualified Data.Monoid as Monoid
+-- CPP: base >= 4.9 for Semigroup
 #if MIN_VERSION_base(4,9,0)
-import Data.Semigroup (Semigroup(..), stimesMonoid)
-
--- CPP: base < 4.13 for MonadFail not exported from Control.Monad
-#if !MIN_VERSION_base(4,13,0)
-import Control.Monad.Fail (MonadFail(..))
+import Data.Semigroup (Semigroup (..), stimesMonoid)
 #endif
-
-#endif
-
+import Data.String (IsString (..))
+import qualified Data.Traversable as Traversable
 -- CPP: GHC >= 7.8 for IsList
 #if __GLASGOW_HASKELL__ >= 708
 import qualified GHC.Exts as Exts
 #endif
-
-import qualified Control.Applicative as Applicative
-import Control.DeepSeq (NFData (..))
-import Control.Monad as Monad
-import qualified Data.Monoid as Monoid
-import qualified Data.Foldable as Foldable
-import Data.Function (on)
-import qualified Data.List as List
-import Data.String (IsString (..))
-import qualified Data.Traversable as Traversable
-import Prelude hiding (concat, foldr, head, map, replicate, tail)
 import qualified Text.Read as Read
+import Prelude hiding (concat, foldr, head, map, replicate, tail)
 
 -----------------------------------------------------------------------------
 
+{- ORMOLU_DISABLE -}
 {-|
 
 A difference list is a function that, given a list, returns the original
@@ -103,9 +113,11 @@ flatten_writer = snd . runWriter . flatten
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 newtype DList a = UnsafeDList {unsafeApplyDList :: [a] -> [a]}
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@fromList xs@__ is a 'DList' representing the list __@xs@__.
@@ -134,11 +146,13 @@ More likely, you will convert from a list, perform some operation on the
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE fromList #-}
 fromList :: [a] -> DList a
 fromList = UnsafeDList . (++)
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@toList xs@__ is the list represented by __@xs@__.
@@ -156,6 +170,7 @@ underlying many 'DList' functions ('append' in particular) used to construct
 construction.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE toList #-}
 toList :: DList a -> [a]
@@ -166,22 +181,26 @@ toList = ($ []) . unsafeApplyDList
 
 -- CPP: GHC >= 7.10 for pattern synonym signatures
 
+{- ORMOLU_DISABLE -}
 {-|
 
 A unidirectional pattern synonym for 'empty'. This is implemented with 'toList'.
 
 -}
+{- ORMOLU_ENABLE -}
 
 #if __GLASGOW_HASKELL__ >= 710
 pattern Nil :: DList a
 #endif
 pattern Nil <- (toList -> [])
 
+{- ORMOLU_DISABLE -}
 {-|
 
 A unidirectional pattern synonym for 'cons'. This is implemented with 'toList'.
 
 -}
+{- ORMOLU_ENABLE -}
 
 #if __GLASGOW_HASKELL__ >= 710
 pattern Cons :: a -> [a] -> DList a
@@ -190,6 +209,7 @@ pattern Cons x xs <- (toList -> x : xs)
 
 #endif
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@apply xs ys@__ is the list represented by the __@xs@__ after appending
@@ -204,11 +224,13 @@ __apply__ ('fromList' xs) ys = xs '++' ys
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE apply #-}
 apply :: DList a -> [a] -> [a]
 apply = unsafeApplyDList
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@empty@__ is a 'DList' with no elements.
@@ -220,11 +242,13 @@ __@empty@__ is a 'DList' with no elements.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE empty #-}
 empty :: DList a
 empty = UnsafeDList id
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@singleton x@__ is a 'DList' with the single element __@x@__.
@@ -236,11 +260,13 @@ __@singleton x@__ is a 'DList' with the single element __@x@__.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE singleton #-}
 singleton :: a -> DList a
 singleton = UnsafeDList . (:)
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@cons x xs@__ is a 'DList' with the 'head' __@x@__ and the 'tail' __@xs@__.
@@ -254,6 +280,7 @@ __@cons x xs@__ is a 'DList' with the 'head' __@x@__ and the 'tail' __@xs@__.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 infixr 9 `cons`
 
@@ -263,6 +290,7 @@ cons x xs = UnsafeDList $ (x :) . unsafeApplyDList xs
 
 infixl 9 `snoc`
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@snoc xs x@__ is a 'DList' with the initial 'DList' __@xs@__ and the last
@@ -281,11 +309,13 @@ side of the equality demonstrates a use of a left-nested append. This is the
 sort of inefficiency that @snoc@ on 'DList's avoids.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE snoc #-}
 snoc :: DList a -> a -> DList a
 snoc xs x = UnsafeDList $ unsafeApplyDList xs . (x :)
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@append xs ys@__ is a 'DList' obtained from the concatenation of the elements
@@ -304,11 +334,13 @@ side of the equality demonstrates a use of a left-nested append. This is the
 sort of inefficiency that @append@ on 'DList's avoids.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE append #-}
 append :: DList a -> DList a -> DList a
 append xs ys = UnsafeDList $ unsafeApplyDList xs . unsafeApplyDList ys
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@concat xss@__ is a 'DList' representing the concatenation of all 'DList's in
@@ -323,11 +355,13 @@ the list __@xss@__.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE concat #-}
 concat :: [DList a] -> DList a
 concat = List.foldr append empty
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@replicate n x@__ is a 'DList' of length __@n@__ with __@x@__ as the value of
@@ -342,6 +376,7 @@ every element.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE replicate #-}
 replicate :: Int -> a -> DList a
@@ -351,6 +386,7 @@ replicate n x = UnsafeDList $ \xs ->
         | otherwise = x : go (m -1)
    in go n
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@list nl cn xs@__ is the case elimination of __@xs@__. If @xs@ is empty, the
@@ -369,6 +405,7 @@ Note that @list@ uses 'toList' to get the represented list and 'fromList' to
 get the 'DList' of the tail.
 
 -}
+{- ORMOLU_ENABLE -}
 
 list :: b -> (a -> DList a -> b) -> DList a -> b
 list nl cn dl =
@@ -376,6 +413,7 @@ list nl cn dl =
     [] -> nl
     (x : xs) -> cn x (fromList xs)
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@head xs@__ is the first element of __@xs@__. If @xs@ is empty, an 'error' is
@@ -392,11 +430,13 @@ __head__ ('fromList' (x : xs)) = x
 Note that @head@ is implemented with 'list'.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE head #-}
 head :: DList a -> a
 head = list (error "Data.DList.head: empty DList") const
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@tail xs@__ is a 'DList' excluding the first element of __@xs@__. If @xs@ is
@@ -413,11 +453,13 @@ __tail__ ('fromList' (x : xs)) = xs
 Note that @tail@ is implemented with 'list'.
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE tail #-}
 tail :: DList a -> DList a
 tail = list (error "Data.DList.tail: empty DList") (flip const)
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@unfoldr f z@__ is the 'DList' constructed from the recursive application of
@@ -433,6 +475,7 @@ some @z' : b@, @f z' == 'Nothing'@.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 unfoldr :: (b -> Maybe (a, b)) -> b -> DList a
 unfoldr f z =
@@ -440,6 +483,7 @@ unfoldr f z =
     Nothing -> empty
     Just (x, z') -> cons x $ unfoldr f z'
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@foldr f z xs@__ is the right-fold of __@f@__ over __@xs@__.
@@ -453,11 +497,13 @@ __foldr__ f z xs = 'List.foldr' f z ('toList' xs)
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE foldr #-}
 foldr :: (a -> b -> b) -> b -> DList a -> b
 foldr f z = List.foldr f z . toList
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@map f xs@__ is the 'DList' obtained by applying __@f@__ to each element of
@@ -472,11 +518,13 @@ __@xs@__.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE map #-}
 map :: (a -> b) -> DList a -> DList b
 map f = foldr (cons . f) empty
 
+{- ORMOLU_DISABLE -}
 {-|
 
 __@intercalate xs xss@__ is the concatenation of __@xss@__ after the insertion
@@ -492,6 +540,7 @@ elements.
 @
 
 -}
+{- ORMOLU_ENABLE -}
 
 {-# INLINE intercalate #-}
 intercalate :: DList a -> [DList a] -> DList a
@@ -506,10 +555,11 @@ instance Ord a => Ord (DList a) where
 -- The 'Read' and 'Show' instances were adapted from 'Data.Sequence'.
 
 instance Read a => Read (DList a) where
-  readPrec = Read.parens $ Read.prec 10 $ do
-    Read.Ident "fromList" <- Read.lexP
-    dl <- Read.readPrec
-    return (fromList dl)
+  readPrec = Read.parens $
+    Read.prec 10 $ do
+      Read.Ident "fromList" <- Read.lexP
+      dl <- Read.readPrec
+      return (fromList dl)
   readListPrec = Read.readListPrecDefault
 
 instance Show a => Show (DList a) where
@@ -533,7 +583,7 @@ instance Applicative.Applicative DList where
   pure = singleton
 
   {-# INLINE (<*>) #-}
-  (<*>) = ap
+  (<*>) = Monad.ap
 
 instance Applicative.Alternative DList where
   {-# INLINE empty #-}
@@ -563,12 +613,12 @@ instance Monad DList where
 
 -- CPP: base >= 4.9 for MonadFail
 #if MIN_VERSION_base(4,9,0)
-instance MonadFail DList where
+instance Monad.MonadFail DList where
   {-# INLINE fail #-}
   fail _ = empty
 #endif
 
-instance MonadPlus DList where
+instance Monad.MonadPlus DList where
   {-# INLINE mzero #-}
   mzero = empty
 
