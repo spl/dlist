@@ -1,3 +1,5 @@
+{- ORMOLU_DISABLE -}
+
 {-# LANGUAGE CPP #-}
 
 #if !defined(__GLASGOW_HASKELL__)
@@ -40,22 +42,21 @@ functions for (a) converting to and from lists and (b) operating on 'DList's
 efficiently.
 
 -}
+{- ORMOLU_ENABLE -}
 
 module Data.DList
   ( -- * Difference List Type
-    DList
 
 -- CPP: GHC >= 8 for pattern synonyms allowed in the constructor
 #if __GLASGOW_HASKELL__ >= 800
-    (Nil, Cons),
-#else
-    ,
+    DList (Nil, Cons),
 -- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
-#if __GLASGOW_HASKELL__ >= 708
+#elif __GLASGOW_HASKELL__ >= 708
+    DList,
+
     -- ** Bundled Patterns
     pattern Nil,
     pattern Cons,
-#endif
 #endif
 
     -- * Conversion
@@ -83,9 +84,14 @@ where
 
 -----------------------------------------------------------------------------
 
--- The 'Data.DList' module exists only to export names from
--- 'Data.DList.Internal'. Some names conflict with 'Prelude', so we hide all
--- imports from 'Prelude'.
-import Prelude ()
-
 import Data.DList.Internal
+
+{- ORMOLU_DISABLE -}
+{-
+
+The 'Data.DList' module exists only to export names from 'Data.DList.Internal'.
+Some names conflict with 'Prelude', so we hide all imports from 'Prelude'.
+
+-}
+{- ORMOLU_ENABLE -}
+import Prelude ()

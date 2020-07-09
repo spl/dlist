@@ -13,7 +13,6 @@
 
 -- CPP: GHC >= 7.8 for Safe Haskell
 #if __GLASGOW_HASKELL__ >= 708
-
 {-
 
 The 'Data.DList.Unsafe' module exports 'UnsafeDList' and 'unsafeApplyDList',
@@ -21,7 +20,6 @@ which allow breaking the invariant of the 'DList' newtype. Therefore, we
 explicitly mark 'Data.DList.Unsafe' as unsafe.
 
 -}
-
 {-# LANGUAGE Unsafe #-}
 #endif
 

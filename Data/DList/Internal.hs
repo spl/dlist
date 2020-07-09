@@ -19,9 +19,7 @@
 -- CPP: GHC >= 7.8 for pattern synonyms, Safe Haskell, view patterns
 #if __GLASGOW_HASKELL__ >= 708
 {- ORMOLU_ENABLE -}
-
 {-# LANGUAGE PatternSynonyms #-}
-
 {-
 
 The 'Data.DList.Internal' module exports 'UnsafeDList' and 'unsafeApplyDList',
@@ -29,11 +27,8 @@ which allow breaking the invariant of the 'DList' newtype. Therefore, we
 explicitly mark 'Data.DList.Internal' as unsafe.
 
 -}
-
 {-# LANGUAGE Unsafe #-}
-
 {-# LANGUAGE ViewPatterns #-}
-
 {- ORMOLU_DISABLE -}
 #endif
 
