@@ -1,3 +1,5 @@
+{- ORMOLU_DISABLE -}
+
 -- Options passed to Haddock
 {-# OPTIONS_HADDOCK hide #-}
 
@@ -12,9 +14,14 @@
 -- CPP: GHC >= 7.8 for Safe Haskell
 #if __GLASGOW_HASKELL__ >= 708
 
--- The 'Data.DList.Unsafe' module exports 'UnsafeDList' and 'unsafeApplyDList',
--- which allow breaking the invariant of the 'DList' newtype. Therefore, we
--- explicitly mark 'Data.DList.Unsafe' as unsafe.
+{-
+
+The 'Data.DList.Unsafe' module exports 'UnsafeDList' and 'unsafeApplyDList',
+which allow breaking the invariant of the 'DList' newtype. Therefore, we
+explicitly mark 'Data.DList.Unsafe' as unsafe.
+
+-}
+
 {-# LANGUAGE Unsafe #-}
 #endif
 
@@ -34,6 +41,7 @@ This module exports the 'DList' constructor, 'UnsafeDList', and the record label
 that break the invariant preserved by the names exported from 'Data.DList'.
 
 -}
+{- ORMOLU_ENABLE -}
 
 module Data.DList.Unsafe (DList (UnsafeDList, unsafeApplyDList)) where
 
