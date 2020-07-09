@@ -1,3 +1,8 @@
+-- Options passed to GHC
+{-# OPTIONS_GHC -Wall #-}
+
+--------------------------------------------------------------------------------
+
 {-# LANGUAGE CPP #-}
 
 #if !defined(__GLASGOW_HASKELL__)
