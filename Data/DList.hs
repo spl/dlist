@@ -50,13 +50,16 @@ module Data.DList
 -- CPP: GHC >= 8 for pattern synonyms allowed in the constructor
 #if __GLASGOW_HASKELL__ >= 800
     DList (Nil, Cons),
--- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
-#elif __GLASGOW_HASKELL__ >= 708
+#else
     DList,
 
+-- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
+#if __GLASGOW_HASKELL__ >= 708
     -- ** Bundled Patterns
     pattern Nil,
     pattern Cons,
+#endif
+
 #endif
 
     -- * Conversion
