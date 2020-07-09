@@ -31,7 +31,7 @@ import qualified Data.List as List
 -- CPP: base >= 4.9 for NonEmpty, Semigroup
 #if MIN_VERSION_base(4,9,0)
 import Data.List.NonEmpty (NonEmpty)
-import Data.Semigroup (Semigroup (sconcat, stimes))
+import qualified Data.Semigroup as Semigroup
 #endif
 import qualified Data.Traversable as Traversable
 import Test.QuickCheck
@@ -135,14 +135,16 @@ prop_patterns xs = case fromList xs of
 #if MIN_VERSION_base(4,9,0)
 
 prop_Semigroup_append :: [Int] -> [Int] -> Bool
-prop_Semigroup_append xs ys = xs <> ys == toList (fromList xs <> fromList ys)
+prop_Semigroup_append xs ys =
+  xs Semigroup.<> ys == toList (fromList xs Semigroup.<> fromList ys)
 
 prop_Semigroup_sconcat :: NonEmpty [Int] -> Bool
-prop_Semigroup_sconcat xs = sconcat xs == toList (sconcat (fmap fromList xs))
+prop_Semigroup_sconcat xs =
+  Semigroup.sconcat xs == toList (Semigroup.sconcat (fmap fromList xs))
 
 prop_Semigroup_stimes :: Int -> [Int] -> Bool
 prop_Semigroup_stimes n xs =
-  n < 0 || stimes n xs == toList (stimes n (fromList xs))
+  n < 0 || Semigroup.stimes n xs == toList (Semigroup.stimes n (fromList xs))
 
 #endif
 
