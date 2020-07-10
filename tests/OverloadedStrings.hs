@@ -1,4 +1,3 @@
-{- ORMOLU_DISABLE -}
 {-# LANGUAGE CPP #-}
 
 #if !defined(__GLASGOW_HASKELL__)
@@ -6,7 +5,6 @@
 #endif
 
 {-# LANGUAGE OverloadedStrings #-}
-{- ORMOLU_ENABLE -}
 
 --------------------------------------------------------------------------------
 

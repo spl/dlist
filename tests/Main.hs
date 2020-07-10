@@ -1,10 +1,8 @@
-{- ORMOLU_DISABLE -}
 {-# LANGUAGE CPP #-}
 
 #if !defined(__GLASGOW_HASKELL__)
 #error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
 #endif
-{- ORMOLU_ENABLE -}
 
 --------------------------------------------------------------------------------
 
