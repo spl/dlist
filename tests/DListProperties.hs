@@ -27,7 +27,7 @@ module DListProperties (test) where
 import qualified Control.Applicative as Applicative
 import Data.DList
 import qualified Data.List as List
--- CPP: GHC >= 8 for DNonEmpty
+-- CPP: GHC >= 8 for NonEmpty, Semigroup
 #if __GLASGOW_HASKELL__ >= 800
 import Data.List.NonEmpty (NonEmpty)
 import qualified Data.Semigroup as Semigroup
@@ -129,7 +129,7 @@ prop_patterns xs = case fromList xs of
 
 #endif
 
--- CPP: GHC >= 8 for Semigroup, NonEmpty
+-- CPP: GHC >= 8 for NonEmpty, Semigroup
 #if __GLASGOW_HASKELL__ >= 800
 
 prop_Semigroup_append :: [Int] -> [Int] -> Bool
@@ -175,7 +175,7 @@ properties =
     ("IsList", property prop_IsList),
     ("patterns", property prop_patterns)
 #endif
--- CPP: GHC >= 8 for Semigroup
+-- CPP: GHC >= 8 for NonEmpty, Semigroup
 #if __GLASGOW_HASKELL__ >= 800
     ,
     ("Semigroup <>", property prop_Semigroup_append),
