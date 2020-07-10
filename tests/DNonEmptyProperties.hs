@@ -1,8 +1,3 @@
--- Options passed to GHC
-{-# OPTIONS_GHC -Wall #-}
-
---------------------------------------------------------------------------------
-
 -- | QuickCheck property tests for DNonEmpty.
 module DNonEmptyProperties (test) where
 

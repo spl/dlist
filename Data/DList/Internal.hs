@@ -1,5 +1,4 @@
 {- ORMOLU_DISABLE -}
-
 -- Options passed to GHC
 {-# OPTIONS_GHC -O2 #-}
 -- Options passed to Haddock

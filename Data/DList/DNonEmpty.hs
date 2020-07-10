@@ -1,3 +1,4 @@
+{- ORMOLU_DISABLE -}
 {-|
 
 Module: Data.DList.DNonEmpty
@@ -14,6 +15,7 @@ supporting functions for (a) converting to and from lists and (b) operating on
 'DNonEmpty's efficiently.
 
 -}
+{- ORMOLU_ENABLE -}
 
 module Data.DList.DNonEmpty
   ( -- * Non-Empty Difference List Type
@@ -38,9 +40,15 @@ where
 
 -----------------------------------------------------------------------------
 
--- The 'Data.DList.DNonEmpty' module exists only to export names from
--- 'Data.DList.DNonEmpty.Internal'. Some names conflict with 'Prelude', so we
--- hide all imports from 'Prelude'.
-import Prelude ()
-
 import Data.DList.DNonEmpty.Internal
+
+{- ORMOLU_DISABLE -}
+{-
+
+The 'Data.DList.DNonEmpty' module exists only to export names from
+'Data.DList.DNonEmpty.Internal'. Some names conflict with 'Prelude', so we hide
+all imports from 'Prelude'.
+
+-}
+{- ORMOLU_ENABLE -}
+import Prelude ()

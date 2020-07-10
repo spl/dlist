@@ -1,5 +1,4 @@
 {- ORMOLU_DISABLE -}
-
 {-# LANGUAGE CPP #-}
 
 #if !defined(__GLASGOW_HASKELL__)
