@@ -43,8 +43,8 @@ License: BSD-3-Clause
 Maintainer: sean.leather@gmail.com
 Stability: stable
 
-This module includes everything related to 'DList'. It is not directly exposed
-to users of the 'dlist' package.
+This module includes everything related to 'DList' and is not exposed to users
+of the @dlist@ package.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -67,7 +67,7 @@ import qualified Data.List as List
 import qualified Data.Monoid as Monoid
 -- CPP: base >= 4.9 for Semigroup
 #if MIN_VERSION_base(4,9,0)
-import Data.Semigroup (Semigroup (..), stimesMonoid)
+import qualified Data.Semigroup as Semigroup
 #endif
 import Data.String (IsString (..))
 import qualified Data.Traversable as Traversable
@@ -126,8 +126,8 @@ __fromList__ . 'toList' = 'id'
 
 This function is implemented with '++'. Repeated uses of @fromList@ are just as
 inefficient as repeated uses of '++'. If you find yourself doing some (possibly
-indirect) form of the following, you may not really be taking advantage of the
-'DList' representation and library:
+indirect) form of the following, you may not be taking advantage of the 'DList'
+representation and library:
 
 @
 __fromList__ . f . 'toList'
@@ -301,7 +301,7 @@ element __@x@__.
 
 Note that 'fromList' is implemented with '++', which means that the right-hand
 side of the equality demonstrates a use of a left-nested append. This is the
-sort of inefficiency that @snoc@ on 'DList's avoids.
+sort of inefficiency that @snoc@ avoids.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -326,7 +326,7 @@ of __@xs@__ and __@ys@__.
 
 Note that 'fromList' is implemented with '++', which means that the right-hand
 side of the equality demonstrates a use of a left-nested append. This is the
-sort of inefficiency that @append@ on 'DList's avoids.
+sort of inefficiency that @append@ avoids.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -666,8 +666,8 @@ instance NFData a => NFData (DList a) where
 
 {-
 
-This is _not_ a flexible instance to allow certain uses of overloaded strings.
-See tests/OverloadedStrings.hs for an example and
+The 'IsString' instance is _not_ a flexible instance to allow certain uses of
+overloaded strings. See tests/OverloadedStrings.hs for an example and
 https://gitlab.haskell.org/ghc/ghc/-/commit/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
 for the same change made to the IsString instance for lists.
 
@@ -689,16 +689,22 @@ instance Exts.IsList (DList a) where
   toList = toList
 #endif
 
+{-
+
+We use 'compare n 0' in the definition of 'Semigroup.stimes' since the same
+expression is used in 'Semigroup.stimesMonoid' and we should get a lazy
+advantage. However, we prefer the error to be sourced here instead of
+'Semigroup.stimesMonoid'.
+
+-}
+
 -- CPP: base >= 4.9 for Semigroup
 #if MIN_VERSION_base(4,9,0)
-instance Semigroup (DList a) where
+instance Semigroup.Semigroup (DList a) where
   {-# INLINE (<>) #-}
   (<>) = append
 
-  -- We use 'compare n 0' since the same expression is used in 'stimesMonoid'
-  -- and we should get a lazy advantage. However, we prefer the error to be
-  -- sourced here instead of 'stimesMonoid'.
   stimes n = case compare n 0 of
     LT -> error "Data.DList.stimes: negative multiplier"
-    _ -> stimesMonoid n
+    _ -> Semigroup.stimesMonoid n
 #endif

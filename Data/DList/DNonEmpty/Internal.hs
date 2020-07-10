@@ -1,7 +1,7 @@
 {- ORMOLU_DISABLE -}
 
 -- Options passed to GHC
-{-# OPTIONS_GHC -O2 #-}
+{-# OPTIONS_GHC -O2 -Wall #-}
 -- Options passed to Haddock
 {-# OPTIONS_HADDOCK hide #-}
 
@@ -21,8 +21,8 @@ License: BSD-3-Clause
 Maintainer: sean.leather@gmail.com
 Stability: stable
 
-This module includes everything related to 'DNonEmpty'. It is not directly exposed
-to users of the 'dlist' package.
+This module includes everything related to 'DNonEmpty' and is not exposed to
+users of the @dlist@ package.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -51,29 +51,13 @@ import Prelude hiding (head, map, tail)
 {- ORMOLU_DISABLE -}
 {-|
 
-A difference list is a function that, given a list, returns the original
-contents of the difference list prepended to the given list.
+A non-empty (and non-strict) difference list is a pair of a 'head' element and a
+possibly empty 'DList'.
 
-This structure supports&#x00A0;\(\mathcal{O}\)(@1@) 'append' and 'snoc'
-operations on lists, making it useful for replacing frequent applications of
-'++' such as logging and pretty printing (esp. if those uses of '++' are
-left-nested).
-
-Here is an example using @DNonEmpty@ as the state type when printing a tree with
-the @Writer@ monad:
-
-@
-import Control.Monad.Writer
-import Data.DList.DNonEmpty
-
-data Tree a = Leaf a | Branch (Tree a) (Tree a)
-
-flatten_writer :: Tree x -> DNonEmpty x
-flatten_writer = snd . runWriter . flatten
-  where
-    flatten (Leaf x)     = tell (singleton x)
-    flatten (Branch x y) = flatten x >> flatten y
-@
+Like 'DList', @DNonEmpty@ supports&#x00A0;\(\mathcal{O}\)(@1@) 'append' and
+'snoc' operations, making it useful for replacing frequent applications of
+'Semigroup.<>', especially if those uses are left-nested (e.g.&#x00A0;@(a
+__'Semigroup.<>'__ b) 'Semigroup.<>' c@ ).
 
 -}
 {- ORMOLU_ENABLE -}
@@ -85,29 +69,29 @@ data DNonEmpty a = a :| DList a
 {- ORMOLU_DISABLE -}
 {-|
 
-__@fromList xs@__ is a 'DNonEmpty' representing the list __@xs@__.
+__@fromNonEmpty xs@__ is a 'DNonEmpty' representing the 'NonEmpty' __@xs@__.
 
-@fromList@ obeys the laws:
-
-@
-'toList' . __fromList__ = 'id'
-__fromList__ . 'toList' = 'id'
-@
-
-This function is implemented with '++'. Repeated uses of @fromList@ are just as
-inefficient as repeated uses of '++'. If you find yourself doing some (possibly
-indirect) form of the following, you may not really be taking advantage of the
-'DNonEmpty' representation and library:
+@fromNonEmpty@ obeys the laws:
 
 @
-__fromList__ . f . 'toList'
+'toNonEmpty' . __fromNonEmpty__ = 'id'
+__fromNonEmpty__ . 'toNonEmpty' = 'id'
 @
 
-More likely, you will convert from a list, perform some operation on the
-'DNonEmpty', and convert back to a list:
+As with 'DList.fromList', this function is implemented with '++'. Repeated uses
+of @fromNonEmpty@ are just as inefficient as repeated uses of '++'. If you find
+yourself doing some (possibly indirect) form of the following, you may not be
+taking advantage of the 'DNonEmpty' representation and library:
 
 @
-'toList' . g . __fromList__
+__fromNonEmpty__ . f . 'toNonEmpty'
+@
+
+More likely, you will convert from a 'NonEmpty', perform some operation on the
+'DNonEmpty', and convert back to a 'NonEmpty':
+
+@
+'toNonEmpty' . g . __fromNonEmpty__
 @
 
 -}
@@ -120,19 +104,19 @@ fromNonEmpty ~(x NonEmpty.:| xs) = x :| DList.fromList xs
 {- ORMOLU_DISABLE -}
 {-|
 
-__@toList xs@__ is the list represented by __@xs@__.
+__@toNonEmpty xs@__ is the 'NonEmpty' represented by __@xs@__.
 
-@toList@ obeys the laws:
+@toNonEmpty@ obeys the laws:
 
 @
-__toList__ . 'fromList' = 'id'
-'fromList' . __toList__ = 'id'
+__toNonEmpty__ . 'fromNonEmpty' = 'id'
+'fromNonEmpty' . __toNonEmpty__ = 'id'
 @
 
-Evaluating @toList xs@ may “collapse” the chain of function composition
-underlying many 'DNonEmpty' functions ('append' in particular) used to construct
-@xs@. This may affect any efficiency you achieved due to laziness in the
-construction.
+As with 'DList.toList', evaluating @toNonEmpty xs@ may “collapse” the chain of
+function composition underlying many 'DList' functions ('DList.append' in
+particular) used to construct the 'tail' of @xs@. This may affect any efficiency
+you achieved due to laziness in the construction.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -140,6 +124,20 @@ construction.
 {-# INLINE toNonEmpty #-}
 toNonEmpty :: DNonEmpty a -> NonEmpty a
 toNonEmpty ~(x :| xs) = x NonEmpty.:| DList.toList xs
+
+{- ORMOLU_DISABLE -}
+{-|
+
+__@toDList xs@__ is the non-empty 'DList' represented by __@xs@__.
+
+@toDList@ obeys the law:
+
+@
+__toDList__ (x ':|' xs) = 'DList.cons' x xs
+@
+
+-}
+{- ORMOLU_ENABLE -}
 
 toDList :: DNonEmpty a -> DList a
 toDList ~(x :| xs) = DList.cons x xs
@@ -152,7 +150,7 @@ __@singleton x@__ is a 'DNonEmpty' with the single element __@x@__.
 @singleton@ obeys the law:
 
 @
-'toList' (__singleton__ x) = [x]
+'toNonEmpty' (__singleton__ x) = x 'NonEmpty.:|' []
 @
 
 -}
@@ -172,7 +170,7 @@ __@cons x xs@__ is a 'DNonEmpty' with the 'head' __@x@__ and the 'tail' __@xs@__
 @cons@ obeys the law:
 
 @
-'toList' (__cons__ x xs) = x : 'fromList' xs
+'toNonEmpty' (__cons__ x xs) = x 'NonEmpty.:|' 'fromNonEmpty' xs
 @
 
 -}
@@ -197,12 +195,12 @@ last element __@x@__.
 @snoc@ obeys the law:
 
 @
-'toList' (__snoc__ xs x) = 'fromList' xs '++' [x]
+'toNonEmpty' (__snoc__ xs x) = 'fromNonEmpty' xs 'Semigroup.<>' ('NonEmpty' x 'NonEmpty.:|' [])
 @
 
-Note that 'fromList' is implemented with '++', which means that the right-hand
-side of the equality demonstrates a use of a left-nested append. This is the
-sort of inefficiency that @snoc@ on 'DNonEmpty's avoids.
+Note that 'fromNonEmpty' is implemented with '++', which means that the
+right-hand side of the equality demonstrates a use of a left-nested append. This
+is the sort of inefficiency that @snoc@ avoids.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -222,12 +220,12 @@ elements of __@xs@__ and __@ys@__.
 @append@ obeys the law:
 
 @
-'toList' (__append__ xs ys) = 'fromList' xs '++' 'fromList' ys
+'toNonEmpty' (__append__ xs ys) = 'fromNonEmpty' xs 'Semigroup.<>' 'fromNonEmpty' ys
 @
 
-Note that 'fromList' is implemented with '++', which means that the right-hand
-side of the equality demonstrates a use of a left-nested append. This is the
-sort of inefficiency that @append@ on 'DNonEmpty's avoids.
+Note that 'fromNonEmpty' is implemented with '++', which means that the
+right-hand side of the equality demonstrates a use of a left-nested append. This
+is the sort of inefficiency that @append@ avoids.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -239,18 +237,15 @@ append (x :| xs) ~(y :| ys) = x :| DList.append xs (DList.cons y ys)
 {- ORMOLU_DISABLE -}
 {-|
 
-__@head xs@__ is the first element of __@xs@__. If @xs@ is empty, an 'error' is
-raised.
+__@head xs@__ is the first element of __@xs@__.
 
 \(\mathcal{O}\)(@1@).
 
 @head@ obeys the law:
 
 @
-__head__ ('fromList' (x : xs)) = x
+__head__ (x ':|' xs) = x
 @
-
-Note that @head@ is implemented with 'list'.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -262,18 +257,15 @@ head ~(x :| _) = x
 {- ORMOLU_DISABLE -}
 {-|
 
-__@tail xs@__ is a 'DList' excluding the first element of __@xs@__. If @xs@ is
-empty, an 'error' is raised.
+__@tail xs@__ is a 'DList' excluding the first element of __@xs@__.
 
-\(\mathcal{O}\)(@'length' ('toList' xs)@).
+\(\mathcal{O}\)(@1@).
 
 @tail@ obeys the law:
 
 @
-__tail__ ('fromList' (x : xs)) = xs
+__tail__ (x ':|' xs) = xs
 @
-
-Note that @tail@ is implemented with 'list'.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -289,12 +281,12 @@ __@unfoldr f z@__ is the 'DNonEmpty' constructed from the recursive application
 of __@f@__. The recursion starts with the seed value __@z@__ and ends when, for
 some @z' : b@, @f z' == 'Nothing'@.
 
-\(\mathcal{O}\)(@'length' ('List.unfoldr' f z)@).
+\(\mathcal{O}\)(@'NonEmpty.length' ('NonEmpty.unfoldr' f z)@).
 
 @unfoldr@ obeys the law:
 
 @
-'toList' (__unfoldr__ f z) = 'List.unfoldr' f z
+'toNonEmpty' (__unfoldr__ f z) = 'NonEmpty.unfoldr' f z
 @
 
 -}
@@ -312,12 +304,12 @@ unfoldr f z =
 __@map f xs@__ is the 'DNonEmpty' obtained by applying __@f@__ to each element
 of __@xs@__.
 
-\(\mathcal{O}\)(@'length' ('toList' xs)@).
+\(\mathcal{O}\)(@'NonEmpty.length' ('toNonEmpty' xs)@).
 
 @map@ obeys the law:
 
 @
-'toList' (__map__ f xs) = 'List.map' f ('toList' xs)
+'toNonEmpty' (__map__ f xs) = 'NonEmpty.map' f ('toNonEmpty' xs)
 @
 
 -}
@@ -399,8 +391,8 @@ instance NFData a => NFData (DNonEmpty a) where
 
 {-
 
-This is _not_ a flexible instance to allow certain uses of overloaded strings.
-See tests/OverloadedStrings.hs for an example and
+The 'IsString' instance is _not_ a flexible instance to allow certain uses of
+overloaded strings. See tests/OverloadedStrings.hs for an example and
 https://gitlab.haskell.org/ghc/ghc/-/commit/b225b234a6b11e42fef433dcd5d2a38bb4b466bf
 for the same change made to the IsString instance for lists.
 
