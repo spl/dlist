@@ -1,8 +1,4 @@
--- Options passed to GHC
-{-# OPTIONS_GHC -Wall #-}
-
---------------------------------------------------------------------------------
-
+{- ORMOLU_DISABLE -}
 {-# LANGUAGE CPP #-}
 
 #if !defined(__GLASGOW_HASKELL__)
@@ -31,6 +27,7 @@ Run this test in the top-level directory with the following command:
 > ! ghc tests/ImportUnsafe.hs
 
 -}
+{- ORMOLU_ENABLE -}
 
 module ImportUnsafe (main) where
 

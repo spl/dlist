@@ -1,8 +1,4 @@
--- Options passed to GHC
-{-# OPTIONS_GHC -Wall #-}
-
---------------------------------------------------------------------------------
-
+-- | Test runner.
 module Main (main) where
 
 --------------------------------------------------------------------------------
@@ -14,5 +10,5 @@ import qualified OverloadedStrings
 
 main :: IO ()
 main = do
-  OverloadedStrings.test
   DListProperties.test
+  OverloadedStrings.test
