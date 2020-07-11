@@ -36,6 +36,11 @@ eqOn c f g x = c x ==> f x == g x
 
 --------------------------------------------------------------------------------
 
+quickCheckLabeledProperties :: [(String, Property)] -> IO ()
+quickCheckLabeledProperties = quickCheck . conjoin . map (uncurry label)
+
+--------------------------------------------------------------------------------
+
 -- CPP: GHC >= 8 for NonEmpty
 #if __GLASGOW_HASKELL__ >= 800
 
