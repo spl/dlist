@@ -63,3 +63,4 @@ test-suite test
                         -- base-4.9 (ghc-8) without the Arbitrary NonEmpty
                         -- instance, which we include ourselves.
                         QuickCheck >= 2.10 && < 2.15
+  ghc-options:          -Wall

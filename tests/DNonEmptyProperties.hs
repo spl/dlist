@@ -6,7 +6,6 @@ module DNonEmptyProperties (test) where
 import qualified Control.Applicative as Applicative
 import qualified Data.DList as DList
 import Data.DList.DNonEmpty
-import qualified Data.List as List
 import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
 import qualified Data.Semigroup as Semigroup
