@@ -32,7 +32,7 @@ module Data.DList.DNonEmpty.Internal where
 
 import qualified Control.Applicative as Applicative
 import Control.DeepSeq (NFData (..))
-import Control.Monad as Monad
+import qualified Control.Monad as Monad
 import Data.DList (DList)
 import qualified Data.DList as DList
 import qualified Data.Foldable as Foldable
@@ -360,7 +360,7 @@ instance Applicative.Applicative DNonEmpty where
   pure = singleton
 
   {-# INLINE (<*>) #-}
-  (<*>) = ap
+  (<*>) = Monad.ap
 
 instance Monad DNonEmpty where
   ~(x :| xs) >>= k = y :| DList.append ys (xs >>= toDList . k)
