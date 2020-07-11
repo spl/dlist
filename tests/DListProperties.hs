@@ -185,4 +185,4 @@ properties =
   ]
 
 test :: IO ()
-test = quickCheck $ conjoin $ List.map (uncurry label) properties
+test = quickCheckLabeledProperties properties
