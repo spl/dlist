@@ -51,12 +51,26 @@ import Prelude hiding (head, map, tail)
 {-|
 
 A non-empty difference list is a pair of a 'head' element and a (possibly empty)
-'DList'.
+difference list.
 
-Like 'DList', @DNonEmpty@ supports&#x00A0;\(\mathcal{O}\)(@1@) 'append' and
-'snoc' operations, making it useful for replacing frequent applications of
-'Semigroup.<>', especially if those uses are left-nested (e.g.&#x00A0;@(a
-__'Semigroup.<>'__ b) 'Semigroup.<>' c@ ).
+Just as 'DList' is a representation of a list, so is @DNonEmpty@ a
+representation of a 'NonEmpty'. @DNonEmpty@ supports&#x00A0;\(\mathcal{O}\)(@1@)
+'append' and 'snoc' operations, making it useful for replacing frequent
+applications of 'Semigroup.<>' on 'NonEmpty' (which is implemented with '++'),
+especially if those uses are left-nested (e.g.&#x00A0;@(a __'Semigroup.<>'__ b)
+'Semigroup.<>' c@ ).
+
+Unlike 'DList', @DNonEmpty@ is not an abstract type: its constructor is
+exported. An alternative definition of @DNonEmpty@ is:
+
+@
+newtype DNonEmpty a = DNonEmpty ([a] -> 'NonEmpty' a)
+@
+
+This type would need to be abstract to avoid producing @DNonEmpty@ values that
+are not isomorphic to 'NonEmpty' values. However, this type would also require
+some functions (such as 'map') to be implemented with 'fromNonEmpty' (and thus
+'++'), which could introduce efficiencies.
 
 -}
 {- ORMOLU_ENABLE -}

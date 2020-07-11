@@ -1,4 +1,15 @@
 {- ORMOLU_DISABLE -}
+{-# LANGUAGE CPP #-}
+
+-----------------------------------------------------------------------------
+
+-- CPP: Ignore unused imports when Haddock is run
+#if defined(__HADDOCK_VERSION__)
+{-# OPTIONS_GHC -Wno-unused-imports #-}
+#endif
+
+-----------------------------------------------------------------------------
+
 {-|
 
 Module: Data.DList.DNonEmpty
@@ -9,7 +20,7 @@ Maintainer: sean.leather@gmail.com
 Stability: stable
 
 A __non-empty difference list__ is a difference list paired with a 'head'
-element. Like a difference list, it supports&#x00A0;\(\mathcal{O}\)(@1@)
+element. Like the difference list, it supports&#x00A0;\(\mathcal{O}\)(@1@)
 'append' and 'snoc' operations.
 
 This module provides the type for a non-empty difference list, 'DNonEmpty', and
@@ -44,6 +55,12 @@ where
 -----------------------------------------------------------------------------
 
 import Data.DList.DNonEmpty.Internal
+
+-- CPP: Import only for Haddock
+#if defined(__HADDOCK_VERSION__)
+import Data.List.NonEmpty (NonEmpty)
+import Data.DList.Unsafe (DList)
+#endif
 
 {- ORMOLU_DISABLE -}
 {-
