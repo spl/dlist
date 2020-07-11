@@ -10,7 +10,7 @@ license:                BSD3
 license-file:           license.md
 author:                 Don Stewart
 maintainer:             Sean Leather <sean.leather@gmail.com>
-copyright:              2006-2009 Don Stewart, 2013-2020 Sean Leather, contributors
+copyright:              2006-2009 Don Stewart, 2013-2020 Sean Leather, 2017-2020 Oleg Grenrus, contributors
 homepage:               https://github.com/spl/dlist
 bug-reports:            https://github.com/spl/dlist/issues
 extra-source-files:     readme.md,
@@ -43,6 +43,9 @@ library
   exposed-modules:      Data.DList
                         Data.DList.Unsafe
   other-modules:        Data.DList.Internal
+  if impl(ghc > 8)
+    exposed-modules:    Data.DList.DNonEmpty
+    other-modules:      Data.DList.DNonEmpty.Internal
   ghc-options:          -Wall
 
 test-suite test
@@ -51,6 +54,8 @@ test-suite test
   other-modules:        DListProperties
                         OverloadedStrings
                         QuickCheckUtil
+  if impl(ghc > 8)
+    other-modules:      DNonEmptyProperties
   hs-source-dirs:       tests
   build-depends:        dlist,
                         base,
