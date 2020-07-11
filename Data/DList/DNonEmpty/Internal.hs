@@ -50,8 +50,8 @@ import Prelude hiding (head, map, tail)
 {- ORMOLU_DISABLE -}
 {-|
 
-A non-empty (and non-strict) difference list is a pair of a 'head' element and a
-possibly empty 'DList'.
+A non-empty difference list is a pair of a 'head' element and a (possibly empty)
+'DList'.
 
 Like 'DList', @DNonEmpty@ supports&#x00A0;\(\mathcal{O}\)(@1@) 'append' and
 'snoc' operations, making it useful for replacing frequent applications of

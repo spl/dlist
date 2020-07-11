@@ -8,11 +8,14 @@ License: BSD-3-Clause
 Maintainer: sean.leather@gmail.com
 Stability: stable
 
-A __difference list__ is an abstraction representing a list that
-supports&#x00A0;\(\mathcal{O}\)(@1@) 'append' and 'snoc' operations. This module
-provides the type for a difference list, 'DNonEmpty', and a collection of
-supporting functions for (a) converting to and from lists and (b) operating on
-'DNonEmpty's efficiently.
+A __non-empty difference list__ is a difference list paired with a 'head'
+element. Like a difference list, it supports&#x00A0;\(\mathcal{O}\)(@1@)
+'append' and 'snoc' operations.
+
+This module provides the type for a non-empty difference list, 'DNonEmpty', and
+a collection of supporting functions for (a) converting to and from 'NonEmpty'
+and 'DList' and (b) operating efficiently on 'DNonEmpty' values. The functions
+also retain the non-strict semantics of 'NonEmpty'.
 
 -}
 {- ORMOLU_ENABLE -}
