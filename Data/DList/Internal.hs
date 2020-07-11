@@ -565,8 +565,11 @@ instance Monoid.Monoid (DList a) where
   {-# INLINE mempty #-}
   mempty = empty
 
+-- CPP: base >= 4.11 for Semigroup as a superclass of Monoid
+#if !MIN_VERSION_base(4,11,0)
   {-# INLINE mappend #-}
   mappend = append
+#endif
 
 instance Functor DList where
   {-# INLINE fmap #-}
