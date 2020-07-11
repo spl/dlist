@@ -59,7 +59,9 @@ instance Arbitrary1 NonEmpty where
   liftShrink shr (x :| xs) = mapMaybe nonEmpty . liftShrink shr $ x : xs
 
 instance Arbitrary a => Arbitrary (NonEmpty a) where
+  {-# INLINABLE arbitrary #-}
   arbitrary = arbitrary1
+  {-# INLINABLE shrink #-}
   shrink = shrink1
 
 #endif
