@@ -74,7 +74,6 @@ module Data.DList
     append,
     concat,
     replicate,
-    list,
     head,
     tail,
     unfoldr,
