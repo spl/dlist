@@ -70,7 +70,7 @@ prop_head :: [Int] -> Property
 prop_head = eqOn (not . null) List.head (head . fromList)
 
 prop_tail :: [Int] -> Property
-prop_tail = eqOn (not . null) List.tail (toList . tail . fromList)
+prop_tail = eqOn (not . null) List.tail (tail . fromList)
 
 prop_unfoldr :: (Int -> Maybe (Int, Int)) -> Int -> Int -> Property
 prop_unfoldr f n =

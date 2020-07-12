@@ -383,33 +383,6 @@ replicate n x = UnsafeDList $ \xs ->
 {- ORMOLU_DISABLE -}
 {-|
 
-__@list nl cn xs@__ is the case elimination of __@xs@__. If @xs@ is empty, the
-result is __@nl@__. If @xs@ has the head @y@ and tail @ys@, the result is __@cn
-y ys@__.
-
-\(\mathcal{O}\)(@'List.length' ('toList' xs)@).
-
-@list@ obeys the law:
-
-@
-__list__ 'empty' 'cons' = 'id'
-@
-
-Note that @list@ uses 'toList' to get the represented list and 'fromList' to
-get the 'DList' of the tail.
-
--}
-{- ORMOLU_ENABLE -}
-
-list :: b -> (a -> DList a -> b) -> DList a -> b
-list nl cn dl =
-  case toList dl of
-    [] -> nl
-    (x : xs) -> cn x (fromList xs)
-
-{- ORMOLU_DISABLE -}
-{-|
-
 __@head xs@__ is the first element of __@xs@__. If @xs@ is empty, an 'error' is
 raised.
 
@@ -418,40 +391,40 @@ raised.
 @head@ obeys the law:
 
 @
-__head__ ('fromList' (x : xs)) = x
+__head__ xs = 'List.head' ('toList' xs)
 @
-
-Note that @head@ is implemented with 'list'.
 
 -}
 {- ORMOLU_ENABLE -}
 
 {-# INLINE head #-}
 head :: DList a -> a
-head = list (error "Data.DList.head: empty DList") const
+head xs = case toList xs of
+  x : _ -> x
+  [] -> error "Data.DList.head: empty DList"
 
 {- ORMOLU_DISABLE -}
 {-|
 
-__@tail xs@__ is a 'DList' excluding the first element of __@xs@__. If @xs@ is
-empty, an 'error' is raised.
+__@tail xs@__ is a list of the elements in __@xs@__ excluding the first element.
+If @xs@ is empty, an 'error' is raised.
 
 \(\mathcal{O}\)(@'length' ('toList' xs)@).
 
 @tail@ obeys the law:
 
 @
-__tail__ ('fromList' (x : xs)) = xs
+__tail__ xs = 'List.tail' ('toList' xs)
 @
-
-Note that @tail@ is implemented with 'list'.
 
 -}
 {- ORMOLU_ENABLE -}
 
 {-# INLINE tail #-}
-tail :: DList a -> DList a
-tail = list (error "Data.DList.tail: empty DList") (flip const)
+tail :: DList a -> [a]
+tail xs = case toList xs of
+  _ : ys -> ys
+  [] -> error "Data.DList.tail: empty DList"
 
 {- ORMOLU_DISABLE -}
 {-|
