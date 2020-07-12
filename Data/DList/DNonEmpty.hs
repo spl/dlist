@@ -38,7 +38,8 @@ module Data.DList.DNonEmpty
     -- * Conversion
     fromNonEmpty,
     toNonEmpty,
-    toDList,
+    toList,
+    fromList,
 
     -- * Basic Functions
     singleton,

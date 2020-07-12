@@ -9,7 +9,6 @@ import Data.DList.DNonEmpty
 import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
 import qualified Data.Semigroup as Semigroup
-import GHC.Exts (IsList (fromList, toList))
 import QuickCheckUtil
 import Test.QuickCheck
 import Text.Show.Functions ()

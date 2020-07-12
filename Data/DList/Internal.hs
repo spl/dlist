@@ -124,9 +124,9 @@ __fromList__ . 'toList' = 'id'
 @
 
 This function is implemented with '++'. Repeated uses of @fromList@ are just as
-inefficient as repeated uses of '++'. If you find yourself doing some (possibly
-indirect) form of the following, you may not be taking advantage of the 'DList'
-representation and library:
+inefficient as repeated uses of '++'. If you find yourself doing some form of
+the following (possibly indirectly), you may not be taking advantage of the
+'DList' representation and library:
 
 @
 __fromList__ . f . 'toList'
@@ -214,7 +214,7 @@ __@ys@__ to it.
 @apply@ obeys the law:
 
 @
-__apply__ ('fromList' xs) ys = xs '++' ys
+__apply__ xs ys = 'toList' xs '++' ys
 @
 
 -}
@@ -270,7 +270,7 @@ __@cons x xs@__ is a 'DList' with the 'head' __@x@__ and the 'tail' __@xs@__.
 @cons@ obeys the law:
 
 @
-'toList' (__cons__ x xs) = x : 'fromList' xs
+'toList' (__cons__ x xs) = x : 'toList' xs
 @
 
 -}
@@ -295,12 +295,8 @@ element __@x@__.
 @snoc@ obeys the law:
 
 @
-'toList' (__snoc__ xs x) = 'fromList' xs '++' [x]
+'toList' (__snoc__ xs x) = 'toList' xs '++' [x]
 @
-
-Note that 'fromList' is implemented with '++', which means that the right-hand
-side of the equality demonstrates a use of a left-nested append. This is the
-sort of inefficiency that @snoc@ avoids.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -320,12 +316,8 @@ of __@xs@__ and __@ys@__.
 @append@ obeys the law:
 
 @
-'toList' (__append__ xs ys) = 'fromList' xs '++' 'fromList' ys
+'toList' (__append__ xs ys) = 'toList' xs '++' 'toList' ys
 @
-
-Note that 'fromList' is implemented with '++', which means that the right-hand
-side of the equality demonstrates a use of a left-nested append. This is the
-sort of inefficiency that @append@ avoids.
 
 -}
 {- ORMOLU_ENABLE -}
