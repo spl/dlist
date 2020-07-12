@@ -93,7 +93,7 @@ __fromNonEmpty__ . 'toNonEmpty' = 'id'
 
 As with 'DList.fromList', this function is implemented with '++'. Repeated uses
 of @fromNonEmpty@ are just as inefficient as repeated uses of '++'. If you find
-yourself doing some (possibly indirect) form of the following, you may not be
+yourself doing some form of the following (possibly indirectly), you may not be
 taking advantage of the 'DNonEmpty' representation and library:
 
 @
@@ -149,11 +149,50 @@ __@toDList xs@__ is the non-empty 'DList' represented by __@xs@__.
 __toDList__ (x ':|' xs) = 'DList.cons' x xs
 @
 
+Note that this function is used only in this module.
+
 -}
 {- ORMOLU_ENABLE -}
 
 toDList :: DNonEmpty a -> DList a
 toDList ~(x :| xs) = DList.cons x xs
+
+{- ORMOLU_DISABLE -}
+{-|
+
+__@toList xs@__ is the non-empty list represented by __@xs@__.
+
+@toList@ obeys the law:
+
+@
+__toList__ xs = 'NonEmpty.toList' ('toNonEmpty' xs)
+@
+
+-}
+{- ORMOLU_ENABLE -}
+
+{-# INLINE toList #-}
+toList :: DNonEmpty a -> [a]
+toList = DList.toList . toDList
+
+{- ORMOLU_DISABLE -}
+{-|
+
+__@fromList xs@__ is a 'DNonEmpty' representing the list __@xs@__. If @xs@ is
+empty, an 'error' is raised.
+
+@fromList@ obeys the law:
+
+@
+__fromList__ xs = 'fromNonEmpty' ('NonEmpty.fromList' xs)
+@
+
+-}
+{- ORMOLU_ENABLE -}
+
+fromList :: [a] -> DNonEmpty a
+fromList (x : xs) = x :| DList.fromList xs
+fromList [] = error "Data.DList.DNonEmpty.fromList: empty list"
 
 {- ORMOLU_DISABLE -}
 {-|
@@ -183,7 +222,7 @@ __@cons x xs@__ is a 'DNonEmpty' with the 'head' __@x@__ and the 'tail' __@xs@__
 @cons@ obeys the law:
 
 @
-'toNonEmpty' (__cons__ x xs) = x 'NonEmpty.:|' 'fromNonEmpty' xs
+'toNonEmpty' (__cons__ x xs) = 'NonEmpty.cons' x ('toNonEmpty' xs)
 @
 
 -}
@@ -208,12 +247,8 @@ last element __@x@__.
 @snoc@ obeys the law:
 
 @
-'toNonEmpty' (__snoc__ xs x) = 'fromNonEmpty' xs 'Semigroup.<>' ('NonEmpty' x 'NonEmpty.:|' [])
+'toNonEmpty' (__snoc__ xs x) = 'toNonEmpty' xs 'Semigroup.<>' (x 'NonEmpty.:|' [])
 @
-
-Note that 'fromNonEmpty' is implemented with '++', which means that the
-right-hand side of the equality demonstrates a use of a left-nested append. This
-is the sort of inefficiency that @snoc@ avoids.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -233,12 +268,8 @@ elements of __@xs@__ and __@ys@__.
 @append@ obeys the law:
 
 @
-'toNonEmpty' (__append__ xs ys) = 'fromNonEmpty' xs 'Semigroup.<>' 'fromNonEmpty' ys
+'toNonEmpty' (__append__ xs ys) = 'toNonEmpty' xs 'Semigroup.<>' 'toNonEmpty' ys
 @
-
-Note that 'fromNonEmpty' is implemented with '++', which means that the
-right-hand side of the equality demonstrates a use of a left-nested append. This
-is the sort of inefficiency that @append@ avoids.
 
 -}
 {- ORMOLU_ENABLE -}
@@ -257,7 +288,7 @@ __@head xs@__ is the first element of __@xs@__.
 @head@ obeys the law:
 
 @
-__head__ (x ':|' xs) = x
+__head__ xs = 'NonEmpty.head' ('toNonEmpty' xs)
 @
 
 -}
@@ -270,14 +301,15 @@ head ~(x :| _) = x
 {- ORMOLU_DISABLE -}
 {-|
 
-__@tail xs@__ is a 'DList' excluding the first element of __@xs@__.
+__@tail xs@__ is a 'DList' of the elements in __@xs@__ excluding the first
+element.
 
 \(\mathcal{O}\)(@1@).
 
 @tail@ obeys the law:
 
 @
-__tail__ (x ':|' xs) = xs
+'DList.toList' (__tail__ xs) = 'NonEmpty.tail' ('toNonEmpty' xs)
 @
 
 -}
@@ -413,16 +445,16 @@ for the same change made to the IsString instance for lists.
 
 instance a ~ Char => IsString (DNonEmpty a) where
   {-# INLINE fromString #-}
-  fromString = Exts.fromList
+  fromString = fromList
 
 instance Exts.IsList (DNonEmpty a) where
   type Item (DNonEmpty a) = a
 
   {-# INLINE fromList #-}
-  fromList = fromNonEmpty . NonEmpty.fromList
+  fromList = fromList
 
   {-# INLINE toList #-}
-  toList = DList.toList . toDList
+  toList = toList
 
 instance Semigroup.Semigroup (DNonEmpty a) where
   {-# INLINE (<>) #-}
