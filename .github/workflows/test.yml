@@ -100,5 +100,5 @@ jobs:
           ghc --version
           cabal --version
           cabal update
-          cd ../bench
+          cd bench
           cabal build
