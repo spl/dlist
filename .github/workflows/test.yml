@@ -78,7 +78,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-haskell@v1
-      - name: Run check, haddock, unsafe import test
+      - name: Run check, haddock, unsafe import test, bench
         run: |
           ghc --version
           cabal --version
@@ -89,3 +89,5 @@ jobs:
           cabal check
           cabal haddock
           ! ghc tests/ImportUnsafe.hs
+          cd ../bench
+          cabal build
