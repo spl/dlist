@@ -1,10 +1,6 @@
 {- ORMOLU_DISABLE -}
 {-# LANGUAGE CPP #-}
 
-#if !defined(__GLASGOW_HASKELL__)
-#error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
-#endif
-
 -- CPP: GHC >= 7.8 && <= 8 for 'pattern' required in the export list
 #if __GLASGOW_HASKELL__ >= 708 && __GLASGOW_HASKELL__ < 800
 {-# LANGUAGE PatternSynonyms #-}

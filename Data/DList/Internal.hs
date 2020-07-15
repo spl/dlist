@@ -8,6 +8,14 @@
 
 {-# LANGUAGE CPP #-}
 
+{-
+
+We use __GLASGOW_HASKELL__ everywhere, so, rather than check if it's defined in
+multiple places, we assert an error here if it is not. Since the rest of the
+package depends on this module ('Data.DList.Internal'), we don't perform the
+same check everywhere else.
+
+-}
 #if !defined(__GLASGOW_HASKELL__)
 #error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
 #endif
