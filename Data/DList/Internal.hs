@@ -539,9 +539,19 @@ instance Monoid.Monoid (DList a) where
   mempty = empty
 
 -- CPP: base >= 4.11 for Semigroup as a superclass of Monoid
-#if !MIN_VERSION_base(4,11,0)
+#if MIN_VERSION_base(4,11,0)
+
+#else
+
   {-# INLINE mappend #-}
+-- CPP: base >= 4.9 for Semigroup in base
+#if MIN_VERSION_base(4,9,0)
+  -- Canonical definition
+  mappend = (<>)
+#else
   mappend = append
+#endif
+
 #endif
 
 instance Functor DList where
