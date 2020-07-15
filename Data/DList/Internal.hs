@@ -547,7 +547,7 @@ instance Monoid.Monoid (DList a) where
 -- CPP: base >= 4.9 for Semigroup in base
 #if MIN_VERSION_base(4,9,0)
   -- Canonical definition
-  mappend = (<>)
+  mappend = (Semigroup.<>)
 #else
   mappend = append
 #endif
