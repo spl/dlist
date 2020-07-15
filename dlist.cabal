@@ -43,7 +43,7 @@ library
   exposed-modules:      Data.DList
                         Data.DList.Unsafe
   other-modules:        Data.DList.Internal
-  if impl(ghc > 8)
+  if impl(ghc >= 8.0)
     exposed-modules:    Data.DList.DNonEmpty
     other-modules:      Data.DList.DNonEmpty.Internal
   ghc-options:          -Wall
@@ -62,7 +62,7 @@ test-suite test
   other-modules:        DListProperties
                         OverloadedStrings
                         QuickCheckUtil
-  if impl(ghc > 8)
+  if impl(ghc >= 8.0)
     other-modules:      DNonEmptyProperties
   hs-source-dirs:       tests
   build-depends:        dlist,
