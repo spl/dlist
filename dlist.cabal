@@ -47,7 +47,7 @@ library
     exposed-modules:    Data.DList.DNonEmpty
     other-modules:      Data.DList.DNonEmpty.Internal
   ghc-options:          -Wall
-  if impl(ghc >= 7.10)
+  if impl(ghc >= 8.0)
     ghc-options:        -Wincomplete-uni-patterns
   if impl(ghc >= 8.0)
     ghc-options:        -Wcompat
@@ -75,7 +75,7 @@ test-suite test
                         -- instance, which we include ourselves.
                         QuickCheck >= 2.10 && < 2.15
   ghc-options:          -Wall
-  if impl(ghc >= 7.10)
+  if impl(ghc >= 8.0)
     ghc-options:        -Wincomplete-uni-patterns
   if impl(ghc >= 8.0)
     ghc-options:        -Wcompat
