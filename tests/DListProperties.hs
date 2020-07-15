@@ -5,10 +5,11 @@
 #error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
 #endif
 
--- CPP: GHC >= 7.8 for overloaded lists
+-- CPP: GHC >= 7.8 for overloaded lists, Safe Haskell
 #if __GLASGOW_HASKELL__ >= 708
 -- For the IsList test
 {-# LANGUAGE OverloadedLists #-}
+{-# LANGUAGE Safe #-}
 #endif
 
 -- CPP: GHC == 7.8 for using pattern synonyms
@@ -16,6 +17,9 @@
 {-# LANGUAGE PatternSynonyms #-}
 #endif
 {- ORMOLU_ENABLE -}
+
+#if __GLASGOW_HASKELL__ >= 708
+#endif
 
 --------------------------------------------------------------------------------
 
