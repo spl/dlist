@@ -65,7 +65,7 @@ import Data.DList.DNonEmpty.Internal
 -- CPP: Import only for Haddock
 #if defined(__HADDOCK_VERSION__)
 import Data.List.NonEmpty (NonEmpty)
-import Data.DList.Unsafe (DList)
+import Data.DList (DList)
 #endif
 
 {- ORMOLU_DISABLE -}
