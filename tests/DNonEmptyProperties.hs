@@ -1,3 +1,12 @@
+{-# LANGUAGE CPP #-}
+
+-- CPP: GHC >= 7.8 for Safe Haskell
+#if __GLASGOW_HASKELL__ >= 708
+{-# LANGUAGE Safe #-}
+#endif
+
+--------------------------------------------------------------------------------
+
 -- | QuickCheck property tests for DNonEmpty.
 module DNonEmptyProperties (test) where
 

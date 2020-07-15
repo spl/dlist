@@ -1,6 +1,11 @@
 {- ORMOLU_DISABLE -}
 {-# LANGUAGE CPP #-}
 
+-- CPP: GHC >= 7.8 for Safe Haskell
+#if __GLASGOW_HASKELL__ >= 708
+{-# LANGUAGE Safe #-}
+#endif
+
 -----------------------------------------------------------------------------
 
 -- CPP: Ignore unused imports when Haddock is run
@@ -60,7 +65,7 @@ import Data.DList.DNonEmpty.Internal
 -- CPP: Import only for Haddock
 #if defined(__HADDOCK_VERSION__)
 import Data.List.NonEmpty (NonEmpty)
-import Data.DList.Unsafe (DList)
+import Data.DList (DList)
 #endif
 
 {- ORMOLU_DISABLE -}

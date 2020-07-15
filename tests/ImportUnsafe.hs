@@ -1,10 +1,6 @@
 {- ORMOLU_DISABLE -}
 {-# LANGUAGE CPP #-}
 
-#if !defined(__GLASGOW_HASKELL__)
-#error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
-#endif
-
 -- CPP: GHC >= 7.8 for Safe Haskell
 #if __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE Safe #-}

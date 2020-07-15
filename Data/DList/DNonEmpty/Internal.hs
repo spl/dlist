@@ -6,6 +6,19 @@
 
 -----------------------------------------------------------------------------
 
+{-# LANGUAGE CPP #-}
+
+-- CPP: GHC >= 7.8 for Safe Haskell
+#if __GLASGOW_HASKELL__ >= 708
+{-
+
+This module imports the unsafe module 'GHC.Exts' for 'IsList' but does not use
+any unsafe features. Therefore, we mark the module as trustworthy.
+
+-}
+{-# LANGUAGE Trustworthy #-}
+#endif
+
 -- For the IsList and IsString instances
 {-# LANGUAGE TypeFamilies #-}
 
@@ -428,7 +441,7 @@ instance Foldable.Foldable DNonEmpty where
   foldr' f x = Foldable.foldr' f x . toNonEmpty
 
   {-# INLINE toList #-}
-  toList = Exts.toList
+  toList = toList
 
 instance NFData a => NFData (DNonEmpty a) where
   {-# INLINE rnf #-}
