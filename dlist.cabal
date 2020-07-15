@@ -49,8 +49,9 @@ library
   ghc-options:          -Wall
   if impl(ghc >= 8.0)
     ghc-options:        -Wcompat
-                        -Wincomplete-uni-patterns
                         -Wincomplete-record-updates
+                        -Wincomplete-uni-patterns
+                        -Wnoncanonical-monad-instances
   if impl(ghc >= 8.2)
     ghc-options:        -Wmissing-home-modules
   if impl(ghc >= 8.4)
@@ -77,8 +78,9 @@ test-suite test
   ghc-options:          -Wall
   if impl(ghc >= 8.0)
     ghc-options:        -Wcompat
-                        -Wincomplete-uni-patterns
                         -Wincomplete-record-updates
+                        -Wincomplete-uni-patterns
+                        -Wnoncanonical-monad-instances
   if impl(ghc >= 8.2)
     ghc-options:        -Wmissing-home-modules
   if impl(ghc >= 8.4)
