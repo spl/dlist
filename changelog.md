@@ -2,7 +2,7 @@
 
 ## [v0.8.0.8][] - 2020-04-02
 
-_Released on (World Autism Awareness Day)._
+Released on **World Autism Awareness Day**.
 
 ### Package changes
 
@@ -10,7 +10,7 @@ _Released on (World Autism Awareness Day)._
 
 ## [v0.8.0.7][] - 2019-08-05
 
-_Released on (Independence Day in Burkina Faso)._
+Released on **Independence Day in Burkina Faso**.
 
 ### Package changes
 
@@ -21,7 +21,7 @@ _Released on (Independence Day in Burkina Faso)._
 
 ## [v0.8.0.6][] - 2019-03-29
 
-_Released on (Martyrs' Day in Madagascar)._
+Released on **Martyrs' Day in Madagascar**.
 
 ### Package changes
 
@@ -29,7 +29,7 @@ _Released on (Martyrs' Day in Madagascar)._
 
 ## [v0.8.0.5][] - 2018-09-13
 
-_Released on (Day of the Programmer)._
+Released on **Day of the Programmer**.
 
 ### Package changes
 
@@ -37,7 +37,7 @@ _Released on (Day of the Programmer)._
 
 ## [v0.8.0.4][] - 2018-01-19
 
-_Released on (Kokborok Day)._
+Released on **Kokborok Day**.
 
 ### Package changes
 
@@ -48,7 +48,7 @@ _Released on (Kokborok Day)._
 
 ## [v0.8.0.3][] - 2017-07-04
 
-_Released on (Independence Day in the United States)._
+Released on **Independence Day in the United States**.
 
 ### Package changes
 
@@ -59,7 +59,7 @@ _Released on (Independence Day in the United States)._
 
 ## [v0.8.0.2][] - 2016-09-04
 
-_Released on (World Sexual Health Day)._
+Released on **World Sexual Health Day**.
 
 ### Package changes
 
@@ -68,7 +68,7 @@ _Released on (World Sexual Health Day)._
 
 ## [v0.8.0.1][] - 2016-07-29
 
-_Released on (58th Anniversary of the Creation of NASA)._
+Released on the **58th Anniversary of the Creation of NASA**.
 
 ### Package changes
 
@@ -77,7 +77,7 @@ _Released on (58th Anniversary of the Creation of NASA)._
 
 ## [v0.8][] - 2016-07-17
 
-_Released on (Constitution Day in South Korea)._
+Released on **Constitution Day in South Korea**.
 
 ### New features
 
@@ -97,7 +97,7 @@ _Released on (Constitution Day in South Korea)._
 
 ## [v0.7.1.2][] - 2015-08-23
 
-_Released on (International Day for the Remembrance of the Slave Trade and its Abolition)._
+Released on **International Day for the Remembrance of the Slave Trade and its Abolition**.
 
 ### Package changes
 
@@ -106,7 +106,7 @@ _Released on (International Day for the Remembrance of the Slave Trade and its A
 
 ## [v0.7.1.1][] - 2015-03-19
 
-_Released on (St. Joseph's Day)._
+Released on **St. Joseph's Day**.
 
 ### Package changes
 
@@ -114,7 +114,7 @@ _Released on (St. Joseph's Day)._
 
 ## [v0.7.1][] - 2014-06-28
 
-_Released on (100th Anniversary of the Assassination of Franz Ferdinand)._
+Released on the **100th Anniversary of the Assassination of Franz Ferdinand**.
 
 ### New features
 
@@ -123,7 +123,7 @@ _Released on (100th Anniversary of the Assassination of Franz Ferdinand)._
 
 ## [v0.7.0.1][] - 2014-03-24
 
-_Released on (World Tuberculosis Day)._
+Released on **World Tuberculosis Day**.
 
 ### Package changes
 
@@ -131,7 +131,7 @@ _Released on (World Tuberculosis Day)._
 
 ## [v0.7][] - 2014-03-17
 
-_Released on (St. Patrick's Day)._
+Released on **St. Patrick's Day**.
 
 ### New features
 
@@ -141,7 +141,7 @@ _Released on (St. Patrick's Day)._
 
 ## [v0.6.0.1][] - 2013-12-01
 
-_Released on (World AIDS Day)._
+Released on **World AIDS Day**.
 
 ### Package changes
 
@@ -150,7 +150,7 @@ _Released on (World AIDS Day)._
 
 ## [v0.6][] - 2013-11-29
 
-_Released on (Black Friday)._
+Released on **Black Friday**.
 
 ### Development changes
 
