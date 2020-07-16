@@ -52,10 +52,18 @@ Released on **Kokborok Day**.
 
 ### Package changes
 
-* Change QuickCheck upper bound from 2.11 to 2.12
-* Make `Data.DList` trustworthy
-  ([Bertram Felgenhauer](https://github.com/int-e))
-* Remove quickcheck-instances dependency for tests
+### Added
+
+* `{-# LANGUAGE Trustworthy #-}` in `Data.DList` ([#31][], [Bertram
+  Felgenhauer](https://github.com/int-e))
+
+### Changed
+
+* `QuickCheck` upper bound: 2.11 to 2.12 ([3d9c8ad][])
+
+### Removed
+
+* `quickcheck-instances` dependency for test suite ([4f92012][])
 
 ## [v0.8.0.3][] - 2017-07-04
 
@@ -207,6 +215,7 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#31]: https://github.com/spl/dlist/pull/31
 [#32]: https://github.com/spl/dlist/pull/32
 [#33]: https://github.com/spl/dlist/pull/33
 [#35]: https://github.com/spl/dlist/pull/35
@@ -214,6 +223,8 @@ Released on **Black Friday**.
 
 [0e2b3a5]: https://github.com/spl/dlist/commit/0e2b3a542796b50796f2aa6dde4665911b9d15a1
 [242511c]: https://github.com/spl/dlist/commit/242511c501299b38c57efeafb9e604f29cb8bb7a
+[3d9c8ad]: https://github.com/spl/dlist/commit/3d9c8ad348b419590a121b8a1604e8ebd01bffbe
+[4f92012]: https://github.com/spl/dlist/commit/4f920128592f6f99b8c57a1adf50cdb16d26c13b
 [a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 
 [Ryan Scott]: https://github.com/RyanGlScott
