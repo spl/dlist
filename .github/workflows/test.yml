@@ -38,7 +38,7 @@ jobs:
           cabal unpack dist/dlist-*.tar.gz
           cd dlist-*/
           cabal install --only-dependencies --enable-tests
-          cabal configure --enable-tests -v2 --ghc-options="-Werror"
+          cabal configure --enable-tests -v2 -f Werror
           cabal build
           cabal test
           cabal install --force-reinstalls
@@ -71,7 +71,7 @@ jobs:
           cabal sdist
           cabal unpack dist-newstyle/sdist/dlist-*.tar.gz
           cd dlist-*/
-          cabal test
+          cabal test -v2 -f Werror
 
   other:
     runs-on: ubuntu-latest

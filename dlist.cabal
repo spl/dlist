@@ -35,6 +35,10 @@ source-repository head
   type:                 git
   location:             git://github.com/spl/dlist.git
 
+flag Werror
+  description:          Enable -Werror
+  default:              False
+
 library
   build-depends:
                         base >= 4 && < 5,
@@ -59,6 +63,8 @@ library
   if impl(ghc >= 8.10)
     ghc-options:        -Wmissing-safe-haskell-mode
                         -Wtrustworthy-safe
+  if flag(Werror)
+    ghc-options:        -Werror
 
 test-suite test
   type:                 exitcode-stdio-1.0
@@ -88,3 +94,5 @@ test-suite test
   if impl(ghc >= 8.10)
     ghc-options:        -Wmissing-safe-haskell-mode
                         -Wtrustworthy-safe
+  if flag(Werror)
+    ghc-options:        -Werror
