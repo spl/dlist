@@ -58,6 +58,7 @@ Released on **Kokborok Day**.
 ### Changed
 
 * `QuickCheck` upper bound: 2.11 to 2.12 ([3d9c8ad][])
+* `QuickCheck` lower bound: 2.7/2.9 to 2.10 ([4f92012][])
 * `Arbitrary`, `Arbitrary1` instances for `NonEmpty` in the test suite copied
   from `quickcheck-instances` ([4f92012][])
 
@@ -92,10 +93,10 @@ Released on **World Sexual Health Day**.
 
 Released on the **58th Anniversary of the Creation of NASA**.
 
-### Package changes
+### Changed
 
-* Change QuickCheck lower bound to 2.9 for GHC >= 8 (base >= 4.9)
-  ([Adam Bergmark](https://github.com/bergmark))
+* `QuickCheck` lower bound: 2.7 to 2.9 for GHC >= 8 ([#28][], [Adam
+  Bergmark](https://github.com/bergmark))
 
 ## [v0.8][] - 2016-07-17
 
@@ -218,6 +219,7 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#28]: https://github.com/spl/dlist/issues/28
 [#29]: https://github.com/spl/dlist/pull/29
 [#30]: https://github.com/spl/dlist/pull/30
 [#31]: https://github.com/spl/dlist/pull/31
