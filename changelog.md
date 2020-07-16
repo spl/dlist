@@ -204,4 +204,4 @@ Released on **Black Friday**.
 
 [a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 
-[Ryan Scott][]: https://github.com/RyanGlScott
+[Ryan Scott]: https://github.com/RyanGlScott
