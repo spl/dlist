@@ -38,6 +38,7 @@ source-repository head
 flag Werror
   description:          Enable -Werror
   default:              False
+  manual:               True
 
 library
   build-depends:
