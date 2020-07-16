@@ -1,39 +1,76 @@
-The release process is as follows:
+# Release Instructions
 
-1. `git checkout master`
+These are the steps for making a new release of the `dlist` package.
 
-2. `git pull`
+1. Check out the latest `main` branch and make sure it is up to date.
 
-3. `git checkout -b version-bump`
+   ```sh
+   cd <dlist-directory>
+   git checkout main
+   git pull
+   ```
 
-4. Update [`changelog.md`](./changelog.md) with release notes for version `$VER`.
+2. Create a new branch for the final changes needed before the release.
 
-5. Update version to `$VER` in [dlist.cabal](./dlist.cabal).
 
-6. `git commit -am 'Bump version to $VER'`
+   ```sh
+   git checkout -b version
+   ```
 
-7. `git push -u origin`
+3. Update the [`changelog.md`][] and [`dlist.cabal`][] for the new version,
+   `$VERSION`.
 
-8. Check release notes in [`changelog.md`](https://github.com/spl/dlist/blob/version-bump/changelog.md).
+   ```sh
+   VERSION=<new version number without 'v'>
+   $EDITOR changelog.md
+   $EDITOR dlist.cabal
+   git commit -am "Bump version to $VERSION"
+   ```
 
-9. `git tag v$VER`
+4. Push the branch and create a pull request on GitHub.
 
-10. `git push --tags`
+   ```sh
+   git push -u origin
+   ```
 
-11. Check for tests passing on [Travis CI](https://travis-ci.org/spl/dlist/builds).
+5. Check for problems on the pull request.
 
-12. `git checkout master`
+   1. Check the [new `changelog.md`][] and [new `dlist.cabal`][].
 
-13. `git merge --ff-only version-bump`
+      If there's a problem, return to step 3.
 
-14. `git push`
+   2. Check for tests passing.
 
-15. Publish tag as a release on [releases](https://github.com/spl/dlist/releases).
+      If there's a problem, revisit in another branch and pull request. Then,
+      merge `main` in to `version` and continue with the next step.
 
-16. Delete branch `version-bump` on [branches](https://github.com/spl/dlist/branches).
+6. Squash and merge the pull request on GitHub.
 
-17. `cabal sdist`
+7. Tag the new version on the `main` branch.
 
-18. `cabal upload dist/dlist-$VER.tar.gz`
+   ```sh
+   git checkout main
+   git pull
+   git branch -D version
+   git tag v$VERSION
+   git push --tags
+   ```
 
-19. Check build on [Hackage](https://hackage.haskell.org/package/dlist).
+8. Publish the tag as a release on [releases][].
+
+   This will initiate the `upload` workflow, which will run `cabal upload` to
+   upload the new version to Hackage.
+
+9. Check [Hackage][] for the candidate documentation and build log.
+
+   If there's a problem, revisit in another branch and pull request. Then,
+   return to step 1 with a new `$VERSION`.
+
+10. Publish the candidate on Hackage.
+
+[Hackage]: https://hackage.haskell.org/package/dlist
+[`changelog.md`]: ./changelog.md
+[`dlist.cabal`]: ./dlist.cabal
+[new `changelog.md`]: https://github.com/spl/dlist/blob/version/changelog.md
+[new `dlist.cabal`]: https://github.com/spl/dlist/blob/version/dlist.cabal
+[releases]: https://github.com/spl/dlist/releases
