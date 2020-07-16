@@ -10,7 +10,11 @@ Released on **World Autism Awareness Day**.
 
 ### Changed
 
-* `QuickCheck` upper bound from 2.14 to 2.15 ([a7ea60d][])
+* `QuickCheck` upper bound: 2.14 to 2.15 ([a7ea60d][])
+
+### Fixed
+
+* Time complexity of `DList.head` ([#35][], [Simon Jakobi][])
 
 ## [v0.8.0.7][] - 2019-08-05
 
@@ -200,8 +204,10 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#35]: https://github.com/spl/dlist/pull/35
 [#36]: https://github.com/spl/dlist/pull/36
 
 [a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 
 [Ryan Scott]: https://github.com/RyanGlScott
+[Simon Jakobi]: https://github.com/sjakobi
