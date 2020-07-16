@@ -50,8 +50,6 @@ Released on **Day of the Programmer**.
 
 Released on **Kokborok Day**.
 
-### Package changes
-
 ### Added
 
 * `{-# LANGUAGE Trustworthy #-}` in `Data.DList` ([#31][], [Bertram
@@ -60,21 +58,26 @@ Released on **Kokborok Day**.
 ### Changed
 
 * `QuickCheck` upper bound: 2.11 to 2.12 ([3d9c8ad][])
-
-### Removed
-
-* `quickcheck-instances` dependency for test suite ([4f92012][])
+* `Arbitrary`, `Arbitrary1` instances for `NonEmpty` in the test suite copied
+  from `quickcheck-instances` ([4f92012][])
 
 ## [v0.8.0.3][] - 2017-07-04
 
 Released on **Independence Day in the United States**.
 
-### Package changes
+### Added
 
-* Change QuickCheck upper bound from 2.10 to 2.11 and import the `Arbitrary`
-  `NonEmpty` instance from quickcheck-instances for 2.10
-* Fix `stimes` property in test suite
-  ([Oleg Grenrus](https://github.com/phadej))
+* `quickcheck-instances` dependency in the test suite for the `Arbitrary`,
+  `Arbitrary1` instances for `NonEmpty` ([5b41d0d][])
+
+### Changed
+
+* `QuickCheck` upper bound: 2.10 to 2.11 ([b2f791a][])
+
+### Fixed
+
+* `stimes` property in the test suite ([#30][], [Oleg
+  Grenrus](https://github.com/phadej))
 
 ## [v0.8.0.2][] - 2016-09-04
 
@@ -215,6 +218,7 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#30]: https://github.com/spl/dlist/pull/30
 [#31]: https://github.com/spl/dlist/pull/31
 [#32]: https://github.com/spl/dlist/pull/32
 [#33]: https://github.com/spl/dlist/pull/33
@@ -226,6 +230,8 @@ Released on **Black Friday**.
 [3d9c8ad]: https://github.com/spl/dlist/commit/3d9c8ad348b419590a121b8a1604e8ebd01bffbe
 [4f92012]: https://github.com/spl/dlist/commit/4f920128592f6f99b8c57a1adf50cdb16d26c13b
 [a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
+[b2f791a]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
+[5b41d0d]: https://github.com/spl/dlist/commit/5b41d0d84a0a14c75798ca30883b613b37ad464a
 
 [Ryan Scott]: https://github.com/RyanGlScott
 [Simon Jakobi]: https://github.com/sjakobi
