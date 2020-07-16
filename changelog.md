@@ -27,8 +27,7 @@ Released on **Independence Day in Burkina Faso**.
 
 ### Changed
 
-* `deepseq` upper bound: 2 to 1.5 ([#33][], [Herbert Valerio
-  Riedel](https://github.com/hvr))
+* `deepseq` upper bound: 2 to 1.5 ([#33][], [Herbert Valerio Riedel][])
 
 ## [v0.8.0.6][] - 2019-03-29
 
@@ -86,7 +85,7 @@ Released on **World Sexual Health Day**.
 
 ### Fixed
 
-* Missing module `OverloadedStrings` in test suite ([#29][], [Sergei
+* Missing module `OverloadedStrings` in the test suite ([#29][], [Sergei
   Trofimovich](https://github.com/trofi))
 
 ## [v0.8.0.1][] - 2016-07-29
@@ -102,16 +101,18 @@ Released on the **58th Anniversary of the Creation of NASA**.
 
 Released on **Constitution Day in South Korea**.
 
-### New features
+### Added
 
-* Add pattern synonyms `Nil` and `Cons` for GHC >= 7.8
-* Add `Semigroup` instance for GHC >= 8 (base >= 4.9)
-* Use inflexible instance for `IsString` to improve support for overloaded
-  strings ([Baldur Blöndal](https://github.com/Icelandjack))
+* Pattern synonyms `Nil` and `Cons` for GHC >= 7.8
+* `Semigroup` instance for GHC >= 8
+* _In_flexible `IsString` instance for `DList` to improve overloaded string
+  support ([#26][], [Baldur Blöndal](https://github.com/Icelandjack))
+* Canonical `Applicative` and `Monad` instances ([#23][], [Herbert Valerio
+  Riedel][])
 
-### Package changes
+### Changed
 
-* Change QuickCheck upper bound from 2.9 to 2.10
+* `QuickCheck` upper bound: 2.9 to 2.10 ([ef7eac5][])
 
 ### Development changes
 
@@ -181,7 +182,7 @@ Released on **Black Friday**.
   ([Bas van Dijk](https://github.com/basvandijk))
 * Migrate repository from http://code.haskell.org/~dons/code/dlist/ to
   https://github.com/spl/dlist
-* Add Travis-CI ([Herbert Valerio Riedel](https://github.com/hvr))
+* Add Travis-CI ([Herbert Valerio Riedel][])
 
 ### Package changes
 
@@ -219,6 +220,8 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#23]: https://github.com/spl/dlist/pull/23
+[#26]: https://github.com/spl/dlist/pull/26
 [#28]: https://github.com/spl/dlist/issues/28
 [#29]: https://github.com/spl/dlist/pull/29
 [#30]: https://github.com/spl/dlist/pull/30
@@ -232,9 +235,11 @@ Released on **Black Friday**.
 [242511c]: https://github.com/spl/dlist/commit/242511c501299b38c57efeafb9e604f29cb8bb7a
 [3d9c8ad]: https://github.com/spl/dlist/commit/3d9c8ad348b419590a121b8a1604e8ebd01bffbe
 [4f92012]: https://github.com/spl/dlist/commit/4f920128592f6f99b8c57a1adf50cdb16d26c13b
+[5b41d0d]: https://github.com/spl/dlist/commit/5b41d0d84a0a14c75798ca30883b613b37ad464a
 [a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 [b2f791a]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
-[5b41d0d]: https://github.com/spl/dlist/commit/5b41d0d84a0a14c75798ca30883b613b37ad464a
+[ef7eac5]: https://github.com/spl/dlist/commit/ef7eac55fc7e180ac3441657f4971ed171b0669c
 
+[Herbert Valerio Riedel]: https://github.com/hvr
 [Ryan Scott]: https://github.com/RyanGlScott
 [Simon Jakobi]: https://github.com/sjakobi
