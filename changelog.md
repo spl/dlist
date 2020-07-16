@@ -6,7 +6,7 @@ Released on **World Autism Awareness Day**.
 
 ### Added
 
-* `toList` in the `Foldable` instance ([#36][], [Ryan Scott][])
+* `toList` in the `Foldable` instance for `DList` ([#36][], [Ryan Scott][])
 
 ### Changed
 
@@ -14,18 +14,21 @@ Released on **World Autism Awareness Day**.
 
 ### Fixed
 
-* Time complexity of `DList.head` ([#35][], [Simon Jakobi][])
+* Time complexity of `head` for `DList` ([#35][], [Simon Jakobi][])
 
 ## [v0.8.0.7][] - 2019-08-05
 
 Released on **Independence Day in Burkina Faso**.
 
-### Package changes
+### Added
 
-* Add `MonadFail` instance for GHC >= 8.8
-  ([Vanessa McHale](https://github.com/vmchale))
-* Change `deepseq` upper bound to 1.5
-  ([Herbert Valerio Riedel](https://github.com/hvr))
+* `MonadFail` instance for `DList` ([#32][], [Vanessa
+  McHale](https://github.com/vmchale))
+
+### Changed
+
+* `deepseq` upper bound: 2 to 1.5 ([#33][], [Herbert Valerio
+  Riedel](https://github.com/hvr))
 
 ## [v0.8.0.6][] - 2019-03-29
 
@@ -204,6 +207,8 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#32]: https://github.com/spl/dlist/pull/32
+[#33]: https://github.com/spl/dlist/pull/33
 [#35]: https://github.com/spl/dlist/pull/35
 [#36]: https://github.com/spl/dlist/pull/36
 
