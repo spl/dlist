@@ -4,9 +4,10 @@
 
 Released on **World Autism Awareness Day**.
 
-### Package changes
+### Changed
 
-* Change QuickCheck upper bound from 2.14 to 2.15
+* QuickCheck upper bound from 2.14 to 2.15
+  (spl/dlist@a7ea60d3d02775216a15d6f688db230d7735c9d1)
 
 ## [v0.8.0.7][] - 2019-08-05
 
