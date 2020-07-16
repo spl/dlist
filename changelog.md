@@ -1,6 +1,6 @@
 # Change Log
 
-## [v0.8.0.8]
+## [v0.8.0.8][]
 
 _Released on 2020-04-02 (World Autism Awareness Day)._
 
@@ -8,7 +8,7 @@ _Released on 2020-04-02 (World Autism Awareness Day)._
 
 * Change QuickCheck upper bound from 2.14 to 2.15
 
-## [v0.8.0.7]
+## [v0.8.0.7][]
 
 _Released on 2019-08-05 (Independence Day in Burkina Faso)._
 
@@ -19,7 +19,7 @@ _Released on 2019-08-05 (Independence Day in Burkina Faso)._
 * Change `deepseq` upper bound to 1.5
   ([Herbert Valerio Riedel](https://github.com/hvr))
 
-## [v0.8.0.6]
+## [v0.8.0.6][]
 
 _Released on 2019-03-29 (Martyrs' Day in Madagascar)._
 
@@ -27,7 +27,7 @@ _Released on 2019-03-29 (Martyrs' Day in Madagascar)._
 
 * Change QuickCheck upper bound from 2.13 to 2.14
 
-## [v0.8.0.5]
+## [v0.8.0.5][]
 
 _Released on 2018-09-13 (Day of the Programmer)._
 
@@ -35,7 +35,7 @@ _Released on 2018-09-13 (Day of the Programmer)._
 
 * Change QuickCheck upper bound from 2.12 to 2.13
 
-## [v0.8.0.4]
+## [v0.8.0.4][]
 
 _Released on 2018-01-19 (Kokborok Day)._
 
@@ -46,7 +46,7 @@ _Released on 2018-01-19 (Kokborok Day)._
   ([Bertram Felgenhauer](https://github.com/int-e))
 * Remove quickcheck-instances dependency for tests
 
-## [v0.8.0.3]
+## [v0.8.0.3][]
 
 _Released on 2017-07-04 (Independence Day in the United States)._
 
@@ -57,7 +57,7 @@ _Released on 2017-07-04 (Independence Day in the United States)._
 * Fix `stimes` property in test suite
   ([Oleg Grenrus](https://github.com/phadej))
 
-## [v0.8.0.2]
+## [v0.8.0.2][]
 
 _Released on 2016-09-04 (World Sexual Health Day)._
 
@@ -66,7 +66,7 @@ _Released on 2016-09-04 (World Sexual Health Day)._
 * Fix test suite: add missing module `OverloadedStrings`
   ([Sergei Trofimovich](https://github.com/trofi))
 
-## [v0.8.0.1]
+## [v0.8.0.1][]
 
 _Released on 2016-07-29 (58th Anniversary of the Creation of NASA)._
 
@@ -75,7 +75,7 @@ _Released on 2016-07-29 (58th Anniversary of the Creation of NASA)._
 * Change QuickCheck lower bound to 2.9 for GHC >= 8 (base >= 4.9)
   ([Adam Bergmark](https://github.com/bergmark))
 
-## [v0.8]
+## [v0.8][]
 
 _Released on 2016-07-17 (Constitution Day in South Korea)._
 
@@ -95,7 +95,7 @@ _Released on 2016-07-17 (Constitution Day in South Korea)._
 * Add `-Wall -Werror` testing
 * Add testing for GHC 8.0.1 to Travis-CI
 
-## [v0.7.1.2]
+## [v0.7.1.2][]
 
 _Released on 2015-08-23 (International Day for the Remembrance of the Slave Trade and its Abolition)._
 
@@ -104,7 +104,7 @@ _Released on 2015-08-23 (International Day for the Remembrance of the Slave Trad
 * Fix GHC 7.10 warnings due to imports
   ([Mikhail Glushenkov](https://github.com/23Skidoo))
 
-## [v0.7.1.1]
+## [v0.7.1.1][]
 
 _Released on 2015-03-19 (St. Joseph's Day)._
 
@@ -112,7 +112,7 @@ _Released on 2015-03-19 (St. Joseph's Day)._
 
 * Change QuickCheck upper bound from 2.8 to 2.9
 
-## [v0.7.1]
+## [v0.7.1][]
 
 _Released on 2014-06-28 (100th Anniversary of the Assassination of Franz Ferdinand)._
 
@@ -121,7 +121,7 @@ _Released on 2014-06-28 (100th Anniversary of the Assassination of Franz Ferdina
 * Add `IsList` instance for GHC >= 7.8
   ([Baldur Blöndal](https://github.com/Icelandjack))
 
-## [v0.7.0.1]
+## [v0.7.0.1][]
 
 _Released on 2014-03-24 (World Tuberculosis Day)._
 
@@ -129,7 +129,7 @@ _Released on 2014-03-24 (World Tuberculosis Day)._
 
 * Change QuickCheck upper bound from 2.7 to 2.8
 
-## [v0.7]
+## [v0.7][]
 
 _Released on 2014-03-17 (St. Patrick's Day)._
 
@@ -139,7 +139,7 @@ _Released on 2014-03-17 (St. Patrick's Day)._
 * Add `IsString` instance
 * Remove deprecated entities
 
-## [v0.6.0.1]
+## [v0.6.0.1][]
 
 _Released on 2013-12-01 (World AIDS Day)._
 
@@ -148,7 +148,7 @@ _Released on 2013-12-01 (World AIDS Day)._
 * Change QuickCheck lower bound from 2.6 to 2.5
   ([Michael Snoyman](https://github.com/snoyberg))
 
-## [v0.6]
+## [v0.6][]
 
 _Released on 2013-11-29 (Black Friday)._
 
@@ -192,5 +192,6 @@ _Released on 2013-11-29 (Black Friday)._
 [v0.8.0.3]: https://github.com/spl/dlist/compare/v0.8.0.2...v0.8.0.3
 [v0.8.0.4]: https://github.com/spl/dlist/compare/v0.8.0.3...v0.8.0.4
 [v0.8.0.5]: https://github.com/spl/dlist/compare/v0.8.0.4...v0.8.0.5
-[v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.5...v0.8.0.7
+[v0.8.0.6]: https://github.com/spl/dlist/compare/v0.8.0.5...v0.8.0.6
+[v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
