@@ -42,9 +42,9 @@ Released on **Martyrs' Day in Madagascar**.
 
 Released on **Day of the Programmer**.
 
-### Package changes
+### Changed
 
-* Change QuickCheck upper bound from 2.12 to 2.13
+* `QuickCheck` upper bound: 2.12 to 2.13 ([0e2b3a5][])
 
 ## [v0.8.0.4][] - 2018-01-19
 
@@ -212,8 +212,9 @@ Released on **Black Friday**.
 [#35]: https://github.com/spl/dlist/pull/35
 [#36]: https://github.com/spl/dlist/pull/36
 
-[a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
+[0e2b3a5]: https://github.com/spl/dlist/commit/0e2b3a542796b50796f2aa6dde4665911b9d15a1
 [242511c]: https://github.com/spl/dlist/commit/242511c501299b38c57efeafb9e604f29cb8bb7a
+[a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 
 [Ryan Scott]: https://github.com/RyanGlScott
 [Simon Jakobi]: https://github.com/sjakobi
