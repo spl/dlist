@@ -4,9 +4,13 @@
 
 Released on **World Autism Awareness Day**.
 
+### Added
+
+* `toList` in the `Foldable` instance ([#36][], [Ryan Scott][])
+
 ### Changed
 
-* QuickCheck upper bound from 2.14 to 2.15 ([a7ea60d][])
+* `QuickCheck` upper bound from 2.14 to 2.15 ([a7ea60d][])
 
 ## [v0.8.0.7][] - 2019-08-05
 
@@ -179,7 +183,6 @@ Released on **Black Friday**.
   (see [#4](https://github.com/spl/dlist/issues/4))
 * Deprecate `maybeReturn` which is not directly relevant to dlists
 
-[a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 [v0.6]: https://github.com/spl/dlist/compare/v0.5...v0.6
 [v0.6.0.1]: https://github.com/spl/dlist/compare/v0.6...v0.6.0.1
 [v0.7]: https://github.com/spl/dlist/compare/v0.6.0.1...v0.7
@@ -196,3 +199,9 @@ Released on **Black Friday**.
 [v0.8.0.6]: https://github.com/spl/dlist/compare/v0.8.0.5...v0.8.0.6
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
+
+[#36]: https://github.com/spl/dlist/pull/36
+
+[a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
+
+[Ryan Scott][]: https://github.com/RyanGlScott
