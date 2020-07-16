@@ -63,8 +63,8 @@ These are the steps for making a new release of the `dlist` package.
 
 9. Check [Hackage][] for the candidate documentation and build log.
 
-   If there's a problem, revisit in another branch and pull request. Then, merge
-   `main` in to `version` and continue with the next step.
+   If there's a problem, revisit in another branch and pull request. Then,
+   return to step 1 with a new `$VERSION`.
 
 10. Publish the candidate on Hackage.
 
