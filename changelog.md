@@ -83,10 +83,10 @@ Released on **Independence Day in the United States**.
 
 Released on **World Sexual Health Day**.
 
-### Package changes
+### Fixed
 
-* Fix test suite: add missing module `OverloadedStrings`
-  ([Sergei Trofimovich](https://github.com/trofi))
+* Missing module `OverloadedStrings` in test suite ([#29][], [Sergei
+  Trofimovich](https://github.com/trofi))
 
 ## [v0.8.0.1][] - 2016-07-29
 
@@ -218,6 +218,7 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#29]: https://github.com/spl/dlist/pull/29
 [#30]: https://github.com/spl/dlist/pull/30
 [#31]: https://github.com/spl/dlist/pull/31
 [#32]: https://github.com/spl/dlist/pull/32
