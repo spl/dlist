@@ -1,0 +1,22 @@
+# This workflow uploads a new version to the Hackage server when a release is
+# created on GitHub.
+
+name: upload
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-haskell@v1
+      - name: Upload
+        run: |
+          cabal --version
+          mkdir sdist
+          cabal sdist --output-dir=./sdist
+          cabal upload --username="${{ secrets.HACKAGE_USERNAME }}" --password="${{ secrets.HACKAGE_PASSWORD }}" "./sdist/dlist-*.tar.gz"
