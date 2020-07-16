@@ -14,7 +14,7 @@ Released on **World Autism Awareness Day**.
 
 ### Fixed
 
-* Time complexity of `head` for `DList` ([#35][], [Simon Jakobi][])
+* Documented time complexity of `head` for `DList` ([#35][], [Simon Jakobi][])
 
 ## [v0.8.0.7][] - 2019-08-05
 
@@ -34,9 +34,9 @@ Released on **Independence Day in Burkina Faso**.
 
 Released on **Martyrs' Day in Madagascar**.
 
-### Package changes
+### Changed
 
-* Change QuickCheck upper bound from 2.13 to 2.14
+* `QuickCheck` upper bound: 2.13 to 2.14 ([242511c][])
 
 ## [v0.8.0.5][] - 2018-09-13
 
@@ -213,6 +213,7 @@ Released on **Black Friday**.
 [#36]: https://github.com/spl/dlist/pull/36
 
 [a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
+[242511c]: https://github.com/spl/dlist/commit/242511c501299b38c57efeafb9e604f29cb8bb7a
 
 [Ryan Scott]: https://github.com/RyanGlScott
 [Simon Jakobi]: https://github.com/sjakobi
