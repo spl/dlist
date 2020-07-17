@@ -178,32 +178,30 @@ Released on **World AIDS Day**.
 
 Released on **Black Friday**.
 
-### Development changes
+### Added
 
-* Maintenance and development taken over by Sean Leather
-  ([Bas van Dijk](https://github.com/basvandijk))
-* Migrate repository from http://code.haskell.org/~dons/code/dlist/ to
-  https://github.com/spl/dlist
-* Add Travis-CI ([Herbert Valerio Riedel][])
+* `apply` to replace `DList` record label `unDL` ([#4][])
+* `Eq`, `Ord`, `Show`, and `Alternative` instances for `DList` ([#1][], [Bas van
+  Dijk][])
+* `Read` instance for `DList` ([`58ef305`][])
+* `Foldable` instance for `DList` ([`5b1d09f`][])
+* Travis-CI for continuous integration testing ([#6][], [Herbert Valerio
+  Riedel][])
 
-### Package changes
+### Changed
 
-* Stop supporting `base < 2`
-* Fix tests and use `cabal test`
-* Add scripts for running `hpc`
-* Update documentation
+* Now maintained by [Sean Leather][] ([#2][], [Bas van Dijk][])
+* Repository moved: <http://code.haskell.org/~dons/code/dlist/> to
+  <https://github.com/spl/dlist>
+* `base` lower bound: 0 to 2 ([`6e1d9e7`][])
 
-### New features
+### Fixed
 
-* New type class instances: `Eq`, `Ord`, `Read`, `Show`, `Alternative`,
-  and `Foldable`
-* New function `apply` to use instead of `unDL`
+* Test suite simplified and changed to use `cabal test` ([`9f58759`][])
 
-### Deprecations
+### Deprecated
 
-* Deprecate `DList` constructor and record selector to make it abstract
-  (see [#4](https://github.com/spl/dlist/issues/4))
-* Deprecate `maybeReturn` which is not directly relevant to dlists
+* Exported `DList` constructor and record label, `maybeReturn` ([#4][])
 
 [v0.6]: https://github.com/spl/dlist/compare/v0.5...v0.6
 [v0.6.0.1]: https://github.com/spl/dlist/compare/v0.6...v0.6.0.1
@@ -222,7 +220,10 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
-
+[#1]: https://github.com/spl/dlist/pull/1
+[#2]: https://github.com/spl/dlist/pull/2
+[#4]: https://github.com/spl/dlist/issues/4
+[#6]: https://github.com/spl/dlist/pull/6
 [#9]: https://github.com/spl/dlist/pull/9
 [#10]: https://github.com/spl/dlist/issues/10
 [#13]: https://github.com/spl/dlist/pull/13
@@ -251,10 +252,15 @@ Released on **Black Friday**.
 [7494dbc]: https://github.com/spl/dlist/commit/7494dbc56550a0f7eb09304403a61c68b4a360e3
 [771a38d]: https://github.com/spl/dlist/commit/771a38df953b97a631806884133a76ab8dfcfce8
 [77f6898]: https://github.com/spl/dlist/commit/77f689829223b5fd6762e24594ce9111e6ef8f6b
+[`58ef305`]: https://github.com/spl/dlist/commit/58ef305146474d77a49a3f9e0148393eb6546fd2
+[`5b1d09f`]: https://github.com/spl/dlist/commit/5b1d09f6daad5543d927a003b4ea5ca50f3e6604
+[`6e1d9e7`]: https://github.com/spl/dlist/commit/6e1d9e74e0a7c7f9c6612cd6bd0b4753f5651968
+[`9f58759`]: https://github.com/spl/dlist/commit/9f587599f128a4dc147c5c8f907b29b46110763b
 [a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 [b2f791a]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
 [ef7eac5]: https://github.com/spl/dlist/commit/ef7eac55fc7e180ac3441657f4971ed171b0669c
 
+[Bas van Dijk]: https://github.com/basvandijk
 [Baldur Blöndal]: https://github.com/Icelandjack
 [Herbert Valerio Riedel]: https://github.com/hvr
 [Ryan Scott]: https://github.com/RyanGlScott
