@@ -10,7 +10,7 @@ Released on **World Autism Awareness Day**.
 
 ### Changed
 
-* `QuickCheck` upper bound: 2.14 to 2.15 ([a7ea60d][])
+* `QuickCheck` upper bound: 2.14 to 2.15 ([`a7ea60d`][])
 
 ### Fixed
 
@@ -35,7 +35,7 @@ Released on **Martyrs' Day in Madagascar**.
 
 ### Changed
 
-* `QuickCheck` upper bound: 2.13 to 2.14 ([242511c][])
+* `QuickCheck` upper bound: 2.13 to 2.14 ([`242511c`][])
 
 ## [v0.8.0.5][] - 2018-09-13
 
@@ -43,7 +43,7 @@ Released on **Day of the Programmer**.
 
 ### Changed
 
-* `QuickCheck` upper bound: 2.12 to 2.13 ([0e2b3a5][])
+* `QuickCheck` upper bound: 2.12 to 2.13 ([`0e2b3a5`][])
 
 ## [v0.8.0.4][] - 2018-01-19
 
@@ -56,10 +56,10 @@ Released on **Kokborok Day**.
 
 ### Changed
 
-* `QuickCheck` upper bound: 2.11 to 2.12 ([3d9c8ad][])
-* `QuickCheck` lower bound: 2.7/2.9 to 2.10 ([4f92012][])
+* `QuickCheck` upper bound: 2.11 to 2.12 ([`3d9c8ad`][])
+* `QuickCheck` lower bound: 2.7/2.9 to 2.10 ([`4f92012`][])
 * `Arbitrary`, `Arbitrary1` instances for `NonEmpty` in the test suite copied
-  from `quickcheck-instances` ([4f92012][])
+  from `quickcheck-instances` ([`4f92012`][])
 
 ## [v0.8.0.3][] - 2017-07-04
 
@@ -68,11 +68,11 @@ Released on **Independence Day in the United States**.
 ### Added
 
 * `quickcheck-instances` dependency in the test suite for the `Arbitrary`,
-  `Arbitrary1` instances for `NonEmpty` ([5b41d0d][])
+  `Arbitrary1` instances for `NonEmpty` ([`5b41d0d`][])
 
 ### Changed
 
-* `QuickCheck` upper bound: 2.10 to 2.11 ([b2f791a][])
+* `QuickCheck` upper bound: 2.10 to 2.11 ([`b2f791a`][])
 
 ### Fixed
 
@@ -112,7 +112,7 @@ Released on **Constitution Day in South Korea**.
 
 * `IsString` instance for `DList` is no longer flexible ([#26][], [Baldur
   Blöndal][])
-* `QuickCheck` upper bound: 2.9 to 2.10 ([ef7eac5][])
+* `QuickCheck` upper bound: 2.9 to 2.10 ([`ef7eac5`][])
 
 ## [v0.7.1.2][] - 2015-08-23
 
@@ -129,8 +129,8 @@ Released on **St. Joseph's Day**.
 
 ### Changed
 
-* `QuickCheck` lower bound: 2.5 to 2.7 ([2d8ec37][])
-* `QuickCheck` upper bound: 2.8 to 2.9 ([3176153][])
+* `QuickCheck` lower bound: 2.5 to 2.7 ([`2d8ec37`][])
+* `QuickCheck` upper bound: 2.8 to 2.9 ([`3176153`][])
 
 ## [v0.7.1][] - 2014-06-28
 
@@ -146,7 +146,7 @@ Released on **World Tuberculosis Day**.
 
 ### Changed
 
-* `QuickCheck` upper bound: 2.7 to 2.8 ([7494dbc][])
+* `QuickCheck` upper bound: 2.7 to 2.8 ([`7494dbc`][])
 
 ## [v0.7][] - 2014-03-17
 
@@ -155,15 +155,15 @@ Released on **St. Patrick's Day**.
 ### Added
 
 * `NFData` instance for `DList` ([#10][])
-* `IsString` instance for `DList` ([771a38d][])
+* `IsString` instance for `DList` ([`771a38d`][])
 
 ### Changed
 
-* `base` lower bound: 2 to 4 ([77f6898][])
+* `base` lower bound: 2 to 4 ([`77f6898`][])
 
 ### Removed
 
-* `DList` constructor and record label, `maybeReturn` ([62c0c09][])
+* `DList` constructor and record label, `maybeReturn` ([`62c0c09`][])
 
 ## [v0.6.0.1][] - 2013-12-01
 
@@ -241,24 +241,24 @@ Released on **Black Friday**.
 [#35]: https://github.com/spl/dlist/pull/35
 [#36]: https://github.com/spl/dlist/pull/36
 
-[0e2b3a5]: https://github.com/spl/dlist/commit/0e2b3a542796b50796f2aa6dde4665911b9d15a1
-[242511c]: https://github.com/spl/dlist/commit/242511c501299b38c57efeafb9e604f29cb8bb7a
-[2d8ec37]: https://github.com/spl/dlist/commit/2d8ec370a3c19d39c0d543f39f8fc31948087fd9
-[3176153]: https://github.com/spl/dlist/commit/3176153187b130002a1577675cdcd5509dd86556
-[3d9c8ad]: https://github.com/spl/dlist/commit/3d9c8ad348b419590a121b8a1604e8ebd01bffbe
-[4f92012]: https://github.com/spl/dlist/commit/4f920128592f6f99b8c57a1adf50cdb16d26c13b
-[5b41d0d]: https://github.com/spl/dlist/commit/5b41d0d84a0a14c75798ca30883b613b37ad464a
-[62c0c09]: https://github.com/spl/dlist/commit/62c0c099d20c3f950d7950dc9ec5a6b3797acaf8
-[7494dbc]: https://github.com/spl/dlist/commit/7494dbc56550a0f7eb09304403a61c68b4a360e3
-[771a38d]: https://github.com/spl/dlist/commit/771a38df953b97a631806884133a76ab8dfcfce8
-[77f6898]: https://github.com/spl/dlist/commit/77f689829223b5fd6762e24594ce9111e6ef8f6b
+[`0e2b3a5`]: https://github.com/spl/dlist/commit/0e2b3a542796b50796f2aa6dde4665911b9d15a1
+[`242511c`]: https://github.com/spl/dlist/commit/242511c501299b38c57efeafb9e604f29cb8bb7a
+[`2d8ec37`]: https://github.com/spl/dlist/commit/2d8ec370a3c19d39c0d543f39f8fc31948087fd9
+[`3176153`]: https://github.com/spl/dlist/commit/3176153187b130002a1577675cdcd5509dd86556
+[`3d9c8ad`]: https://github.com/spl/dlist/commit/3d9c8ad348b419590a121b8a1604e8ebd01bffbe
+[`4f92012`]: https://github.com/spl/dlist/commit/4f920128592f6f99b8c57a1adf50cdb16d26c13b
 [`58ef305`]: https://github.com/spl/dlist/commit/58ef305146474d77a49a3f9e0148393eb6546fd2
 [`5b1d09f`]: https://github.com/spl/dlist/commit/5b1d09f6daad5543d927a003b4ea5ca50f3e6604
+[`5b41d0d`]: https://github.com/spl/dlist/commit/5b41d0d84a0a14c75798ca30883b613b37ad464a
+[`62c0c09`]: https://github.com/spl/dlist/commit/62c0c099d20c3f950d7950dc9ec5a6b3797acaf8
 [`6e1d9e7`]: https://github.com/spl/dlist/commit/6e1d9e74e0a7c7f9c6612cd6bd0b4753f5651968
+[`7494dbc`]: https://github.com/spl/dlist/commit/7494dbc56550a0f7eb09304403a61c68b4a360e3
+[`771a38d`]: https://github.com/spl/dlist/commit/771a38df953b97a631806884133a76ab8dfcfce8
+[`77f6898`]: https://github.com/spl/dlist/commit/77f689829223b5fd6762e24594ce9111e6ef8f6b
 [`9f58759`]: https://github.com/spl/dlist/commit/9f587599f128a4dc147c5c8f907b29b46110763b
-[a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
-[b2f791a]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
-[ef7eac5]: https://github.com/spl/dlist/commit/ef7eac55fc7e180ac3441657f4971ed171b0669c
+[`a7ea60d`]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
+[`b2f791a`]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
+[`ef7eac5`]: https://github.com/spl/dlist/commit/ef7eac55fc7e180ac3441657f4971ed171b0669c
 
 [Baldur Blöndal]: https://github.com/Icelandjack
 [Bas van Dijk]: https://github.com/basvandijk
