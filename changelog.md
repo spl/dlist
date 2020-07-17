@@ -9,6 +9,7 @@
 * `Data.DList.Internal` for all `DList`-related implementation,
   `Data.DList.Unsafe` for exporting the `DList` constructor ([#55][], [#59][])
 * `Data.DList.DNonEmpty` ([#60][])
+* GitHub Action for uploading a release ([#74][])
 
 ### Changed
 
@@ -18,7 +19,6 @@
 * Improved documentation
 * GitHub Action for continuous integration testing to replace Travis-CI
   ([#47][], [#50][])
-* GitHub Action for uploading a release ([#74][])
 
 ### Removed
 
