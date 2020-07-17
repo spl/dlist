@@ -2,6 +2,16 @@
 
 ## [Unreleased][]
 
+### Added
+
+* `intercalate` for `DList` ([#43][], [Jacob Leach][])
+* `Traversable` instance for `DList` ([#45][], [Veronika Romashkina][])
+* `Data.DList.DNonEmpty` ([#60][])
+
+### Changed
+
+* `stimes` defined with `stimesMonoid` ([#46][], [Janek Spaderna][])
+
 ## [v0.8.0.8][] - 2020-04-02
 
 Released on **World Autism Awareness Day**.
@@ -252,6 +262,10 @@ Released on **Black Friday**.
 [#33]: https://github.com/spl/dlist/pull/33
 [#35]: https://github.com/spl/dlist/pull/35
 [#36]: https://github.com/spl/dlist/pull/36
+[#43]: https://github.com/spl/dlist/pull/43
+[#45]: https://github.com/spl/dlist/pull/45
+[#46]: https://github.com/spl/dlist/pull/46
+[#60]: https://github.com/spl/dlist/pull/60
 
 <!-- Commits -->
 
@@ -281,6 +295,9 @@ Released on **Black Friday**.
 [Don Stewart]: https://github.com/donsbot
 [Evan Laforge]: https://github.com/elaforge
 [Herbert Valerio Riedel]: https://github.com/hvr
+[Jacob Leach]: https://github.com/riz0id
+[Janek Spaderna]: https://github.com/JaSpa
 [Ryan Scott]: https://github.com/RyanGlScott
 [Sean Leather]: https://github.com/spl
 [Simon Jakobi]: https://github.com/sjakobi
+[Veronika Romashkina]: https://github.com/vrom911
