@@ -15,11 +15,11 @@ See the [change log](./changelog.md) for recent changes.
 ### Research
 
 1. A novel representation of lists and its application to the function
-    “reverse.” John Hughes. Information Processing Letters. Volume 22, Issue 3.
-    1986-03. Pages 141-144.
-   \[[PDF](https://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/lists.pdf)]
+   “reverse.” John Hughes. Information Processing Letters. Volume 22, Issue 3.
+   1986-03. Pages 141-144.
+  [[PDF](https://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/lists.pdf)]
 
-    This is the original source for a representation of lists as first-class functions.
+   This is the original source for a representation of lists as first-class functions.
 
 ### Basic Introduction
 
