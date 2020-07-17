@@ -104,13 +104,14 @@ Released on **Constitution Day in South Korea**.
 ### Added
 
 * Pattern synonyms `Nil` and `Cons` ([#15][])
-* `Semigroup` instance ([#25][])
-* Inflexible `IsString` instance for `DList` ([#26][], [Baldur Blöndal][])
-* Canonical `Applicative` and `Monad` instances ([#23][], [Herbert Valerio
-  Riedel][])
+* `Semigroup` instance for `DList` ([#25][])
+* Canonical `Applicative` and `Monad` instances for `DList` ([#23][], [Herbert
+  Valerio Riedel][])
 
 ### Changed
 
+* `IsString` instance for `DList` is no longer flexible ([#26][], [Baldur
+  Blöndal][])
 * `QuickCheck` upper bound: 2.9 to 2.10 ([ef7eac5][])
 
 ## [v0.7.1.2][] - 2015-08-23
@@ -137,15 +138,15 @@ Released on the **100th Anniversary of the Assassination of Franz Ferdinand**.
 
 ### Added
 
-* `IsList` instance ([#13][], [Baldur Blöndal][])
+* `IsList` instance for `DList` ([#13][], [Baldur Blöndal][])
 
 ## [v0.7.0.1][] - 2014-03-24
 
 Released on **World Tuberculosis Day**.
 
-### Package changes
+### Changed
 
-* Change QuickCheck upper bound from 2.7 to 2.8
+* `QuickCheck` upper bound: 2.7 to 2.8 ([7494dbc][])
 
 ## [v0.7][] - 2014-03-17
 
@@ -236,6 +237,7 @@ Released on **Black Friday**.
 [3d9c8ad]: https://github.com/spl/dlist/commit/3d9c8ad348b419590a121b8a1604e8ebd01bffbe
 [4f92012]: https://github.com/spl/dlist/commit/4f920128592f6f99b8c57a1adf50cdb16d26c13b
 [5b41d0d]: https://github.com/spl/dlist/commit/5b41d0d84a0a14c75798ca30883b613b37ad464a
+[7494dbc]: https://github.com/spl/dlist/commit/7494dbc56550a0f7eb09304403a61c68b4a360e3
 [a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 [b2f791a]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
 [ef7eac5]: https://github.com/spl/dlist/commit/ef7eac55fc7e180ac3441657f4971ed171b0669c
