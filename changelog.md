@@ -114,19 +114,14 @@ Released on **Constitution Day in South Korea**.
 
 * `QuickCheck` upper bound: 2.9 to 2.10 ([ef7eac5][])
 
-### Development changes
-
-* Add `-Wall -Werror` testing
-* Add testing for GHC 8.0.1 to Travis-CI
-
 ## [v0.7.1.2][] - 2015-08-23
 
 Released on **International Day for the Remembrance of the Slave Trade and its Abolition**.
 
-### Package changes
+### Fixed
 
-* Fix GHC 7.10 warnings due to imports
-  ([Mikhail Glushenkov](https://github.com/23Skidoo))
+* Imports causing warnings in GHC 7.10 ([#22][], [Mikhail
+  Glushenkov](https://github.com/23Skidoo))
 
 ## [v0.7.1.1][] - 2015-03-19
 
@@ -221,6 +216,7 @@ Released on **Black Friday**.
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
 [#15]: https://github.com/spl/dlist/issues/15
+[#22]: https://github.com/spl/dlist/pull/22
 [#23]: https://github.com/spl/dlist/pull/23
 [#25]: https://github.com/spl/dlist/issues/25
 [#26]: https://github.com/spl/dlist/pull/26
