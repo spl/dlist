@@ -260,8 +260,9 @@ Released on **Black Friday**.
 [b2f791a]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
 [ef7eac5]: https://github.com/spl/dlist/commit/ef7eac55fc7e180ac3441657f4971ed171b0669c
 
-[Bas van Dijk]: https://github.com/basvandijk
 [Baldur Blöndal]: https://github.com/Icelandjack
+[Bas van Dijk]: https://github.com/basvandijk
 [Herbert Valerio Riedel]: https://github.com/hvr
 [Ryan Scott]: https://github.com/RyanGlScott
+[Sean Leather]: https://github.com/spl
 [Simon Jakobi]: https://github.com/sjakobi
