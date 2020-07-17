@@ -169,10 +169,10 @@ Released on **St. Patrick's Day**.
 
 Released on **World AIDS Day**.
 
-### Package changes
+### Changed
 
-* Change QuickCheck lower bound from 2.6 to 2.5
-  ([Michael Snoyman](https://github.com/snoyberg))
+* `QuickCheck` lower bound: 2.6 to 2.5 ([#9][], [Michael
+  Snoyman](https://github.com/snoyberg))
 
 ## [v0.6][] - 2013-11-29
 
@@ -222,6 +222,8 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+
+[#9]: https://github.com/spl/dlist/pull/9
 [#10]: https://github.com/spl/dlist/issues/10
 [#13]: https://github.com/spl/dlist/pull/13
 [#15]: https://github.com/spl/dlist/issues/15
