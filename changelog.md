@@ -103,10 +103,10 @@ Released on **Constitution Day in South Korea**.
 
 ### Added
 
-* Pattern synonyms `Nil` and `Cons` for GHC >= 7.8
-* `Semigroup` instance for GHC >= 8
-* _In_flexible `IsString` instance for `DList` to improve overloaded string
-  support ([#26][], [Baldur Blöndal](https://github.com/Icelandjack))
+* Pattern synonyms `Nil` and `Cons` ([#15][])
+* `Semigroup` instance ([#25][])
+* Inflexible `IsString` instance for `DList` ([#26][], [Baldur
+  Blöndal](https://github.com/Icelandjack))
 * Canonical `Applicative` and `Monad` instances ([#23][], [Herbert Valerio
   Riedel][])
 
@@ -220,7 +220,9 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#15]: https://github.com/spl/dlist/issues/15
 [#23]: https://github.com/spl/dlist/pull/23
+[#25]: https://github.com/spl/dlist/issues/25
 [#26]: https://github.com/spl/dlist/pull/26
 [#28]: https://github.com/spl/dlist/issues/28
 [#29]: https://github.com/spl/dlist/pull/29
