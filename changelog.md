@@ -6,8 +6,7 @@
 
 * `intercalate` for `DList` ([#43][], [Jacob Leach][])
 * `Traversable` instance for `DList` ([#45][], [Veronika Romashkina][])
-* `Data.DList.Unsafe` for exporting the unsafe `DList` constructor ([#55][],
-  [#59][])
+* `Data.DList.Unsafe` for exporting the `DList` constructor ([#55][], [#59][])
 * `Data.DList.DNonEmpty` ([#60][])
 
 ### Changed
@@ -15,10 +14,13 @@
 * `stimes` for `DList` defined with `stimesMonoid` ([#46][], [Janek Spaderna][])
 * Type of `tail`: from `tail :: DList a -> DList a` to `tail :: DList a -> [a]`
   ([#69][])
+* Improved documentation
+* GitHub Actions for continuous integration testing to replace Travis-CI
+  ([#47][], [#50][])
 
 ### Removed
 
-* `list` for `DList` ([#69][])
+* `list :: b -> (a -> DList a -> b) -> DList a -> b` ([#69][])
 
 ## [v0.8.0.8][] - 2020-04-02
 
@@ -273,6 +275,8 @@ Released on **Black Friday**.
 [#43]: https://github.com/spl/dlist/pull/43
 [#45]: https://github.com/spl/dlist/pull/45
 [#46]: https://github.com/spl/dlist/pull/46
+[#47]: https://github.com/spl/dlist/pull/47
+[#50]: https://github.com/spl/dlist/pull/50
 [#55]: https://github.com/spl/dlist/pull/55
 [#59]: https://github.com/spl/dlist/pull/59
 [#60]: https://github.com/spl/dlist/pull/60
