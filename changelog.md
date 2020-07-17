@@ -127,9 +127,10 @@ Released on **International Day for the Remembrance of the Slave Trade and its A
 
 Released on **St. Joseph's Day**.
 
-### Package changes
+### Changed
 
-* Change QuickCheck upper bound from 2.8 to 2.9
+* `QuickCheck` lower bound: 2.5 to 2.7 ([2d8ec37][])
+* `QuickCheck` upper bound: 2.8 to 2.9 ([3176153][])
 
 ## [v0.7.1][] - 2014-06-28
 
@@ -231,6 +232,8 @@ Released on **Black Friday**.
 
 [0e2b3a5]: https://github.com/spl/dlist/commit/0e2b3a542796b50796f2aa6dde4665911b9d15a1
 [242511c]: https://github.com/spl/dlist/commit/242511c501299b38c57efeafb9e604f29cb8bb7a
+[2d8ec37]: https://github.com/spl/dlist/commit/2d8ec370a3c19d39c0d543f39f8fc31948087fd9
+[3176153]: https://github.com/spl/dlist/commit/3176153187b130002a1577675cdcd5509dd86556
 [3d9c8ad]: https://github.com/spl/dlist/commit/3d9c8ad348b419590a121b8a1604e8ebd01bffbe
 [4f92012]: https://github.com/spl/dlist/commit/4f920128592f6f99b8c57a1adf50cdb16d26c13b
 [5b41d0d]: https://github.com/spl/dlist/commit/5b41d0d84a0a14c75798ca30883b613b37ad464a
