@@ -203,6 +203,10 @@ Released on **Black Friday**.
 
 * Exported `DList` constructor and record label, `maybeReturn` ([#4][])
 
+<!-- Keep each of these groups of references sorted. -->
+
+<!-- Version tag comparisons -->
+
 [v0.6]: https://github.com/spl/dlist/compare/v0.5...v0.6
 [v0.6.0.1]: https://github.com/spl/dlist/compare/v0.6...v0.6.0.1
 [v0.7]: https://github.com/spl/dlist/compare/v0.6.0.1...v0.7
@@ -219,6 +223,8 @@ Released on **Black Friday**.
 [v0.8.0.6]: https://github.com/spl/dlist/compare/v0.8.0.5...v0.8.0.6
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
+
+<!-- Issues and PRs -->
 
 [#1]: https://github.com/spl/dlist/pull/1
 [#2]: https://github.com/spl/dlist/pull/2
@@ -241,6 +247,8 @@ Released on **Black Friday**.
 [#35]: https://github.com/spl/dlist/pull/35
 [#36]: https://github.com/spl/dlist/pull/36
 
+<!-- Commits -->
+
 [`0e2b3a5`]: https://github.com/spl/dlist/commit/0e2b3a542796b50796f2aa6dde4665911b9d15a1
 [`242511c`]: https://github.com/spl/dlist/commit/242511c501299b38c57efeafb9e604f29cb8bb7a
 [`2d8ec37`]: https://github.com/spl/dlist/commit/2d8ec370a3c19d39c0d543f39f8fc31948087fd9
@@ -259,6 +267,8 @@ Released on **Black Friday**.
 [`a7ea60d`]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 [`b2f791a`]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
 [`ef7eac5`]: https://github.com/spl/dlist/commit/ef7eac55fc7e180ac3441657f4971ed171b0669c
+
+<!-- Contributors -->
 
 [Baldur Blöndal]: https://github.com/Icelandjack
 [Bas van Dijk]: https://github.com/basvandijk

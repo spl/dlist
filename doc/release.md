@@ -12,10 +12,9 @@ These are the steps for making a new release of the `dlist` package.
 
 2. Create a new branch for the final changes needed before the release.
 
-
-   ```sh
-   git checkout -b version
-   ```
+```sh
+git checkout -b version
+```
 
 3. Update the [`changelog.md`][] and [`dlist.cabal`][] for the new version,
    `$VERSION`.
