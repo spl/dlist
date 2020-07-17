@@ -6,7 +6,8 @@
 
 * `intercalate` for `DList` ([#43][], [Jacob Leach][])
 * `Traversable` instance for `DList` ([#45][], [Veronika Romashkina][])
-* `Data.DList.Unsafe` for exporting the `DList` constructor ([#55][], [#59][])
+* `Data.DList.Internal` for all `DList`-related implementation,
+  `Data.DList.Unsafe` for exporting the `DList` constructor ([#55][], [#59][])
 * `Data.DList.DNonEmpty` ([#60][])
 
 ### Changed
@@ -15,8 +16,9 @@
 * Type of `tail`: from `tail :: DList a -> DList a` to `tail :: DList a -> [a]`
   ([#69][])
 * Improved documentation
-* GitHub Actions for continuous integration testing to replace Travis-CI
+* GitHub Action for continuous integration testing to replace Travis-CI
   ([#47][], [#50][])
+* GitHub Action for uploading a release ([#74][])
 
 ### Removed
 
@@ -281,6 +283,7 @@ Released on **Black Friday**.
 [#59]: https://github.com/spl/dlist/pull/59
 [#60]: https://github.com/spl/dlist/pull/60
 [#69]: https://github.com/spl/dlist/pull/69
+[#74]: https://github.com/spl/dlist/pull/74
 
 <!-- Commits -->
 
