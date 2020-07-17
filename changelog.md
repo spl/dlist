@@ -105,8 +105,7 @@ Released on **Constitution Day in South Korea**.
 
 * Pattern synonyms `Nil` and `Cons` ([#15][])
 * `Semigroup` instance ([#25][])
-* Inflexible `IsString` instance for `DList` ([#26][], [Baldur
-  Blöndal](https://github.com/Icelandjack))
+* Inflexible `IsString` instance for `DList` ([#26][], [Baldur Blöndal][])
 * Canonical `Applicative` and `Monad` instances ([#23][], [Herbert Valerio
   Riedel][])
 
@@ -136,10 +135,9 @@ Released on **St. Joseph's Day**.
 
 Released on the **100th Anniversary of the Assassination of Franz Ferdinand**.
 
-### New features
+### Added
 
-* Add `IsList` instance for GHC >= 7.8
-  ([Baldur Blöndal](https://github.com/Icelandjack))
+* `IsList` instance ([#13][], [Baldur Blöndal][])
 
 ## [v0.7.0.1][] - 2014-03-24
 
@@ -216,6 +214,7 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#13]: https://github.com/spl/dlist/pull/13
 [#15]: https://github.com/spl/dlist/issues/15
 [#22]: https://github.com/spl/dlist/pull/22
 [#23]: https://github.com/spl/dlist/pull/23
@@ -241,6 +240,7 @@ Released on **Black Friday**.
 [b2f791a]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
 [ef7eac5]: https://github.com/spl/dlist/commit/ef7eac55fc7e180ac3441657f4971ed171b0669c
 
+[Baldur Blöndal]: https://github.com/Icelandjack
 [Herbert Valerio Riedel]: https://github.com/hvr
 [Ryan Scott]: https://github.com/RyanGlScott
 [Simon Jakobi]: https://github.com/sjakobi
