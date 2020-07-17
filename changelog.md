@@ -1,5 +1,7 @@
 # Change Log
 
+## [Unreleased][]
+
 ## [v0.8.0.8][] - 2020-04-02
 
 Released on **World Autism Awareness Day**.
@@ -223,6 +225,10 @@ Released on **Black Friday**.
 [v0.8.0.6]: https://github.com/spl/dlist/compare/v0.8.0.5...v0.8.0.6
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
+
+<!-- The HEAD version tag comparison -->
+
+[Unreleased]: https://github.com/spl/dlist/compare/v0.8.0.8...HEAD
 
 <!-- Issues and PRs -->
 
