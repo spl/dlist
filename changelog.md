@@ -152,11 +152,18 @@ Released on **World Tuberculosis Day**.
 
 Released on **St. Patrick's Day**.
 
-### New features
+### Added
 
-* Add `NFData` instance (and `deepseq` dependency)
-* Add `IsString` instance
-* Remove deprecated entities
+* `NFData` instance for `DList` ([#10][])
+* `IsString` instance for `DList` ([771a38d][])
+
+### Changed
+
+* `base` lower bound: 2 to 4 ([77f6898][])
+
+### Removed
+
+* `DList` constructor and record label, `maybeReturn` ([62c0c09][])
 
 ## [v0.6.0.1][] - 2013-12-01
 
@@ -215,6 +222,7 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+[#10]: https://github.com/spl/dlist/issues/10
 [#13]: https://github.com/spl/dlist/pull/13
 [#15]: https://github.com/spl/dlist/issues/15
 [#22]: https://github.com/spl/dlist/pull/22
@@ -237,7 +245,10 @@ Released on **Black Friday**.
 [3d9c8ad]: https://github.com/spl/dlist/commit/3d9c8ad348b419590a121b8a1604e8ebd01bffbe
 [4f92012]: https://github.com/spl/dlist/commit/4f920128592f6f99b8c57a1adf50cdb16d26c13b
 [5b41d0d]: https://github.com/spl/dlist/commit/5b41d0d84a0a14c75798ca30883b613b37ad464a
+[62c0c09]: https://github.com/spl/dlist/commit/62c0c099d20c3f950d7950dc9ec5a6b3797acaf8
 [7494dbc]: https://github.com/spl/dlist/commit/7494dbc56550a0f7eb09304403a61c68b4a360e3
+[771a38d]: https://github.com/spl/dlist/commit/771a38df953b97a631806884133a76ab8dfcfce8
+[77f6898]: https://github.com/spl/dlist/commit/77f689829223b5fd6762e24594ce9111e6ef8f6b
 [a7ea60d]: https://github.com/spl/dlist/commit/a7ea60d3d02775216a15d6f688db230d7735c9d1
 [b2f791a]: https://github.com/spl/dlist/commit/b2f791ab98e2091303fff4567727716b6021b63e
 [ef7eac5]: https://github.com/spl/dlist/commit/ef7eac55fc7e180ac3441657f4971ed171b0669c
