@@ -190,8 +190,8 @@ Released on **Black Friday**.
 
 ### Changed
 
-* Now maintained by [Sean Leather][] ([#2][], [Bas van Dijk][])
-* Repository moved: <http://code.haskell.org/~dons/code/dlist/> to
+* Maintenance: [Don Stewart][] to [Sean Leather][] ([#2][], [Bas van Dijk][])
+* Repository: <http://code.haskell.org/~dons/code/dlist/> to
   <https://github.com/spl/dlist>
 * `base` lower bound: 0 to 2 ([`6e1d9e7`][])
 
@@ -262,6 +262,7 @@ Released on **Black Friday**.
 
 [Baldur Blöndal]: https://github.com/Icelandjack
 [Bas van Dijk]: https://github.com/basvandijk
+[Don Stewart]: https://github.com/donsbot
 [Herbert Valerio Riedel]: https://github.com/hvr
 [Ryan Scott]: https://github.com/RyanGlScott
 [Sean Leather]: https://github.com/spl
