@@ -154,7 +154,7 @@ Released on **St. Patrick's Day**.
 
 ### Added
 
-* `NFData` instance for `DList` ([#10][])
+* `NFData` instance for `DList` ([#10][], [Evan Laforge][])
 * `IsString` instance for `DList` ([`771a38d`][])
 
 ### Changed
@@ -273,6 +273,7 @@ Released on **Black Friday**.
 [Baldur Blöndal]: https://github.com/Icelandjack
 [Bas van Dijk]: https://github.com/basvandijk
 [Don Stewart]: https://github.com/donsbot
+[Evan Laforge]: https://github.com/elaforge
 [Herbert Valerio Riedel]: https://github.com/hvr
 [Ryan Scott]: https://github.com/RyanGlScott
 [Sean Leather]: https://github.com/spl
