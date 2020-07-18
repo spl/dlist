@@ -11,15 +11,17 @@
   `unsafeApplyDList` ([#55][], [#59][])
 * `Data.DList.DNonEmpty` ([#60][])
 * GitHub Action for uploading a release ([#74][])
+* `dlist-bench`, a benchmark package ([#71][])
 
 ### Changed
 
 * `stimes` for `DList` defined with `stimesMonoid` ([#46][], [Janek Spaderna][])
 * Type of `tail`: from `tail :: DList a -> DList a` to `tail :: DList a -> [a]`
   ([#69][])
-* Improved documentation
 * GitHub Action for continuous integration testing to replace Travis-CI
   ([#47][], [#50][])
+* GHC warning and error improvements ([#72][], [#73][])
+* Improved documentation ([#55][], [#70][], [#76][], [#77][])
 
 ### Removed
 
@@ -284,7 +286,13 @@ Released on **Black Friday**.
 [#59]: https://github.com/spl/dlist/pull/59
 [#60]: https://github.com/spl/dlist/pull/60
 [#69]: https://github.com/spl/dlist/pull/69
+[#70]: https://github.com/spl/dlist/pull/70
+[#71]: https://github.com/spl/dlist/pull/71
+[#72]: https://github.com/spl/dlist/pull/72
+[#73]: https://github.com/spl/dlist/pull/73
 [#74]: https://github.com/spl/dlist/pull/74
+[#76]: https://github.com/spl/dlist/pull/76
+[#77]: https://github.com/spl/dlist/pull/77
 
 <!-- Commits -->
 
