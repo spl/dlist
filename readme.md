@@ -105,6 +105,105 @@ every function in the `dlist` package is the most efficient for every situation.
 _**Moral of the story:**_ If you are using `dlist` to speed up your code, check
 to be sure that it actually does. Benchmark!
 
+## Design Notes
+
+These are some notes on design and development choices made for the `dlist`
+package.
+
+### Avoid `++`
+
+The original intent of Hughes' representation of lists as first-class functions
+was to provide an abstraction such that the list `append` operation found in
+functional programming languages (and now called `++` in Haskell) would not
+appear in left-nested positions to avoid duplicated structure as lists are
+constructed. The lesson learned by many people using list over the years is that
+the `append` operation can appear, sometimes surprisingly, in places they don't
+expect it.
+
+The goal of the `dlist` package is to avoid surprising its users with unexpected
+insertions of `++`. Towards this end, there should be a minimal set of functions
+in `dlist` in which `++` can be directly or indirectly found. The list of known
+uses of `++` includes:
+
+* `DList`: `fromList`, `fromString`, `read`
+* `DNonEmpty`: `fromList`, `fromNonEmpty`, `fromString`, `read`
+
+If any future requested functions involve `++` (e.g. via `fromList`), the burden
+of inclusion is higher than it would be otherwise.
+
+### Abstraction
+
+The `DList` representation and its supporting functions (e.g. `append`, `snoc`,
+etc.) rely on an invariant to preserve its safe use. That is, without this
+invariant, a user may encounter unexpected outcomes.
+
+(We use safety in the sense that the semantics are well-defined and expected,
+not in the sense of side of referential transparency. The invariant does not
+directly lead to side effects in the `dlist` package, but a program that uses an
+unsafely generated `DList` may do something surprising.)
+
+The invariant is that, for any `xs :: DList a`,
+
+```haskell
+fromList (toList xs) = xs
+```
+
+To see how this invariant can be broken, consider this example:
+
+```haskell
+xs :: DList a
+xs = UnsafeDList (const [])
+
+fromList (toList (xs `snoc` 1))
+  = fromList (toList (UnsafeDList (const []) `snoc` 1))
+  = fromList (toList (UnsafeDList (unsafeApplyDList (UnsafeDList (const [])) . (x :))))
+  = fromList (toList (UnsafeDList (const [] . (x :))))
+  = fromList (($ []) . unsafeApplyDList $ UnsafeDList (const [] . (x :)))
+  = fromList (const [] . (x :) $ [])
+  = fromList (const [] [x])
+  = fromList []
+  = UnsafeDList (++ [])
+```
+
+The invariant can also be stated as:
+
+```haskell
+toList (fromList (toList xs)) = toList xs
+```
+
+And we can restate the example as:
+
+```haskell
+toList (fromList (toList (xs `snoc` 1))) = toList (UnsafeDList (++ [])) = []
+```
+
+It would be rather unhelpful and surprising to find `(xs \`snoc\` 1)` turned out
+to be the empty list.
+
+To preserve the invariant on `DList`, we provide it as an abstract type in the
+`Data.DList` module. The constructor, `UnsafeDList`, and record label,
+`unsafeApplyDList`, are not exported because these can be used, as shown above,
+to break the invariant.
+
+All of that said, there have been numerous requests to export the `DList`
+constructor. We are not convinced that it is necessary, but we are convinced
+that users should decide for themselves.
+
+To use the constructor and record label of `DList`, you import them as follows:
+
+```haskell
+import Data.DList.Unsafe (DList(UnsafeDList, unsafeApplyDList))
+```
+
+If you are using Safe Haskell, you may need to add this at the top of your
+module:
+
+```haskell
+{-# LANGUAGE Trustworthy #-}
+```
+
+Just be aware that the burden of proof for safety is on you.
+
 ## References
 
 ### Research
