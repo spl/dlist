@@ -120,10 +120,10 @@ constructed. The lesson learned by many people using list over the years is that
 the `append` operation can appear, sometimes surprisingly, in places they don't
 expect it.
 
-The goal of the `dlist` package is to avoid surprising its users with unexpected
-insertions of `++`. Towards this end, there should be a minimal set of functions
-in `dlist` in which `++` can be directly or indirectly found. The list of known
-uses of `++` includes:
+One of our goals is for the `dlist` package to avoid surprising its users with
+unexpected insertions of `++`. Towards this end, there should be a minimal set
+of functions in `dlist` in which `++` can be directly or indirectly found. The
+list of known uses of `++` includes:
 
 * `DList`: `fromList`, `fromString`, `read`
 * `DNonEmpty`: `fromList`, `fromNonEmpty`, `fromString`, `read`
@@ -142,7 +142,7 @@ not in the sense of side of referential transparency. The invariant does not
 directly lead to side effects in the `dlist` package, but a program that uses an
 unsafely generated `DList` may do something surprising.)
 
-The invariant is that, for any `xs :: DList a`,
+The invariant is that, for any `xs :: DList a`:
 
 ```haskell
 fromList (toList xs) = xs
@@ -174,10 +174,12 @@ toList (fromList (toList xs)) = toList xs
 And we can restate the example as:
 
 ```haskell
-toList (fromList (toList (xs `snoc` 1))) = toList (UnsafeDList (++ [])) = []
+toList (fromList (toList (xs `snoc` 1)))
+  = toList (UnsafeDList (++ []))
+  = []
 ```
 
-It would be rather unhelpful and surprising to find `(xs \`snoc\` 1)` turned out
+It would be rather unhelpful and surprising to find ``(xs `snoc` 1)`` turned out
 to be the empty list.
 
 To preserve the invariant on `DList`, we provide it as an abstract type in the
