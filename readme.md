@@ -8,7 +8,7 @@
 
 <!-- Brief description -->
 
-_**List-like types supporting _O_(1) `append` and `snoc` operations.**_
+_**List-like types supporting O(1) `append` and `snoc` operations.**_
 
 <!-- Sections -->
 
