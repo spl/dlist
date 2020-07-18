@@ -90,29 +90,10 @@ import Prelude hiding (concat, foldr, head, map, replicate, tail)
 {- ORMOLU_DISABLE -}
 {-|
 
-A difference list is a function that, given a list, returns the original
-contents of the difference list prepended to the given list.
-
-This structure supports&#x00A0;\(\mathcal{O}\)(@1@) 'append' and 'snoc'
-operations on lists, making it useful for replacing frequent applications of
-'++' such as logging and pretty printing (esp. if those uses of '++' are
-left-nested).
-
-Here is an example using @DList@ as the state type when printing a tree with the
-@Writer@ monad:
-
-@
-import Control.Monad.Writer
-import Data.DList
-
-data Tree a = Leaf a | Branch (Tree a) (Tree a)
-
-flatten_writer :: Tree x -> DList x
-flatten_writer = snd . runWriter . flatten
-  where
-    flatten (Leaf x)     = tell (singleton x)
-    flatten (Branch x y) = flatten x >> flatten y
-@
+A difference list is an abstraction representing a list that
+supports&#x00A0;\(\mathcal{O}\)(@1@) 'append' and 'snoc' operations, making it
+useful for replacing frequent applications of '++' such as logging and pretty
+printing (esp. if those uses of '++' are left-nested).
 
 -}
 {- ORMOLU_ENABLE -}

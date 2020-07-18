@@ -2,9 +2,7 @@ name:                   dlist
 version:                0.8.0.8
 synopsis:               Difference lists
 description:
-  Difference lists are a list-like type supporting O(1) append. This is
-  particularly useful for efficient logging and pretty printing (e.g. with the
-  Writer monad), where list append quickly becomes too expensive.
+  List-like types supporting O(1) append and snoc operations.
 category:               Data
 license:                BSD3
 license-file:           license.md
