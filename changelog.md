@@ -16,8 +16,7 @@
 ### Changed
 
 * `stimes` for `DList` defined with `stimesMonoid` ([#46][], [Janek Spaderna][])
-* Type of `tail`: from `tail :: DList a -> DList a` to `tail :: DList a -> [a]`
-  ([#69][])
+* Type of `tail` `DList a -> DList a` to `DList a -> [a]` ([#69][])
 * GitHub Action for continuous integration testing to replace Travis-CI
   ([#47][], [#50][])
 * GHC warning and error improvements ([#72][], [#73][])
