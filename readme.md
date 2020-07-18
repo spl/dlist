@@ -1,14 +1,51 @@
-# Difference Lists in Haskell
+# Difference Lists
+
+<!-- Badges -->
 
 [![test-badge][]][test]
 [![hackage-badge][]][hackage-dlist]
 [![packdeps-badge][]][packdeps]
 
-## Summary
+<!-- Brief description -->
 
-The Haskell `dlist` package defines a list-like type supporting O(1) append and snoc operations.
+_**List-like types supporting _O_(1) `append` and `snoc` operations.**_
 
-See the [change log](./changelog.md) for recent changes.
+<!-- Sections -->
+
+## Installation
+
+[`dlist`][hackage-dlist] is a Haskell package available from [Hackage][hackage].
+It can be installed with [`cabal`][cabal] or [`stack`][stack].
+
+See the [change log](./changelog.md) for the changes in each version.
+
+## Usage
+
+Here is an example of using `DList` to “flatten” a `Tree` into a (difference)
+list of the elements in its leaves (`Leaf` constructors). `flattenFast` is
+likely to be more efficient than the similar `flattenSlow`, which uses `(: [])`
+instead of `DList.singleton` to inject the element, because `flattenSlow` may
+involve many left-nested append (a.k.a. `++`) operations, which results in
+redundant list constructions.
+
+```haskell
+import Control.Monad.Trans.Writer.Lazy (runWriter, tell) -- From 'transformers'
+import qualified Data.DList as DList
+
+data Tree a = Leaf a | Branch (Tree a) (Tree a)
+
+flattenFast :: Tree a -> [a]
+flattenFast = DList.toList . snd . runWriter . go
+  where
+    go (Leaf x) = tell (DList.singleton x)
+    go (Branch x y) = go x >> go y
+
+flattenSlow :: Tree a -> [a]
+flattenSlow = snd . runWriter . go
+  where
+    go (Leaf x) = tell [x]
+    go (Branch x y) = go x >> go y
+```
 
 ## References
 
@@ -74,14 +111,17 @@ contributors
 [blog-ellis]: http://h2.jaguarpaw.co.uk/posts/demystifying-dlist/
 [blog-kmett]: https://web.archive.org/web/20080918101635/comonad.com/reader/2008/a-sort-of-difference/
 [book-real-world-haskell]: http://book.realworldhaskell.org/read/data-structures.html
+[cabal]: https://cabal.readthedocs.io/
 [hackage-badge]: https://img.shields.io/hackage/v/dlist.svg?maxAge=3600
 [hackage-dlist]: https://hackage.haskell.org/package/dlist
+[hackage]: https://hackage.haskell.org/
 [hughes-pdf]: https://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/lists.pdf
 [license]: ./license.md
 [mail-okeefe]: https://www.mail-archive.com/haskell-cafe@haskell.org/msg83699.html
 [packdeps-badge]: https://img.shields.io/hackage-deps/v/dlist.svg?maxAge=3600
 [packdeps]: http://packdeps.haskellers.com/feed?needle=dlist
 [stack-overflow]: https://stackoverflow.com/questions/3352418/what-is-a-dlist
+[stack]: https://docs.haskellstack.org/
 [test-badge]: https://github.com/spl/dlist/workflows/test/badge.svg
 [test]: https://github.com/spl/dlist/actions?query=workflow%3Atest
 [wiki-haskell]: https://wiki.haskell.org/Difference_list
