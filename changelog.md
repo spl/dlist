@@ -26,9 +26,9 @@
 
 * `list :: b -> (a -> DList a -> b) -> DList a -> b` ([#69][])
 
-## [v0.8.0.8][] - 2020-04-02
+## [v0.8.0.8][]
 
-Released on **World Autism Awareness Day**.
+Released on **2020-04-02**, **World Autism Awareness Day**.
 
 ### Added
 
@@ -42,9 +42,9 @@ Released on **World Autism Awareness Day**.
 
 * Documented time complexity of `head` for `DList` ([#35][], [Simon Jakobi][])
 
-## [v0.8.0.7][] - 2019-08-05
+## [v0.8.0.7][]
 
-Released on **Independence Day in Burkina Faso**.
+Released on **2019-08-05**, **Independence Day in Burkina Faso**.
 
 ### Added
 
@@ -55,25 +55,25 @@ Released on **Independence Day in Burkina Faso**.
 
 * `deepseq` upper bound: 2 to 1.5 ([#33][], [Herbert Valerio Riedel][])
 
-## [v0.8.0.6][] - 2019-03-29
+## [v0.8.0.6][]
 
-Released on **Martyrs' Day in Madagascar**.
+Released on **2019-03-29**, **Martyrs' Day in Madagascar**.
 
 ### Changed
 
 * `QuickCheck` upper bound: 2.13 to 2.14 ([`242511c`][])
 
-## [v0.8.0.5][] - 2018-09-13
+## [v0.8.0.5][]
 
-Released on **Day of the Programmer**.
+Released on **2018-09-13**, **Day of the Programmer**.
 
 ### Changed
 
 * `QuickCheck` upper bound: 2.12 to 2.13 ([`0e2b3a5`][])
 
-## [v0.8.0.4][] - 2018-01-19
+## [v0.8.0.4][]
 
-Released on **Kokborok Day**.
+Released on **2018-01-19**, **Kokborok Day**.
 
 ### Added
 
@@ -87,9 +87,9 @@ Released on **Kokborok Day**.
 * `Arbitrary`, `Arbitrary1` instances for `NonEmpty` in the test suite copied
   from `quickcheck-instances` ([`4f92012`][])
 
-## [v0.8.0.3][] - 2017-07-04
+## [v0.8.0.3][]
 
-Released on **Independence Day in the United States**.
+Released on **2017-07-04**, **Independence Day in the United States**.
 
 ### Added
 
@@ -105,27 +105,27 @@ Released on **Independence Day in the United States**.
 * `stimes` property in the test suite ([#30][], [Oleg
   Grenrus](https://github.com/phadej))
 
-## [v0.8.0.2][] - 2016-09-04
+## [v0.8.0.2][]
 
-Released on **World Sexual Health Day**.
+Released on **2016-09-04**, **World Sexual Health Day**.
 
 ### Fixed
 
 * Missing module `OverloadedStrings` in the test suite ([#29][], [Sergei
   Trofimovich](https://github.com/trofi))
 
-## [v0.8.0.1][] - 2016-07-29
+## [v0.8.0.1][]
 
-Released on the **58th Anniversary of the Creation of NASA**.
+Released on **2016-07-29**, the **58th Anniversary of the Creation of NASA**.
 
 ### Changed
 
 * `QuickCheck` lower bound: 2.7 to 2.9 for GHC >= 8 ([#28][], [Adam
   Bergmark](https://github.com/bergmark))
 
-## [v0.8][] - 2016-07-17
+## [v0.8][]
 
-Released on **Constitution Day in South Korea**.
+Released on **2016-07-17**, **Constitution Day in South Korea**.
 
 ### Added
 
@@ -140,43 +140,45 @@ Released on **Constitution Day in South Korea**.
   Blöndal][])
 * `QuickCheck` upper bound: 2.9 to 2.10 ([`ef7eac5`][])
 
-## [v0.7.1.2][] - 2015-08-23
+## [v0.7.1.2][]
 
-Released on **International Day for the Remembrance of the Slave Trade and its Abolition**.
+Released on **2015-08-23**, **International Day for the Remembrance of the Slave
+Trade and its Abolition**.
 
 ### Fixed
 
 * Imports causing warnings in GHC 7.10 ([#22][], [Mikhail
   Glushenkov](https://github.com/23Skidoo))
 
-## [v0.7.1.1][] - 2015-03-19
+## [v0.7.1.1][]
 
-Released on **St. Joseph's Day**.
+Released on **2015-03-19**, **St. Joseph's Day**.
 
 ### Changed
 
 * `QuickCheck` lower bound: 2.5 to 2.7 ([`2d8ec37`][])
 * `QuickCheck` upper bound: 2.8 to 2.9 ([`3176153`][])
 
-## [v0.7.1][] - 2014-06-28
+## [v0.7.1][]
 
-Released on the **100th Anniversary of the Assassination of Franz Ferdinand**.
+Released on **2014-06-28**, the **100th Anniversary of the Assassination of
+Franz Ferdinand**.
 
 ### Added
 
 * `IsList` instance for `DList` ([#13][], [Baldur Blöndal][])
 
-## [v0.7.0.1][] - 2014-03-24
+## [v0.7.0.1][]
 
-Released on **World Tuberculosis Day**.
+Released on **2014-03-24**, **World Tuberculosis Day**.
 
 ### Changed
 
 * `QuickCheck` upper bound: 2.7 to 2.8 ([`7494dbc`][])
 
-## [v0.7][] - 2014-03-17
+## [v0.7][]
 
-Released on **St. Patrick's Day**.
+Released on **2014-03-17**, **St. Patrick's Day**.
 
 ### Added
 
@@ -191,18 +193,18 @@ Released on **St. Patrick's Day**.
 
 * `DList` constructor and record label, `maybeReturn` ([`62c0c09`][])
 
-## [v0.6.0.1][] - 2013-12-01
+## [v0.6.0.1][]
 
-Released on **World AIDS Day**.
+Released on **2013-12-01**, **World AIDS Day**.
 
 ### Changed
 
 * `QuickCheck` lower bound: 2.6 to 2.5 ([#9][], [Michael
   Snoyman](https://github.com/snoyberg))
 
-## [v0.6][] - 2013-11-29
+## [v0.6][]
 
-Released on **Black Friday**.
+Released on **2013-11-29**, **Black Friday**.
 
 ### Added
 
