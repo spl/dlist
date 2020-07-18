@@ -27,7 +27,7 @@ See the [change log](./changelog.md) for recent changes.
 
 2. [Difference list][wiki-haskell]. Haskell.org Wiki.
 
-3. [What is a DList?][stack-overflow].
+3. [What is a DList?][stack-overflow]
    Stack Overflow.
 
 ### Blogs and Discussion
