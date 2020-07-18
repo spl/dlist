@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+_No unreleased changes at this time._
+
+## [v1.0][]
+
 ### Added
 
 * `intercalate` for `DList` ([#43][], [Jacob Leach][])
@@ -246,10 +250,11 @@ Released on **2013-11-29**, **Black Friday**.
 [v0.8.0.6]: https://github.com/spl/dlist/compare/v0.8.0.5...v0.8.0.6
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
+[v1.0]: https://github.com/spl/dlist/compare/v0.8.0.8...v1.0
 
 <!-- The HEAD version tag comparison -->
 
-[Unreleased]: https://github.com/spl/dlist/compare/v0.8.0.8...HEAD
+[Unreleased]: https://github.com/spl/dlist/compare/v1.0...HEAD
 
 <!-- Issues and PRs -->
 

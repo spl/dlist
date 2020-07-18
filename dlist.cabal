@@ -1,5 +1,5 @@
 name:                   dlist
-version:                0.8.0.8
+version:                1.0
 synopsis:               Difference lists
 description:
   List-like types supporting O(1) append and snoc operations.
