@@ -48,8 +48,7 @@ Released on **2019-08-05**, **Independence Day in Burkina Faso**.
 
 ### Added
 
-* `MonadFail` instance for `DList` ([#32][], [Vanessa
-  McHale](https://github.com/vmchale))
+* `MonadFail` instance for `DList` ([#32][], [Vanessa McHale][])
 
 ### Changed
 
@@ -78,7 +77,7 @@ Released on **2018-01-19**, **Kokborok Day**.
 ### Added
 
 * `{-# LANGUAGE Trustworthy #-}` in `Data.DList` ([#31][], [Bertram
-  Felgenhauer](https://github.com/int-e))
+  Felgenhauer][])
 
 ### Changed
 
@@ -102,8 +101,7 @@ Released on **2017-07-04**, **Independence Day in the United States**.
 
 ### Fixed
 
-* `stimes` property in the test suite ([#30][], [Oleg
-  Grenrus](https://github.com/phadej))
+* `stimes` property in the test suite ([#30][], [Oleg Grenrus][])
 
 ## [v0.8.0.2][]
 
@@ -112,7 +110,7 @@ Released on **2016-09-04**, **World Sexual Health Day**.
 ### Fixed
 
 * Missing module `OverloadedStrings` in the test suite ([#29][], [Sergei
-  Trofimovich](https://github.com/trofi))
+  Trofimovich][])
 
 ## [v0.8.0.1][]
 
@@ -120,8 +118,7 @@ Released on **2016-07-29**, the **58th Anniversary of the Creation of NASA**.
 
 ### Changed
 
-* `QuickCheck` lower bound: 2.7 to 2.9 for GHC >= 8 ([#28][], [Adam
-  Bergmark](https://github.com/bergmark))
+* `QuickCheck` lower bound: 2.7 to 2.9 for GHC >= 8 ([#28][], [Adam Bergmark][])
 
 ## [v0.8][]
 
@@ -147,8 +144,7 @@ Trade and its Abolition**.
 
 ### Fixed
 
-* Imports causing warnings in GHC 7.10 ([#22][], [Mikhail
-  Glushenkov](https://github.com/23Skidoo))
+* Imports causing warnings in GHC 7.10 ([#22][], [Mikhail Glushenkov][])
 
 ## [v0.7.1.1][]
 
@@ -199,8 +195,7 @@ Released on **2013-12-01**, **World AIDS Day**.
 
 ### Changed
 
-* `QuickCheck` lower bound: 2.6 to 2.5 ([#9][], [Michael
-  Snoyman](https://github.com/snoyberg))
+* `QuickCheck` lower bound: 2.6 to 2.5 ([#9][], [Michael Snoyman][])
 
 ## [v0.6][]
 
@@ -219,8 +214,8 @@ Released on **2013-11-29**, **Black Friday**.
 ### Changed
 
 * Maintenance: [Don Stewart][] to [Sean Leather][] ([#2][], [Bas van Dijk][])
-* Repository: <http://code.haskell.org/~dons/code/dlist/> to
-  <https://github.com/spl/dlist>
+* Repository: `http://code.haskell.org/~dons/code/dlist/` to
+  `https://github.com/spl/dlist`
 * `base` lower bound: 0 to 2 ([`6e1d9e7`][])
 
 ### Fixed
@@ -318,14 +313,21 @@ Released on **2013-11-29**, **Black Friday**.
 
 <!-- Contributors -->
 
+[Adam Bergmark]: https://github.com/bergmark
 [Baldur Blöndal]: https://github.com/Icelandjack
 [Bas van Dijk]: https://github.com/basvandijk
+[Bertram Felgenhauer]: https://github.com/int-e
 [Don Stewart]: https://github.com/donsbot
 [Evan Laforge]: https://github.com/elaforge
 [Herbert Valerio Riedel]: https://github.com/hvr
 [Jacob Leach]: https://github.com/riz0id
 [Janek Spaderna]: https://github.com/JaSpa
+[Michael Snoyman]: https://github.com/snoyberg
+[Mikhail Glushenkov]: https://github.com/23Skidoo
+[Oleg Grenrus]: https://github.com/phadej
 [Ryan Scott]: https://github.com/RyanGlScott
 [Sean Leather]: https://github.com/spl
+[Sergei Trofimovich]: https://github.com/trofi
 [Simon Jakobi]: https://github.com/sjakobi
+[Vanessa McHale]: https://github.com/vmchale
 [Veronika Romashkina]: https://github.com/vrom911
