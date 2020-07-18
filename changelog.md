@@ -6,9 +6,9 @@
 
 * `intercalate` for `DList` ([#43][], [Jacob Leach][])
 * `Traversable` instance for `DList` ([#45][], [Veronika Romashkina][])
-* `Data.DList.Internal` for all `DList`-related implementation,
-  `Data.DList.Unsafe` for exporting the `DList` constructor `UnsafeDList` and
-  record label `unsafeApplyDList` ([#55][], [#59][])
+* `Data.DList.Internal` for the `DList` implementation, `Data.DList.Unsafe` for
+  exporting the `DList` constructor `UnsafeDList` and record label
+  `unsafeApplyDList` ([#55][], [#59][])
 * `Data.DList.DNonEmpty` ([#60][])
 * GitHub Action for uploading a release ([#74][])
 
