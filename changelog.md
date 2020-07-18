@@ -1,5 +1,31 @@
 # Change Log
 
+## [Unreleased][]
+
+### Added
+
+* `intercalate` for `DList` ([#43][], [Jacob Leach][])
+* `Traversable` instance for `DList` ([#45][], [Veronika Romashkina][])
+* `Data.DList.Internal` for the `DList` implementation, `Data.DList.Unsafe` for
+  exporting the `DList` constructor `UnsafeDList` and record label
+  `unsafeApplyDList` ([#55][], [#59][])
+* `Data.DList.DNonEmpty` ([#60][])
+* GitHub Action for uploading a release ([#74][])
+* `dlist-bench`, a benchmark package ([#71][])
+
+### Changed
+
+* `stimes` for `DList` defined with `stimesMonoid` ([#46][], [Janek Spaderna][])
+* Type of `tail`: `DList a -> DList a` to `DList a -> [a]` ([#69][])
+* GitHub Action for continuous integration testing to replace Travis-CI
+  ([#47][], [#50][])
+* GHC warning and error improvements ([#72][], [#73][])
+* Improved documentation ([#55][], [#70][], [#76][], [#77][])
+
+### Removed
+
+* `list :: b -> (a -> DList a -> b) -> DList a -> b` ([#69][])
+
 ## [v0.8.0.8][] - 2020-04-02
 
 Released on **World Autism Awareness Day**.
@@ -224,6 +250,10 @@ Released on **Black Friday**.
 [v0.8.0.7]: https://github.com/spl/dlist/compare/v0.8.0.6...v0.8.0.7
 [v0.8.0.8]: https://github.com/spl/dlist/compare/v0.8.0.7...v0.8.0.8
 
+<!-- The HEAD version tag comparison -->
+
+[Unreleased]: https://github.com/spl/dlist/compare/v0.8.0.8...HEAD
+
 <!-- Issues and PRs -->
 
 [#1]: https://github.com/spl/dlist/pull/1
@@ -246,6 +276,22 @@ Released on **Black Friday**.
 [#33]: https://github.com/spl/dlist/pull/33
 [#35]: https://github.com/spl/dlist/pull/35
 [#36]: https://github.com/spl/dlist/pull/36
+[#43]: https://github.com/spl/dlist/pull/43
+[#45]: https://github.com/spl/dlist/pull/45
+[#46]: https://github.com/spl/dlist/pull/46
+[#47]: https://github.com/spl/dlist/pull/47
+[#50]: https://github.com/spl/dlist/pull/50
+[#55]: https://github.com/spl/dlist/pull/55
+[#59]: https://github.com/spl/dlist/pull/59
+[#60]: https://github.com/spl/dlist/pull/60
+[#69]: https://github.com/spl/dlist/pull/69
+[#70]: https://github.com/spl/dlist/pull/70
+[#71]: https://github.com/spl/dlist/pull/71
+[#72]: https://github.com/spl/dlist/pull/72
+[#73]: https://github.com/spl/dlist/pull/73
+[#74]: https://github.com/spl/dlist/pull/74
+[#76]: https://github.com/spl/dlist/pull/76
+[#77]: https://github.com/spl/dlist/pull/77
 
 <!-- Commits -->
 
@@ -275,6 +321,9 @@ Released on **Black Friday**.
 [Don Stewart]: https://github.com/donsbot
 [Evan Laforge]: https://github.com/elaforge
 [Herbert Valerio Riedel]: https://github.com/hvr
+[Jacob Leach]: https://github.com/riz0id
+[Janek Spaderna]: https://github.com/JaSpa
 [Ryan Scott]: https://github.com/RyanGlScott
 [Sean Leather]: https://github.com/spl
 [Simon Jakobi]: https://github.com/sjakobi
+[Veronika Romashkina]: https://github.com/vrom911
