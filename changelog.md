@@ -6,6 +6,8 @@ _No unreleased changes at this time._
 
 ## [v1.0][]
 
+Released on **2020-07-18**, **Nelson Mandela International Day**.
+
 ### Added
 
 * `intercalate` for `DList` ([#43][], [Jacob Leach][])

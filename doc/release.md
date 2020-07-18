@@ -55,7 +55,7 @@ These are the steps for making a new release of the `dlist` package.
    git push --tags
    ```
 
-8. Publish the tag as a release on [releases][].
+8. Publish the [tag][tags] as a release.
 
    This will initiate the `upload` workflow, which will run `cabal upload` to
    upload the new version to Hackage.
@@ -72,4 +72,4 @@ These are the steps for making a new release of the `dlist` package.
 [`dlist.cabal`]: ./dlist.cabal
 [new `changelog.md`]: https://github.com/spl/dlist/blob/version/changelog.md
 [new `dlist.cabal`]: https://github.com/spl/dlist/blob/version/dlist.cabal
-[releases]: https://github.com/spl/dlist/releases
+[tags]: https://github.com/spl/dlist/tags
