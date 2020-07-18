@@ -19,4 +19,4 @@ jobs:
           cabal --version
           mkdir sdist
           cabal sdist --output-dir=./sdist
-          cabal upload --username="${{ secrets.HACKAGE_USERNAME }}" --password="${{ secrets.HACKAGE_PASSWORD }}" "./sdist/dlist-*.tar.gz"
+          cabal upload --username="${{ secrets.HACKAGE_USERNAME }}" --password="${{ secrets.HACKAGE_PASSWORD }}" ./sdist/dlist-*.tar.gz
