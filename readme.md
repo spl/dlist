@@ -11,7 +11,7 @@ _**List-like types supporting O(1) `append` and `snoc` operations.**_
 [`dlist`][hackage-dlist] is a Haskell package available from [Hackage][hackage].
 It can be installed with [`cabal`][cabal] or [`stack`][stack].
 
-See the [change log](./changelog.md) for the changes in each version.
+See the [change log][changelog] for the changes in each version.
 
 ## Usage
 
@@ -242,7 +242,8 @@ These are various references where you can learn more about difference lists.
 [BSD 3-Clause “New” or “Revised” License][license] © Don Stewart, Sean Leather,
 contributors
 
-[benchmark]: ./bench/Main.hs
+[changelog]: https://github.com/spl/dlist/blob/main/changelog.md#change-log
+[benchmark]: https://github.com/spl/dlist/blob/main/bench/Main.hs
 [blog-auclair-1]: https://logicaltypes.blogspot.com/2008/08/using-difference-lists.html
 [blog-auclair-2]: https://logicaltypes.blogspot.com/2014/06/keepequals-with-difference-lists.html
 [blog-breitner]: https://www.joachim-breitner.de/blog/620-Constructing_a_list_in_a_Monad
@@ -256,7 +257,7 @@ contributors
 [hackage-dlist]: https://hackage.haskell.org/package/dlist
 [hackage]: https://hackage.haskell.org/
 [hughes-pdf]: https://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/lists.pdf
-[license]: ./license.md
+[license]: https://github.com/spl/dlist/blob/main/license.md
 [mail-okeefe]: https://www.mail-archive.com/haskell-cafe@haskell.org/msg83699.html
 [packdeps-badge]: https://img.shields.io/hackage-deps/v/dlist.svg?maxAge=3600
 [packdeps]: http://packdeps.haskellers.com/feed?needle=dlist
