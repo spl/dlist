@@ -208,52 +208,40 @@ Just be aware that the burden of proof for safety is on you.
 
 ## References
 
+These are various references where you can learn more about difference lists.
+
 ### Research
 
-1. A novel representation of lists and its application to the function
-   “reverse.” John Hughes. Information Processing Letters. Volume 22, Issue 3.
-   1986-03. Pages 141-144.
-   [PDF][hughes-pdf]
+* **A novel representation of lists and its application to the function
+  “reverse.”** John Hughes. Information Processing Letters. Volume 22, Issue 3.
+  1986-03. Pages 141-144. [PDF][hughes-pdf]
 
-   This is the original source for a representation of lists as first-class functions.
+  This is the original published source for a representation of lists as
+  first-class functions.
 
-### Basic Introduction
+### Background
 
-1. [Difference list][wikipedia]. Wikipedia.
+* [Wikipedia][wikipedia]
+* [Haskell Wiki][wiki-haskell]
+* [Stack Overflow][stack-overflow]
 
-2. [Difference list][wiki-haskell]. Haskell.org Wiki.
+### Blogs and Mailing Lists
 
-3. [What is a DList?][stack-overflow]
-   Stack Overflow.
-
-### Blogs and Discussion
-
-1. [Using Difference Lists][blog-auclair-1].
-   Douglas M. Auclair. 2008-08-13.
-
-2. [A Sort of Difference][blog-kmett].
-   Edward Kmett. 2008-09-18.
-
-3. [Reference for technique wanted][mail-okeefe].
-   Richard O'Keefe, et al. 2010-10-31.
-
-4. [24 Days of Hackage: dlist][blog-charles].
-   Oliver Charles. 2012-12-14.
-
-5. [Constructing a list in a Monad][blog-breitner].
-   Joachim Breitner. 2013-11-13.
-
-6. [Demystifying DList][blog-ellis].
-   ([On Reddit][blog-ellis-reddit]).
-   Tom Ellis. 2014-01-24.
-
-7. [keepEquals with Difference Lists][blog-auclair-2]. Douglas M. Auclair.
-   2014-06-21.
+* [Using Difference Lists][blog-auclair-1]. Douglas M. Auclair. 2008-08-13.
+* [A Sort of Difference][blog-kmett]. Edward Kmett. 2008-09-18.
+* [Reference for technique wanted][mail-okeefe]. Richard O'Keefe, et al.
+  2010-10-31.
+* [24 Days of Hackage: dlist][blog-charles]. Oliver Charles. 2012-12-14.
+* [Constructing a list in a Monad][blog-breitner]. Joachim Breitner. 2013-11-13.
+* [Demystifying DList][blog-ellis] ([Reddit][blog-ellis-reddit]). Tom Ellis.
+  2014-01-24.
+* [keepEquals with Difference Lists][blog-auclair-2]. Douglas M. Auclair.
+  2014-06-21.
 
 ### Books
 
-1. [Chapter 13. Data Structures][book-real-world-haskell].
-   Real World Haskell. 2008-12-05.
+* [Chapter 13. Data Structures][book-real-world-haskell]. Real World Haskell.
+  2008-12-05.
 
 ## License
 
