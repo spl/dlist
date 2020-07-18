@@ -1,16 +1,10 @@
 # Difference Lists
 
-<!-- Badges -->
-
 [![test-badge][]][test]
 [![hackage-badge][]][hackage-dlist]
 [![packdeps-badge][]][packdeps]
 
-<!-- Brief description -->
-
 _**List-like types supporting O(1) `append` and `snoc` operations.**_
-
-<!-- Sections -->
 
 ## Installation
 
@@ -247,8 +241,6 @@ These are various references where you can learn more about difference lists.
 
 [BSD 3-Clause “New” or “Revised” License][license] © Don Stewart, Sean Leather,
 contributors
-
-<!-- Keep these sorted. -->
 
 [benchmark]: ./bench/Main.hs
 [blog-auclair-1]: https://logicaltypes.blogspot.com/2008/08/using-difference-lists.html
