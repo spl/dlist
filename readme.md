@@ -21,31 +21,89 @@ See the [change log](./changelog.md) for the changes in each version.
 
 ## Usage
 
-Here is an example of using `DList` to “flatten” a `Tree` into a (difference)
-list of the elements in its leaves (`Leaf` constructors). `flattenFast` is
-likely to be more efficient than the similar `flattenSlow`, which uses `(: [])`
-instead of `DList.singleton` to inject the element, because `flattenSlow` may
-involve many left-nested append (a.k.a. `++`) operations, which results in
-redundant list constructions.
+Here is an example of “flattening” a `Tree` into a list of the elements in its
+`Leaf` constructors:
 
 ```haskell
-import Control.Monad.Trans.Writer.Lazy (runWriter, tell) -- From 'transformers'
 import qualified Data.DList as DList
 
 data Tree a = Leaf a | Branch (Tree a) (Tree a)
 
-flattenFast :: Tree a -> [a]
-flattenFast = DList.toList . snd . runWriter . go
-  where
-    go (Leaf x) = tell (DList.singleton x)
-    go (Branch x y) = go x >> go y
-
 flattenSlow :: Tree a -> [a]
-flattenSlow = snd . runWriter . go
+flattenSlow = go
   where
-    go (Leaf x) = tell [x]
-    go (Branch x y) = go x >> go y
+    go (Leaf x) = [x]
+    go (Branch left right) = go left ++ go right
+
+flattenFast :: Tree a -> [a]
+flattenFast = DList.toList . go
+  where
+    go (Leaf x) = DList.singleton x
+    go (Branch left right) = go left `DList.append` go right
 ```
+
+(The above code can be found in the [benchmark][].)
+
+`flattenSlow` is likely to be slower than `flattenFast`:
+
+1. `flattenSlow` uses `++` to concatenate lists, each of which is recursively
+   constructed from the `left` and `right` `Tree` values in the `Branch`
+   constructor.
+
+2. `flattenFast` does not use `++` but constructs a composition of functions,
+   each of which is a “cons” introduced by `DList.singleton` (`(x :)`). The
+   function `DList.toList` applies the composed function to `[]`, constructing
+   a list in the end.
+
+To see the difference between `flattenSlow` and `flattenFast`, consider some
+rough evaluations of the functions applied to a `Tree`:
+
+```haskell
+flattenSlow (Branch (Branch (Leaf 'a') (Leaf 'b')) (Leaf 'c'))
+  = go (Branch (Branch (Leaf 'a') (Leaf 'b')) (Leaf 'c'))
+  = go (Branch (Leaf 'a') (Leaf 'b')) ++ go (Leaf 'c')
+  = (go (Leaf 'a') ++ go (Leaf 'b')) ++ "c"
+  = ("a" ++ "b") ++ "c"
+  = ('a' : [] ++ "b") ++ "c"
+  = ('a' : "b") ++ "c"
+  = 'a' : "b" ++ "c"
+  = 'a' : 'b' : [] ++ "c"
+  = 'a' : 'b' : "c"
+```
+
+```haskell
+flattenFast (Branch (Branch (Leaf 'a') (Leaf 'b')) (Leaf 'c'))
+  = toList $ go (Branch (Branch (Leaf 'a') (Leaf 'b')) (Leaf 'c'))
+  = toList $ go (Branch (Leaf 'a') (Leaf 'b')) `append` go (Leaf 'c')
+  = unsafeApplyDList (go (Branch (Leaf 'a') (Leaf 'b'))) . unsafeApplyDList (go (Leaf 'c')) $ []
+  = unsafeApplyDList (go (Branch (Leaf 'a') (Leaf 'b'))) (unsafeApplyDList (go (Leaf 'c')) [])
+  = unsafeApplyDList (go (Branch (Leaf 'a') (Leaf 'b'))) (unsafeApplyDList (singleton 'c') [])
+  = unsafeApplyDList (go (Branch (Leaf 'a') (Leaf 'b'))) (unsafeApplyDList (UnsafeDList ((:) 'c')) [])
+  = unsafeApplyDList (go (Branch (Leaf 'a') (Leaf 'b'))) "c"
+  = unsafeApplyDList (UnsafeDList (unsafeApplyDList (go (Leaf 'a')) . unsafeApplyDList (go (Leaf 'b')))) "c"
+  = unsafeApplyDList (go (Leaf 'a')) (unsafeApplyDList (go (Leaf 'b')) "c")
+  = unsafeApplyDList (go (Leaf 'a')) (unsafeApplyDList (singleton 'b') "c")
+  = unsafeApplyDList (go (Leaf 'a')) (unsafeApplyDList (UnsafeDList ((:) 'b')) "c")
+  = unsafeApplyDList (go (Leaf 'a')) ('b' : "c")
+  = unsafeApplyDList (singleton 'a') ('b' : "c")
+  = unsafeApplyDList (UnsafeDList ((:) 'a')) ('b' : "c")
+  = 'a' : 'b' : "c"
+```
+
+The left-nested `++` in `flattenSlow` results in intermediate list constructions
+that are immediately discarded in the evaluation of the outermost `++`. On the
+other hand, the evaluation of `flattenFast` involves no intermediate list
+construction but rather function applications and `newtype` constructor wrapping
+and unwrapping. This is where the efficiency comes from.
+
+_**Warning!**_ Note that there is truth in the above, but there is also a lot of
+hand-waving and intrinsic complexity. For example, there may be GHC rewrite
+rules that apply to `++`, which will change the actual evaluation. And, of
+course, strictness, laziness, and sharing all play a significant role. Also, not
+every function in the `dlist` package is the most efficient for every situation.
+
+_**Moral of the story:**_ If you are using `dlist` to speed up your code, check
+to be sure that it actually does. Benchmark!
 
 ## References
 
@@ -103,6 +161,7 @@ contributors
 
 <!-- Keep these sorted. -->
 
+[benchmark]: ./bench/Main.hs
 [blog-auclair-1]: https://logicaltypes.blogspot.com/2008/08/using-difference-lists.html
 [blog-auclair-2]: https://logicaltypes.blogspot.com/2014/06/keepequals-with-difference-lists.html
 [blog-breitner]: https://www.joachim-breitner.de/blog/620-Constructing_a_list_in_a_Monad

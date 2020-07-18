@@ -1,6 +1,5 @@
 module Main (main) where
 
-import Control.Monad.Trans.Writer.Lazy (runWriter, tell)
 import Criterion.Main (bench, bgroup, defaultMain, whnf)
 import qualified Data.DList as DList
 import qualified Data.DList.DNonEmpty as DNonEmpty
@@ -49,13 +48,11 @@ main =
               NonEmptyDList.fromNonEmpty $ 1 NonEmpty.:| [2, 3, 4, 5]
         ],
       bgroup
-        "writer"
-        [ bench "List" $
-            whnf (writer (: [])) $
-              Branch (Branch (Leaf 'a') (Leaf 'b')) (Branch (Leaf 'c') (Leaf 'd')),
-          bench "DList" $
-            whnf (writer DList.singleton) $
-              Branch (Branch (Leaf 'a') (Leaf 'b')) (Branch (Leaf 'c') (Leaf 'd'))
+        "Tree"
+        [ bench "flattenSlow" $
+            whnf flattenSlow exampleTree,
+          bench "flattenFast" $
+            whnf flattenFast exampleTree
         ]
     ]
 
@@ -77,9 +74,24 @@ fmap_append m x = Foldable.foldl' (+) 0 $ Foldable.toList $ go m x
 
 data Tree a = Leaf a | Branch (Tree a) (Tree a)
 
--- | Tree flattening with the Writer monad
-writer :: Monoid w => (Char -> w) -> Tree Char -> w
-writer f = snd . runWriter . go
+exampleTree :: Tree Char
+exampleTree =
+  Branch
+    (Branch
+      (Branch
+        (Branch (Leaf 'a') (Leaf 'b'))
+        (Leaf 'c'))
+      (Leaf 'd'))
+    (Branch (Leaf 'e') (Leaf 'f'))
+
+flattenSlow :: Tree a -> [a]
+flattenSlow = go
   where
-    go (Leaf x) = tell (f x)
-    go (Branch x y) = go x >> go y
+    go (Leaf x) = [x]
+    go (Branch left right) = go left ++ go right
+
+flattenFast :: Tree a -> [a]
+flattenFast = DList.toList . go
+  where
+    go (Leaf x) = DList.singleton x
+    go (Branch left right) = go left `DList.append` go right
