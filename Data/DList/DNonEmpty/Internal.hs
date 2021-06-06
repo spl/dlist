@@ -394,7 +394,7 @@ instance Read a => Read (DNonEmpty a) where
 instance Show a => Show (DNonEmpty a) where
   showsPrec p dl =
     showParen (p > 10) $
-      showString "fromNonEmpty " . shows (toNonEmpty dl)
+      showString "fromNonEmpty " . showsPrec 11 (toNonEmpty dl)
 
 instance Functor DNonEmpty where
   {-# INLINE fmap #-}
