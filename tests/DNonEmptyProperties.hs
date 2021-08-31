@@ -62,9 +62,9 @@ prop_show_read :: NonEmpty Int -> Bool
 prop_show_read = eqWith id (read . show)
 
 prop_read_show :: NonEmpty Int -> Bool
-prop_read_show x = eqWith id (show . f . read) $ "fromNonEmpty " ++ show x
+prop_read_show x = eqWith id (show . f . read) $ "fromNonEmpty (" ++ show x ++ ")"
   where
-    f :: NonEmpty Int -> NonEmpty Int
+    f :: DNonEmpty Int -> DNonEmpty Int
     f = id
 
 exampleList :: [Int]
