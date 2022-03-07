@@ -27,7 +27,7 @@ jobs:
           sudo add-apt-repository -y ppa:hvr/ghc
           sudo apt-get update
           sudo apt-get install ghc-${{ matrix.ghc-version }} cabal-install-${{ matrix.cabal-version }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run tests
         run: |
           export PATH=/opt/ghc/${{ matrix.ghc-version }}/bin:/opt/cabal/${{ matrix.cabal-version }}/bin:$PATH
@@ -58,7 +58,7 @@ jobs:
         cabal-version:
           - latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install ghc-${{ matrix.ghc-version }}
         uses: actions/setup-haskell@v1
         with:
@@ -76,7 +76,7 @@ jobs:
   other:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-haskell@v1
       - name: Run check, haddock, unsafe import test
         run: |
@@ -93,7 +93,7 @@ jobs:
   benchmark:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-haskell@v1
       - name: Build bench
         run: |
