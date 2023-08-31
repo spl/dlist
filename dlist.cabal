@@ -2,6 +2,8 @@ cabal-version:          >= 1.10
 
 name:                   dlist
 version:                1.0
+x-revision:             1
+
 synopsis:               Difference lists
 description:
   List-like types supporting O(1) append and snoc operations.
@@ -39,7 +41,7 @@ tested-with:
 
 source-repository head
   type:                 git
-  location:             git://github.com/spl/dlist.git
+  location:             https://github.com/spl/dlist.git
 
 flag Werror
   description:          Enable -Werror
@@ -49,7 +51,7 @@ flag Werror
 library
   build-depends:
                         base >= 4 && < 5,
-                        deepseq >= 1.1 && < 1.5
+                        deepseq >= 1.1 && < 1.6
   exposed-modules:      Data.DList
                         Data.DList.Unsafe
   other-modules:        Data.DList.Internal
