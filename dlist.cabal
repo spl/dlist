@@ -36,7 +36,7 @@ tested-with:            GHC==7.0.4
 
 source-repository head
   type:                 git
-  location:             git://github.com/spl/dlist.git
+  location:             https://github.com/spl/dlist.git
 
 flag Werror
   description:          Enable -Werror
