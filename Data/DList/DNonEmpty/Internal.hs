@@ -50,9 +50,14 @@ import Data.DList (DList)
 import qualified Data.DList as DList
 import qualified Data.Foldable as Foldable
 import Data.Function (on)
+#if !MIN_VERSION_base(4,8,0)
+import Data.Monoid (mappend)
+#endif
+#if MIN_VERSION_base(4,9,0)
 import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
 import qualified Data.Semigroup as Semigroup
+#endif
 import Data.String (IsString (..))
 import qualified GHC.Exts as Exts
 import qualified Text.Read as Read
@@ -123,9 +128,11 @@ More likely, you will convert from a 'NonEmpty', perform some operation on the
 -}
 {- ORMOLU_ENABLE -}
 
+#if MIN_VERSION_base(4,9,0)
 {-# INLINE fromNonEmpty #-}
 fromNonEmpty :: NonEmpty a -> DNonEmpty a
 fromNonEmpty ~(x NonEmpty.:| xs) = x :| DList.fromList xs
+#endif
 
 {- ORMOLU_DISABLE -}
 {-|
@@ -147,9 +154,11 @@ you achieved due to laziness in the construction.
 -}
 {- ORMOLU_ENABLE -}
 
+#if MIN_VERSION_base(4,9,0)
 {-# INLINE toNonEmpty #-}
 toNonEmpty :: DNonEmpty a -> NonEmpty a
 toNonEmpty ~(x :| xs) = x NonEmpty.:| DList.toList xs
+#endif
 
 {- ORMOLU_DISABLE -}
 {-|
@@ -378,23 +387,26 @@ map :: (a -> b) -> DNonEmpty a -> DNonEmpty b
 map f ~(x :| xs) = f x :| DList.map f xs
 
 instance Eq a => Eq (DNonEmpty a) where
-  (==) = (==) `on` toNonEmpty
+  (==) = (==) `on` toList
 
 instance Ord a => Ord (DNonEmpty a) where
-  compare = compare `on` toNonEmpty
+  compare = compare `on` toList
 
 instance Read a => Read (DNonEmpty a) where
   readPrec = Read.parens $
     Read.prec 10 $ do
       Read.Ident "fromNonEmpty" <- Read.lexP
-      dl <- Read.readPrec
-      return $ fromNonEmpty dl
+      Read.parens $ do
+        x <- Read.prec 5 Read.readPrec
+        Read.Symbol ":|" <- Read.lexP
+        xs <- Read.prec 5 Read.readPrec
+        return $ x :| DList.fromList xs
   readListPrec = Read.readListPrecDefault
 
 instance Show a => Show (DNonEmpty a) where
-  showsPrec p dl =
+  showsPrec p (x :| xs)=
     showParen (p > 10) $
-      showString "fromNonEmpty " . showsPrec 11 (toNonEmpty dl)
+      showString "fromNonEmpty (" . showsPrec 5 x . showString " :| " . showsPrec 5 (DList.toList xs) . showString ")"
 
 instance Functor DNonEmpty where
   {-# INLINE fmap #-}
@@ -416,36 +428,32 @@ instance Monad DNonEmpty where
   return = Applicative.pure
 
 instance Foldable.Foldable DNonEmpty where
-  {-# INLINE fold #-}
-  fold = Foldable.fold . toNonEmpty
+  foldr f x = Foldable.foldr f x . toList
+  foldl f x = Foldable.foldl f x . toList
 
-  {-# INLINE foldMap #-}
-  foldMap f = Foldable.foldMap f . toNonEmpty
+#if MIN_VERSION_base(4,6,0)
+  foldl' f x = Foldable.foldl' f x . toList
+  foldr' f x = Foldable.foldr' f x . toList
+#endif
 
-  {-# INLINE foldr #-}
-  foldr f x = Foldable.foldr f x . toNonEmpty
+  -- These are based on their NonEmpty counterparts
+  -- We don't convert to NonEmpty, because we support
+  -- base <4.9.0.0
+  fold ~(x :| xs) = x `mappend` Foldable.fold xs
+  foldMap f ~(x :| xs) = f x `mappend` Foldable.foldMap f xs
+  foldr1 f (p :| ps) = Foldable.foldr go id ps p
+    where
+      go x r prev = f prev (r x)
+  foldl1 f (x :| xs) = Foldable.foldl f x (DList.toList xs)
 
-  {-# INLINE foldl #-}
-  foldl f x = Foldable.foldl f x . toNonEmpty
-
-  {-# INLINE foldr1 #-}
-  foldr1 f = Foldable.foldr1 f . toNonEmpty
-
-  {-# INLINE foldl1 #-}
-  foldl1 f = Foldable.foldl1 f . toNonEmpty
-
-  {-# INLINE foldl' #-}
-  foldl' f x = Foldable.foldl' f x . toNonEmpty
-
-  {-# INLINE foldr' #-}
-  foldr' f x = Foldable.foldr' f x . toNonEmpty
-
+#if MIN_VERSION_base(4,8,0)
   {-# INLINE toList #-}
   toList = toList
+#endif
 
 instance NFData a => NFData (DNonEmpty a) where
   {-# INLINE rnf #-}
-  rnf = rnf . toNonEmpty
+  rnf = rnf . toList
 
 {-
 
@@ -460,6 +468,7 @@ instance a ~ Char => IsString (DNonEmpty a) where
   {-# INLINE fromString #-}
   fromString = fromList
 
+#if MIN_VERSION_base(4,7,0)
 instance Exts.IsList (DNonEmpty a) where
   type Item (DNonEmpty a) = a
 
@@ -468,7 +477,10 @@ instance Exts.IsList (DNonEmpty a) where
 
   {-# INLINE toList #-}
   toList = toList
+#endif
 
+#if MIN_VERSION_base(4,9,0)
 instance Semigroup.Semigroup (DNonEmpty a) where
   {-# INLINE (<>) #-}
   (<>) = append
+#endif
