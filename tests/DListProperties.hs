@@ -20,7 +20,7 @@
 --------------------------------------------------------------------------------
 
 -- | QuickCheck property tests for DList.
-module DListProperties (test) where
+module DListProperties (properties) where
 
 --------------------------------------------------------------------------------
 
@@ -183,6 +183,3 @@ properties =
     ("Semigroup stimes", property prop_Semigroup_stimes)
 #endif
   ]
-
-test :: IO ()
-test = quickCheckLabeledProperties properties

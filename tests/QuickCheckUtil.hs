@@ -37,8 +37,8 @@ eqOn c f g x = c x ==> f x == g x
 
 --------------------------------------------------------------------------------
 
-quickCheckLabeledProperties :: [(String, Property)] -> IO ()
-quickCheckLabeledProperties = quickCheck . conjoin . map (uncurry label)
+quickCheckLabeledProperties :: [(String, Property)] -> IO Result
+quickCheckLabeledProperties = quickCheckResult . conjoin . map (uncurry label)
 
 --------------------------------------------------------------------------------
 

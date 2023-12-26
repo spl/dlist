@@ -8,7 +8,7 @@
 --------------------------------------------------------------------------------
 
 -- | QuickCheck property tests for DNonEmpty.
-module DNonEmptyProperties (test) where
+module DNonEmptyProperties (properties) where
 
 --------------------------------------------------------------------------------
 
@@ -104,6 +104,3 @@ properties =
     ("fromList", property prop_fromList),
     ("Semigroup <>", property prop_Semigroup_append)
   ]
-
-test :: IO ()
-test = quickCheckLabeledProperties properties
