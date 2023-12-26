@@ -59,7 +59,7 @@ prop_map :: (Int -> Int) -> NonEmpty Int -> Bool
 prop_map f = eqWith (NonEmpty.map f) (toNonEmpty . map f . fromNonEmpty)
 
 prop_show_read :: NonEmpty Int -> Bool
-prop_show_read = eqWith id (read . show)
+prop_show_read = eqWith id (read . show) . fromNonEmpty
 
 prop_read_show :: NonEmpty Int -> Bool
 prop_read_show x = eqWith id (show . f . read) $ "fromNonEmpty (" ++ show x ++ ")"
