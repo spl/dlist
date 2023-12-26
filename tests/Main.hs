@@ -13,10 +13,7 @@ module Main (main) where
 --------------------------------------------------------------------------------
 
 import qualified DListProperties
--- CPP: GHC >= 8 for DNonEmpty
-#if __GLASGOW_HASKELL__ >= 800
 import qualified DNonEmptyProperties
-#endif
 import qualified OverloadedStrings
 import QuickCheckUtil (quickCheckLabeledProperties)
 import Control.Monad (unless)
