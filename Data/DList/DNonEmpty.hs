@@ -8,9 +8,12 @@
 
 -----------------------------------------------------------------------------
 
+-- GHC >=8 supports this flag
+#if MIN_VERSION_base(4,9,0)
 -- CPP: Ignore unused imports when Haddock is run
-#if defined(__HADDOCK_VERSION__)
+# if defined(__HADDOCK_VERSION__)
 {-# OPTIONS_GHC -Wno-unused-imports #-}
+# endif
 #endif
 
 -----------------------------------------------------------------------------
@@ -41,8 +44,10 @@ module Data.DList.DNonEmpty
     DNonEmpty((:|)),
 
     -- * Conversion
+#if MIN_VERSION_base(4,9,0)
     fromNonEmpty,
     toNonEmpty,
+#endif
     toList,
     fromList,
 
@@ -64,7 +69,9 @@ import Data.DList.DNonEmpty.Internal
 
 -- CPP: Import only for Haddock
 #if defined(__HADDOCK_VERSION__)
+# if MIN_VERSION_base(4,9,0)
 import Data.List.NonEmpty (NonEmpty)
+# endif
 import Data.DList (DList)
 #endif
 

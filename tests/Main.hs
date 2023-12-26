@@ -13,19 +13,19 @@ module Main (main) where
 --------------------------------------------------------------------------------
 
 import qualified DListProperties
--- CPP: GHC >= 8 for DNonEmpty
-#if __GLASGOW_HASKELL__ >= 800
 import qualified DNonEmptyProperties
-#endif
 import qualified OverloadedStrings
+import QuickCheckUtil (quickCheckLabeledProperties)
+import Control.Monad (unless)
+import Test.QuickCheck (isSuccess)
+import System.Exit (exitFailure)
 
 --------------------------------------------------------------------------------
 
 main :: IO ()
 main = do
-  DListProperties.test
--- CPP: GHC >= 8 for DNonEmpty
-#if __GLASGOW_HASKELL__ >= 800
-  DNonEmptyProperties.test
-#endif
   OverloadedStrings.test
+  result <- quickCheckLabeledProperties $
+    DListProperties.properties
+    ++ DNonEmptyProperties.properties
+  unless (isSuccess result) exitFailure
