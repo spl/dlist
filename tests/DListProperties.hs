@@ -14,6 +14,12 @@
 #endif
 {- ORMOLU_ENABLE -}
 
+-- CPP: GHC >= 9.8 for disabling partial function warnings for 'List.head' and
+-- 'List.tail'
+#if __GLASGOW_HASKELL__ >= 908
+{-# OPTIONS_GHC -Wno-x-partial #-}
+#endif
+
 #if __GLASGOW_HASKELL__ >= 708
 #endif
 

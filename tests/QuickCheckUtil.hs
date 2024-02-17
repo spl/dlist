@@ -21,7 +21,10 @@ module QuickCheckUtil where
 
 -- CPP: GHC >= 8 for NonEmpty
 #if __GLASGOW_HASKELL__ >= 800
+-- CPP: GHC >= 9.6 for 'liftA2' exported from Prelude
+#if __GLASGOW_HASKELL__ < 906
 import Control.Applicative (liftA2)
+#endif
 import Data.List.NonEmpty (NonEmpty (..), nonEmpty)
 import Data.Maybe (mapMaybe)
 #endif
