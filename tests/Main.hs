@@ -34,4 +34,5 @@ main = do
 #if __GLASGOW_HASKELL__ >= 800
     ++ DNonEmptyProperties.properties
 #endif
+  OverloadedStrings.test
   unless (isSuccess result) exitFailure
