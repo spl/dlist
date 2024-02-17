@@ -263,7 +263,7 @@ contributors
 [packdeps]: http://packdeps.haskellers.com/feed?needle=dlist
 [stack-overflow]: https://stackoverflow.com/questions/3352418/what-is-a-dlist
 [stack]: https://docs.haskellstack.org/
-[test-badge]: https://github.com/spl/dlist/workflows/test/badge.svg
-[test]: https://github.com/spl/dlist/actions?query=workflow%3Atest
+[test-badge]: https://github.com/spl/dlist/actions/workflows/haskell-ci.yml/badge.svg
+[test]: https://github.com/spl/dlist/actions/workflows/haskell-ci.yml
 [wiki-haskell]: https://wiki.haskell.org/Difference_list
 [wikipedia]: https://en.wikipedia.org/wiki/Difference_list
