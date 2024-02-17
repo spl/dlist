@@ -97,7 +97,7 @@ prop_intercalate sep =
   eqWith (List.intercalate sep) (toList . intercalate (fromList sep) . List.map fromList)
 
 prop_show_read :: [Int] -> Bool
-prop_show_read = eqWith id (read . show)
+prop_show_read = eqWith id (read . show) . fromList
 
 prop_read_show :: [Int] -> Bool
 prop_read_show x = eqWith id (show . f . read) $ "fromList " ++ show x
