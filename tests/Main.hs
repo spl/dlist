@@ -27,7 +27,6 @@ import System.Exit (exitFailure)
 
 main :: IO ()
 main = do
-  OverloadedStrings.test
   result <- quickCheckLabeledProperties $
     DListProperties.properties
 -- CPP: GHC >= 8 for DNonEmpty
