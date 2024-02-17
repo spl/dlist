@@ -30,7 +30,7 @@ main = do
   OverloadedStrings.test
   result <- quickCheckLabeledProperties $
     DListProperties.properties
-  -- CPP: GHC >= 8 for DNonEmpty
+-- CPP: GHC >= 8 for DNonEmpty
 #if __GLASGOW_HASKELL__ >= 800
     ++ DNonEmptyProperties.properties
 #endif
