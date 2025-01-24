@@ -190,6 +190,8 @@ pattern Cons :: a -> [a] -> DList a
 #endif
 pattern Cons x xs <- (toList -> x : xs)
 
+{-# COMPLETE Nil, Cons #-}
+
 #endif
 
 {- ORMOLU_DISABLE -}
