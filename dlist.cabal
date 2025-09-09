@@ -14,7 +14,7 @@ copyright:              2006-2009 Don Stewart, 2013-2020 Sean Leather, 2017-2020
 homepage:               https://github.com/spl/dlist
 bug-reports:            https://github.com/spl/dlist/issues
 extra-source-files:     readme.md,
-                        changelog.md
+                        changelog.md,
                         tests/ImportUnsafe.hs
 build-type:             Simple
 tested-with:            GHC==7.0.4
