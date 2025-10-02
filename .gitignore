@@ -9,3 +9,4 @@ cabal.sandbox.config
 # cabal build outputs
 dist
 dist-newstyle
+dist-mcabal

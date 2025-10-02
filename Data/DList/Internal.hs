@@ -16,8 +16,8 @@ package depends on this module ('Data.DList.Internal'), we don't perform the
 same check everywhere else.
 
 -}
-#if !defined(__GLASGOW_HASKELL__)
-#error "Your compiler is not GHC. Let us know if dlist can be made to work on it."
+#if !defined(__GLASGOW_HASKELL__) && !defined(__MHS__)
+#error "Your compiler is not GHC or MicroHs. Let us know if dlist can be made to work on it."
 #endif
 
 -- For the IsList and IsString instances
@@ -64,9 +64,9 @@ import qualified Control.Applicative as Applicative
 import Control.DeepSeq (NFData (..))
 import qualified Control.Monad as Monad
 -- CPP: base >= 4.9 for MonadFail
--- CPP: base >= 4.13 for MonadFail exported from Control.Monad
+-- CPP: base >= 4.13 for MonadFail exported from Prelude
 #if MIN_VERSION_base(4,9,0) && !MIN_VERSION_base(4,13,0)
-import qualified Control.Monad.Fail as Monad
+import Control.Monad.Fail (MonadFail (..))
 #endif
 import qualified Data.Foldable as Foldable
 import Data.Function (on)
@@ -159,10 +159,10 @@ construction.
 toList :: DList a -> [a]
 toList = ($ []) . unsafeApplyDList
 
--- CPP: GHC >= 7.8 for pattern synonyms
-#if __GLASGOW_HASKELL__ >= 708
+-- CPP: GHC >= 7.8 or MicroHs for pattern synonyms
+#if __GLASGOW_HASKELL__ >= 708 || __MHS__
 
--- CPP: GHC >= 7.10 for pattern synonym signatures
+-- CPP: GHC >= 7.10 or MicroHs for pattern synonym signatures
 
 {- ORMOLU_DISABLE -}
 {-|
@@ -172,7 +172,7 @@ A unidirectional pattern synonym for 'empty'. This is implemented with 'toList'.
 -}
 {- ORMOLU_ENABLE -}
 
-#if __GLASGOW_HASKELL__ >= 710
+#if __GLASGOW_HASKELL__ >= 710 || __MHS__
 pattern Nil :: DList a
 #endif
 pattern Nil <- (toList -> [])
@@ -185,7 +185,7 @@ A unidirectional pattern synonym for 'cons'. This is implemented with 'toList'.
 -}
 {- ORMOLU_ENABLE -}
 
-#if __GLASGOW_HASKELL__ >= 710
+#if __GLASGOW_HASKELL__ >= 710 || __MHS__
 pattern Cons :: a -> [a] -> DList a
 #endif
 pattern Cons x xs <- (toList -> x : xs)
@@ -574,7 +574,7 @@ instance Monad DList where
 
 -- CPP: base >= 4.9 for MonadFail
 #if MIN_VERSION_base(4,9,0)
-instance Monad.MonadFail DList where
+instance MonadFail DList where
   {-# INLINE fail #-}
   fail _ = empty
 #endif
@@ -605,8 +605,8 @@ instance Foldable.Foldable DList where
   {-# INLINE foldl1 #-}
   foldl1 f = List.foldl1 f . toList
 
--- CPP: GHC >= 7.6 for foldl', foldr' in Foldable
-#if __GLASGOW_HASKELL__ >= 706
+-- CPP: base >= 4.6 for foldl', foldr' in Foldable
+#if MIN_VERSION_base(4,6,0)
   {-# INLINE foldl' #-}
   foldl' f x = List.foldl' f x . toList
 

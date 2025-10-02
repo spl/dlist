@@ -460,6 +460,7 @@ instance a ~ Char => IsString (DNonEmpty a) where
   {-# INLINE fromString #-}
   fromString = fromList
 
+#ifdef __GLASGOW_HASKELL__
 instance Exts.IsList (DNonEmpty a) where
   type Item (DNonEmpty a) = a
 
@@ -468,6 +469,7 @@ instance Exts.IsList (DNonEmpty a) where
 
   {-# INLINE toList #-}
   toList = toList
+#endif
 
 instance Semigroup.Semigroup (DNonEmpty a) where
   {-# INLINE (<>) #-}
