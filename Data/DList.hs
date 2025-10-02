@@ -43,7 +43,7 @@ module Data.DList
   ( -- * Difference List Type
 
 -- CPP: GHC >= 8 for pattern synonyms allowed in the constructor
-#if __GLASGOW_HASKELL__ >= 800
+#if __GLASGOW_HASKELL__ >= 800 || __MHS__
     DList (Nil, Cons),
 #else
     DList,
