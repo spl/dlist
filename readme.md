@@ -2,7 +2,6 @@
 
 [![test-badge][]][test]
 [![hackage-badge][]][hackage-dlist]
-[![packdeps-badge][]][packdeps]
 
 _**List-like types supporting O(1) `append` and `snoc` operations.**_
 
@@ -259,8 +258,6 @@ contributors
 [hughes-pdf]: https://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/lists.pdf
 [license]: https://github.com/spl/dlist/blob/main/license.md
 [mail-okeefe]: https://www.mail-archive.com/haskell-cafe@haskell.org/msg83699.html
-[packdeps-badge]: https://img.shields.io/hackage-deps/v/dlist.svg?maxAge=3600
-[packdeps]: http://packdeps.haskellers.com/feed?needle=dlist
 [stack-overflow]: https://stackoverflow.com/questions/3352418/what-is-a-dlist
 [stack]: https://docs.haskellstack.org/
 [test-badge]: https://github.com/spl/dlist/actions/workflows/haskell-ci.yml/badge.svg
